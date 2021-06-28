@@ -259,6 +259,7 @@
 
         affixFolderNumbers()
         affixBranchLines(branches)
+        sanitizeFolderLeftover(branches)
         sanitizeFolderLines()
         setFillerSizes()
     }
@@ -336,7 +337,6 @@
 
             let connected = false
             let arrow = false
-            console.log([...lineArray])
             while (lineArray.length > 0) {
                 if (lineArray[0].classList.contains('connected_yes') || lineArray[0].classList.contains('connected_folder')) {
                     connected = true
@@ -363,15 +363,61 @@
         })
     }
 
+    function sanitizeFolderLeftover(branches) {
+        for (let rank of document.querySelectorAll('.rank')) {
+            loop: for (let branch of branches) {
+                const lineItems = rank.querySelectorAll(`.badgeLine_${branch}`)
+                const vehicleBadges = [...lineItems].filter((item) => {
+                    return item.classList.contains('vehicleBadge')
+                })
+                if (vehicleBadges.length > 0 && vehicleBadges.pop().classList.contains('connected_folder')) {
+                    let connectors = [...lineItems].filter((item) => {
+                        return item.classList.contains('badgeLine')
+                    })
+                    connectors = connectors.filter((item) => {
+                        item = item.parentNode.parentNode.parentNode.parentNode.parentNode
+                        return !item.classList.contains('foldertooltiptext')
+                    })
+                    const lastConnector = connectors.pop()
+                    let reachedConnector = false
+                    let firstVehicle = true
+                    for (let item of document.querySelectorAll(`.badgeLine_${branch}`)) {
+                        if (reachedConnector) {
+                            if (item.classList.contains('vehicleBadge')) {
+                                if (firstVehicle) {
+                                    firstVehicle = false
+                                    continue
+                                }
+                                if (item.classList.contains('connected_no')) {
+                                    lastConnector.innerHTML = ''
+                                    break loop
+                                }
+
+                                if (item.classList.contains('connected_yes')) {
+                                    break loop
+                                }
+                            }
+                        }
+                        if (item.isSameNode(lastConnector)) reachedConnector = true
+                    }
+                    lastConnector.innerHTML = ''
+                }
+            }
+        }
+    }
+
     function sanitizeFolderLines() {
-        /*
         let folders = document.querySelectorAll('.foldertooltiptext')
         folders.forEach((folder) => {
-            folder.querySelector('.lineArrow').style.borderColor = 'rgba(0, 0, 0, 0)'
-            let last = folder.querySelectorAll('.lineDiv')
-            last[last.length - 1].style.backgroundColor = 'rgba(0, 0, 0, 0)'
-        }) //fix this, it breaks folders on premium side, basically only remove first arrow if first box contains it and remove last line if last box contains it
-        */
+            folder = [...folder.querySelectorAll('.badgeLine')]
+            if (folder[0].children[0] !== undefined) {
+                folder[0].children[0].style.borderColor = 'rgba(0, 0, 0, 0)'
+            }
+            folder.reverse()
+            if (folder[0].children[0] !== undefined) {
+                folder[0].children[0].style.backgroundColor = 'rgba(0, 0, 0, 0)'
+            }
+        })
     }
 
     function setFillerSizes() {
@@ -383,6 +429,3 @@
         })
     }
 })()
-
-//if folder is last in rank, it has connection even if there is no followup vehicle
-//caused by incorrect order of folder
