@@ -1,0 +1,185 @@
+/*https://www.w3schools.com/css/css_tooltip.asp*/
+
+:root {
+    --main_bg: rgb(48, 48, 48);
+    --text_col: white;
+
+    --tech_tree_bg: rgb(36, 46, 51);
+}
+
+td {
+    border: 1px black solid;
+}
+
+ul {
+    padding-left: 17px;
+}
+
+body {
+    background-color: var(--tech_tree_bg);
+    color: var(--text_col);
+}
+
+.type_researchable,
+.type_event {
+    background-color: rgb(46, 66, 80);
+}
+
+.type_premium {
+    background-color: rgb(60, 52, 28);
+}
+
+.type_squadron {
+    background-color: rgb(48, 70, 44);
+}
+
+.badgeSide {
+    width: 10px;
+}
+
+.badgeLine {
+    height: 20px;
+    padding: 0px;
+}
+
+#techtree img {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    max-height: 70%;
+    max-width: 80%;
+}
+
+#techtree table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+#techtree td {
+    border-color: rgba(0, 0, 0, 0);
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+}
+
+.rank {
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+    display: flex;
+    width: fit-content;
+}
+
+.rank:first-of-type {
+    border-top: 2px solid black;
+}
+
+.branch {
+    width: 182px;
+    display: inline-block;
+    vertical-align: top;
+    flex-shrink: 0;
+}
+
+.vehicleName {
+    z-index: 1;
+    text-shadow: 0px 0px 11px #000000;
+    max-width: 140px;
+    position: absolute;
+    top: 0px;
+    left: 4px;
+}
+
+.vehicleBr {
+    z-index: 1;
+    text-shadow: 0px 0px 11px #000000;
+    position: absolute;
+    bottom: 1px;
+    right: 2px;
+}
+
+.folderNumber {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    border: none;
+    text-align: right;
+    width: 30px;
+    height: 30px;
+    background:
+        linear-gradient(to top right, transparent 50%, #000000 0) top right/30px 30px no-repeat, transparent;
+}
+
+.vehicleBadge {
+    width: 150px;
+    height: 50px;
+    border: 1px black solid !important;
+}
+
+
+.fillerDiv {}
+
+.lineDiv {
+    width: 20px;
+    background-color: rgb(96, 125, 139);
+    height: 100%;
+    margin: auto;
+}
+
+.lineArrow {
+    width: 0px;
+    height: 0px;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid rgb(96, 125, 139);
+    margin: auto;
+}
+
+.badgeLine_premium_0 {
+    border-left: 2px solid black;
+}
+
+/*REGION TOOLTIPS*/
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 300px;
+    background-color: black;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    position: absolute;
+    z-index: 2;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.foldertooltip {
+    margin-bottom: -4px;
+    position: relative;
+    display: inline-block;
+}
+
+.foldertooltip .foldertooltiptext {
+    visibility: hidden;
+    background-color: rgb(64, 85, 97);
+    border-radius: 6px;
+    position: absolute;
+    z-index: 2;
+}
+
+.foldertooltiptext {
+    top: 0px;
+}
+
+.foldertooltip:hover .foldertooltiptext {
+    visibility: visible;
+}
+
+/*ENDREGION TOOLTIPS*/
