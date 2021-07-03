@@ -8,13 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WT Tech-Tree Maker</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
 </head>
 
 <body>
     <a href="file:///C:/Users/zanju/Desktop/lol/tech_tree/index.html">tree</a>
     <a href="https://www.bcnp-wot.fr/nation/fr/game.html">WOT tree</a>
     <a href="https://www.youtube.com/watch?v=WiPLepeLbz0">sphinx</a>
+    <a href="https://forum.warthunder.com/index.php?/topic/492051-need-more-aa-in-tech-tree-non-sam/page/2/">forum</a>
     <details>
         <summary>Add vehicle</summary>
         <button id="buttn1">Add vehicle</button>
@@ -94,8 +94,14 @@
                     some
                     ;)</span>
             </div><br>
-            <textarea name="vehicledescription" id="vehicledescription" rows="10" cols="50"
-                placeholder="This vehicle is awesome!"></textarea>
+            <textarea name="vehicledescription" id="vehicledescription" placeholder="This vehicle is awesome!"></textarea>
+
+            <label for="vehicleimagelist">Images:</label>
+            <div class="tooltip">❓
+                <span class="tooltiptext">Images to display after clicking on the vehicle.<br><br> Optional</span>
+            </div><br>
+            <button id="vehicleimagelistadd">Add image <b style="color: green;">+</b></button>
+            <ol id="vehicleimagelist"></ol>
 
         </form>
     </details>
@@ -181,14 +187,38 @@
             <textarea name="vehicledescriptionedit" id="vehicledescriptionedit" rows="10" cols="50"
                 placeholder="This vehicle is awesome!"></textarea>
 
+            <label for="vehicleimagelistedit">Images:</label>
+            <div class="tooltip">❓
+                <span class="tooltiptext">Images to display after clicking on the vehicle.<br><br> Optional</span>
+            </div><br>
+            <button id="vehicleimagelisteditadd">Add image <b style="color: green;">+</b></button>
+            <ol id="vehicleimagelistedit"></ol>
+
         </form>
     </details>
 
     <div id="techtree"></div>
 
-    <table>
-        <tbody id="techtreetest"></tbody>
-    </table>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 id="modal_title"></h2>
+            </div>
+            <div class="modal-gallery">
+                <div class="galleria" id="galleria"></div>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/galleria.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
