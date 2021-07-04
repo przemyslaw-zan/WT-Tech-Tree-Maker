@@ -8,9 +8,27 @@
 		_toggleInfo: false
 	})
 
+	const descriptionTemplate =
+		'<p><em>Year: <strong>XXXX</strong></em>&nbsp;<em>Development stage:</em>&nbsp;<strong>X</strong></p><p><em>Primary weapon: <strong>X</strong></em></p><p><em>Secondary weapon: <strong>X</strong></em></p><p><em>Other info:</em></p><p><em>Proposed BR: <strong>X.X</strong></em></p><p><em>Links:</em></p>'
+
 	CKEDITOR.replace('vehicledescription')
+	CKEDITOR.instances.vehicledescription.setData(descriptionTemplate)
 	CKEDITOR.replace('vehicledescriptionedit')
 	//CKEDITOR.config.uiColor = '#66AB16';
+
+	CKEDITOR.on('dialogDefinition', function (ev) {
+		const dialogName = ev.data.name
+		const dialogDefinition = ev.data.definition
+		if (dialogName == 'link') {
+			const infoTab = dialogDefinition.getContents('info')
+			const protocolField = infoTab.get('protocol')
+			protocolField['default'] = 'https://'
+
+			const targetTab = dialogDefinition.getContents('target')
+			const targetField = targetTab.get('linkTargetType')
+			targetField['default'] = '_blank'
+		}
+	})
 
 	// Get the modal
 	var modal = document.getElementById('myModal')
@@ -76,6 +94,7 @@
 
 		const organizedVehicles = organizeTree(vehicleList)
 		drawTree(organizedVehicles)
+		document.querySelector('#vehicleimagelistedit').innerHTML = ''
 	})
 
 	document.querySelector('#buttn5').addEventListener('click', () => {
@@ -231,12 +250,13 @@
 		info.style.top = 'auto'
 		info.style.right = '0px'
 		document.querySelector('.galleria-info-text').style.backgroundColor =
-			'RGBA(0, 0, 0, 0.75)'
+			'RGBA(0, 0, 0, 0.85)'
 		document.querySelector('.galleria-info-text').style.padding = '3px'
 		modal.style.display = 'block'
 	})
 
 	document.querySelector('#editionSelect').addEventListener('change', (e) => {
+		document.querySelector('#vehicleimagelistedit').innerHTML = ''
 		const vehicleId = e.target.value
 		const vehicle = vehicleList.find((item) => {
 			return item.id === vehicleId
@@ -299,6 +319,7 @@
 		}
 		vehicleList.push(vehicle)
 		document.querySelector('#newForm').reset()
+		CKEDITOR.instances.vehicledescription.setData(descriptionTemplate)
 	}
 
 	function readVehicleEditInput() {
@@ -443,7 +464,7 @@
 				branchDiv.classList.add('branch')
 				if (branch.indexOf('premium') !== -1 && firstPremiumBranch) {
 					firstPremiumBranch = false
-					branchDiv.style.borderLeft = '2px solid black'
+					branchDiv.style.borderLeft = '2px solid white'
 				}
 				let region = `rank_${rank}_branch_${branch}`
 				if (organizedVehicles[region] !== undefined) {
