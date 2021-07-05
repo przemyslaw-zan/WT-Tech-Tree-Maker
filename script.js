@@ -1,4 +1,8 @@
 'use strict'
+/*
+TODO
+warn or prevent multiple vehicles following same target
+*/
 ;(() => {
 	Galleria.loadTheme(
 		'https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/themes/classic/galleria.classic.min.js'
@@ -236,7 +240,7 @@
 		const vehicle = vehicleList.find((item) => {
 			return item.id === element.id
 		})
-		if (!vehicle.images && !vehicle.description) return
+		if (!isClickable(vehicle)) return
 		document.querySelector('#modal_title').innerText = vehicle.name
 		if (vehicle.images)
 			$('.galleria')
@@ -256,6 +260,7 @@
 	})
 
 	document.querySelector('#editionSelect').addEventListener('change', (e) => {
+		if (e.target.value === 'undefined') return
 		document.querySelector('#vehicleimagelistedit').innerHTML = ''
 		const vehicleId = e.target.value
 		const vehicle = vehicleList.find((item) => {
@@ -267,7 +272,7 @@
 		document.querySelector('#vehicletypeedit').value = vehicle.type
 		document.querySelector('#vehicleconnectionedit').value = vehicle.connection
 		document.querySelector('#vehiclebranchedit').value = vehicle.branch
-		document.querySelector('#vehicleorderedit').value = vehicle.order
+		document.querySelector('#vehiclefollowedit').value = vehicle.follow
 		CKEDITOR.instances.vehicledescriptionedit.setData(vehicle.description)
 		document.querySelector('#vehiclethumbnailedit').value = vehicle.thumbnail
 		if (vehicle.images) {
@@ -291,7 +296,7 @@
 		const type = document.querySelector('#vehicletype').value
 		const connection = document.querySelector('#vehicleconnection').value
 		const branch = Number(document.querySelector('#vehiclebranch').value)
-		const order = Number(document.querySelector('#vehicleorder').value)
+		const follow = document.querySelector('#vehiclefollowedit').value
 		const description = CKEDITOR.instances.vehicledescription.getData()
 		const id = 'v' + Date.now()
 		const thumbnail = document.querySelector('#vehiclethumbnail').value
@@ -311,7 +316,7 @@
 			type,
 			connection,
 			branch,
-			order,
+			follow,
 			description,
 			id,
 			thumbnail,
@@ -333,7 +338,7 @@
 		const type = document.querySelector('#vehicletypeedit').value
 		const connection = document.querySelector('#vehicleconnectionedit').value
 		const branch = Number(document.querySelector('#vehiclebranchedit').value)
-		const order = Number(document.querySelector('#vehicleorderedit').value)
+		const follow = document.querySelector('#vehiclefollowedit').value
 		const description = CKEDITOR.instances.vehicledescriptionedit.getData()
 		CKEDITOR.instances.vehicledescriptionedit.setData('')
 		const id = document.querySelector('#editionSelect').value
@@ -354,7 +359,7 @@
 			type,
 			connection,
 			branch,
-			order,
+			follow,
 			description,
 			id,
 			thumbnail,
@@ -371,8 +376,14 @@
 	function validateVehicleInput() {}
 
 	function fillEditSelection(vehicleList) {
-		const select = document.querySelector('#editionSelect')
-		select.innerHTML = ''
+		const selectArr = [
+			document.querySelector('#editionSelect'),
+			document.querySelector('#vehiclefollow'),
+			document.querySelector('#vehiclefollowedit')
+		]
+		selectArr.forEach((item) => {
+			item.innerHTML = ''
+		})
 		const vehicles = []
 		for (let vehicle of vehicleList) {
 			const name = vehicle.name
@@ -385,11 +396,16 @@
 		vehicles.sort((a, b) => {
 			return a.name.localeCompare(b.name)
 		})
-		for (let vehicle of vehicles) {
-			let option = document.createElement('option')
-			option.value = vehicle.id
-			option.innerText = vehicle.name
-			select.appendChild(option)
+		const defaultOption =
+			'<option value="undefined">-- nothing selected --</option>'
+		for (let select of selectArr) {
+			select.innerHTML += defaultOption
+			for (let vehicle of vehicles) {
+				let option = document.createElement('option')
+				option.value = vehicle.id
+				option.innerText = vehicle.name
+				select.appendChild(option)
+			}
 		}
 	}
 
@@ -407,9 +423,44 @@
 		}
 		for (let region in sortedVehicles) {
 			let array = sortedVehicles[region]
-			array.sort((a, b) =>
-				a.order !== b.order ? a.order - b.order : a.br - b.br
-			)
+			array.sort((a, b) => a.br - b.br)
+			const followers = array.filter((item) => {
+				return ![undefined, 'undefined'].includes(item.follow)
+			})
+			if (followers.length > 0) {
+				let i = 0
+				while (!isFollowApplied(array)) {
+					for (let follower of followers) {
+						if (
+							array.findIndex((item) => {
+								return item.id === follower.follow
+							}) === -1
+						)
+							continue
+						array.splice(array.indexOf(follower), 1)
+						let target =
+							array.findIndex((item) => {
+								return item.id === follower.follow
+							}) + 1
+						array.splice(target, 0, follower)
+					}
+					//Anti infinite loop safety
+					i++
+					if (i > 1000) break
+				}
+			}
+
+			function isFollowApplied(array) {
+				array = [...array]
+				while (array.length >= 2) {
+					if (![undefined, 'undefined'].includes(array[1].follow)) {
+						if (array[0].id !== array[1].follow) return false
+					}
+					array.shift()
+				}
+				return true
+			}
+
 			let temp = [...array]
 			array = []
 			for (let vehicle of temp) {
@@ -492,6 +543,14 @@
 		setFillerSizes()
 	}
 
+	function isClickable(vehicle) {
+		const images = vehicle.images?.length > 0
+		const description =
+			vehicle.description?.length > 0 &&
+			vehicle.description !== descriptionTemplate
+		return description || images
+	}
+
 	function createVehicleBadge(vehicle) {
 		let div = document.createElement('div')
 		let img = ''
@@ -509,13 +568,10 @@
                     <td rowspan="3" class="badgeSide"></td>
                 </tr>
                 <tr>
-                    <td id="${vehicle.id}" class="vehicleBadge type_${
-			vehicle.type
-		} ${branchLine} connected_${
-			vehicle.connection
-		}" style="position:relative; ${
-			vehicle.images || vehicle.description ? 'cursor:pointer;' : ''
-		}">
+                    <td id="${vehicle.id}"
+						class="vehicleBadge type_${vehicle.type} ${branchLine}
+							connected_${vehicle.connection}"
+						style="position:relative; ${isClickable(vehicle) ? 'cursor:pointer;' : ''}">
                         <span class="vehicleName">${vehicle.name}</span>
                         <b class="vehicleBr">${vehicle.br.toFixed(1)}</b>
                         ${img}
