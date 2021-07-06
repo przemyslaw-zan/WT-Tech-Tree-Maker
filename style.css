@@ -48,7 +48,8 @@ body {
 	width: fit-content;
 }
 
-#techtree img {
+#techtree img,
+#delModal .modal-body img {
 	position: absolute;
 	bottom: 0px;
 	left: 0px;
@@ -56,16 +57,38 @@ body {
 	max-width: 80%;
 }
 
+#vehicleDeleteDisplay {
+	background-color: var(--tech_tree_bg);
+	width: fit-content;
+	margin: 10px;
+	margin: auto;
+	border-radius: 10px;
+}
+
+#deleteAllButton {
+	display: block;
+	margin: auto;
+	margin-top: 10px;
+	background-color: rgb(212, 0, 0);
+	color: black;
+	font-weight: bold;
+	padding: 10px;
+	border: 3px black dashed;
+	cursor: pointer;
+}
+
 a {
 	color: greenyellow;
 }
 
-#techtree table {
+#techtree table,
+#delModal .modal-body table {
 	border-collapse: separate;
 	border-spacing: 0;
 }
 
-#techtree td {
+#techtree td,
+#delModal .modal-body td {
 	border-color: rgba(0, 0, 0, 0);
 	border-top-width: 0px;
 	border-bottom-width: 0px;
@@ -127,6 +150,24 @@ a {
 }
 
 /*.fillerDiv {}*/
+
+nav {
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 3;
+}
+
+nav div {
+	background-color: cadetblue;
+	padding: 3px;
+	margin-top: 3px;
+	border-radius: 0 5px 5px 0;
+	border: 1px solid black;
+	border-left: none;
+	cursor: pointer;
+	text-align: center;
+}
 
 .lineDiv {
 	width: 20px;

@@ -13,329 +13,401 @@
 	</head>
 
 	<body>
-		<a href="file:///C:/Users/zanju/Desktop/lol/tech_tree/index.html">tree</a>
-		<a href="https://www.bcnp-wot.fr/nation/fr/game.html">WOT tree</a>
-		<a href="https://www.youtube.com/watch?v=WiPLepeLbz0">sphinx</a>
-		<a
-			href="https://forum.warthunder.com/index.php?/topic/492051-need-more-aa-in-tech-tree-non-sam/page/2/"
-			>forum</a
-		>
-		<details>
-			<summary>Add vehicle</summary>
-			<button id="buttn1">Add vehicle</button>
-			<button id="buttn2">show sorted in console</button>
-			<button id="buttn3">clear list</button>
-			<form id="newForm">
-				<label for="vehiclename">Name:</label>
-				<input type="text" name="vehiclename" id="vehiclename" maxlength="50" />
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Name of the vehicle.<br /><br />Required.</span
-					>
-				</div>
-				<br />
+		<nav>
+			<div id="navAdd" style="background-color: rgb(2, 133, 2)">
+				Add vehicle
+			</div>
+			<div id="navEdit" style="background-color: rgb(114, 74, 0)">
+				Edit vehicle
+			</div>
+			<div id="navDel" style="background-color: rgb(128, 0, 0)">
+				Delete vehicle
+			</div>
+			<div id="navOrder" style="background-color: rgb(0, 77, 128)">
+				Vehicle ordering
+			</div>
+			<div id="navExport" style="background-color: rgb(124, 0, 128)">
+				Export tree
+			</div>
+		</nav>
 
-				<label for="vehiclerank">Rank:</label>
-				<input
-					type="number"
-					name="vehiclerank"
-					id="vehiclerank"
-					min="1"
-					max="9"
-				/>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Rank of the vehicle. <br /><br />
-						Optional - if left empty, will be defaulted to 0.</span
-					>
+		<div id="addModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<span class="close">&times;</span>
+					<h2>Add new vehicle</h2>
 				</div>
-				<br />
+				<div class="modal-body">
+					<button id="addButton">Add vehicle</button>
+					<form id="newForm">
+						<label for="vehiclename">Name:</label>
+						<input
+							type="text"
+							name="vehiclename"
+							id="vehiclename"
+							maxlength="50"
+						/>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Name of the vehicle.<br /><br />Required.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehiclebr">Battle rating:</label>
-				<input type="number" name="vehiclebr" id="vehiclebr" min="1" max="99" />
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Battle rating of the vehicle. It can be any number, I ommited
-						requirement for these to end in .0 / .3 / .7<br /><br />
-						Optional - if left empty, will be defaulted to 0.</span
-					>
-				</div>
-				<br />
+						<label for="vehiclerank">Rank:</label>
+						<input
+							type="number"
+							name="vehiclerank"
+							id="vehiclerank"
+							min="1"
+							max="9"
+						/>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Rank of the vehicle. <br /><br />
+								Optional - if left empty, will be defaulted to 0.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehicletype">Type:</label>
-				<select name="vehicletype" id="vehicletype">
-					<option value="researchable">Researchable</option>
-					<option value="premium">Premium</option>
-					<option value="event">Event</option>
-					<option value="squadron">Squadron</option>
-				</select>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Type of the vehicle. Non-researchable vehicles will be
-						automatically placed on premium sidebar of the tech-tree.</span
-					>
-				</div>
-				<br />
+						<label for="vehiclebr">Battle rating:</label>
+						<input
+							type="number"
+							name="vehiclebr"
+							id="vehiclebr"
+							min="1"
+							max="99"
+						/>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Battle rating of the vehicle. It can be any number, I ommited
+								requirement for these to end in .0 / .3 / .7<br /><br />
+								Optional - if left empty, will be defaulted to 0.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehicleconnection">Connected:</label>
-				<select name="vehicleconnection" id="vehicleconnection">
-					<option value="yes">Yes</option>
-					<option value="no">No</option>
-					<option value="folder">Folder</option>
-				</select>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Defines relation to the previous vehicle in the branch. Folder only
-						applies as long as there is vehicle above in the rank. Connection
-						only when there is one in a branch.</span
-					>
-				</div>
-				<br />
+						<label for="vehicletype">Type:</label>
+						<select name="vehicletype" id="vehicletype">
+							<option value="researchable">Researchable</option>
+							<option value="premium">Premium</option>
+							<option value="event">Event</option>
+							<option value="squadron">Squadron</option>
+						</select>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Type of the vehicle. Non-researchable vehicles will be
+								automatically placed on premium sidebar of the tech-tree.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehiclebranch">Branch:</label>
-				<input
-					type="number"
-					name="vehiclebranch"
-					id="vehiclebranch"
-					min="1"
-					max="9"
-				/>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Defines which branch the vehicle belongs to (left to right vertical
-						lines of vehicles) <br /><br />
-						Optional - if left empty, will be defaulted to 0.</span
-					>
-				</div>
-				<br />
+						<label for="vehicleconnection">Connected:</label>
+						<select name="vehicleconnection" id="vehicleconnection">
+							<option value="yes">Yes</option>
+							<option value="no">No</option>
+							<option value="folder">Folder</option>
+						</select>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Defines relation to the previous vehicle in the branch. Folder
+								only applies as long as there is vehicle above in the rank.
+								Connection only when there is one in a branch.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehiclefollow">Follow:</label>
-				<select id="vehiclefollow" name="vehiclefollow"></select>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>This setting allows you to override ordering of vehicles by BR, and
-						instead attach this vehicle after another vehicle.<br /><br />
-						In order for this to work, both vehicles need to be in the same rank
-						and branch.</span
-					>
-				</div>
-				<br />
+						<label for="vehiclebranch">Branch:</label>
+						<input
+							type="number"
+							name="vehiclebranch"
+							id="vehiclebranch"
+							min="1"
+							max="9"
+						/>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Defines which branch the vehicle belongs to (left to right
+								vertical lines of vehicles) <br /><br />
+								Optional - if left empty, will be defaulted to 0.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehiclethumbnail">Thumbnail:</label>
-				<input type="text" name="vehiclethumbnail" id="vehiclethumbnail" />
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Small image that displays on the tech tree.<br /><br />Optional.</span
-					>
-				</div>
-				<br />
+						<label for="vehiclefollow">Follow:</label>
+						<select id="vehiclefollow" name="vehiclefollow"></select>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>This setting allows you to override ordering of vehicles by BR,
+								and instead attach this vehicle after another vehicle.<br /><br />
+								In order for this to work, both vehicles need to be in the same
+								rank and branch.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehicledescription">Description:</label>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Description of the vehicle <br /><br />
-						Optional - although would be nice to have some ;)</span
-					>
-				</div>
-				<br />
-				<textarea
-					name="vehicledescription"
-					id="vehicledescription"
-					placeholder="This vehicle is awesome!"
-				></textarea>
+						<label for="vehiclethumbnail">Thumbnail:</label>
+						<input type="text" name="vehiclethumbnail" id="vehiclethumbnail" />
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Small image that displays on the tech tree.<br /><br />Optional.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehicleimagelist">Images:</label>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Images to display after clicking on the vehicle.<br /><br />
-						Optional</span
-					>
-				</div>
-				<br />
-				<button id="vehicleimagelistadd">
-					Add image <b style="color: green">+</b>
-				</button>
-				<ol id="vehicleimagelist"></ol>
-			</form>
-		</details>
+						<label for="vehicledescription">Description:</label>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Description of the vehicle <br /><br />
+								Optional - although would be nice to have some ;)</span
+							>
+						</div>
+						<br />
+						<textarea
+							name="vehicledescription"
+							id="vehicledescription"
+							placeholder="This vehicle is awesome!"
+						></textarea>
 
-		<details>
-			<summary>Edit vehicle</summary>
-			Select vehicle to edit:
-			<select id="editionSelect"></select
-			><br />
-			<button id="buttn4">Apply changes to the vehicle</button>
-			<button id="buttn5">Delete vehicle</button>
-			<form id="editForm">
-				<label for="vehiclenameedit">Name:</label>
-				<input
-					type="text"
-					name="vehiclenameedit"
-					id="vehiclenameedit"
-					maxlength="50"
-				/>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Name of the vehicle.<br /><br />Required.</span
-					>
+						<label for="vehicleimagelist">Images:</label>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Images to display after clicking on the vehicle.<br /><br />
+								Optional</span
+							>
+						</div>
+						<br />
+						<button id="vehicleimagelistadd">
+							Add image <b style="color: green">+</b>
+						</button>
+						<ol id="vehicleimagelist"></ol>
+					</form>
 				</div>
-				<br />
+			</div>
+		</div>
 
-				<label for="vehiclerankedit">Rank:</label>
-				<input
-					type="number"
-					name="vehiclerankedit"
-					id="vehiclerankedit"
-					min="1"
-					max="9"
-				/>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Rank of the vehicle. <br /><br />
-						Optional - if left empty, will be defaulted to 0.</span
-					>
+		<div id="editModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<span class="close">&times;</span>
+					<h2>Edit vehicle</h2>
 				</div>
-				<br />
+				<div class="modal-body">
+					Select vehicle to edit:
+					<select id="editionSelect"></select
+					><br />
+					<button id="editButton">Apply changes to the vehicle</button>
+					<form id="editForm">
+						<label for="vehiclenameedit">Name:</label>
+						<input
+							type="text"
+							name="vehiclenameedit"
+							id="vehiclenameedit"
+							maxlength="50"
+						/>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Name of the vehicle.<br /><br />Required.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehiclebredit">Battle rating:</label>
-				<input
-					type="number"
-					name="vehiclebredit"
-					id="vehiclebredit"
-					min="1"
-					max="99"
-				/>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Battle rating of the vehicle. It can be any number, I ommited
-						requirement for these to end in .0 / .3 / .7<br /><br />
-						Optional - if left empty, will be defaulted to 0.</span
-					>
-				</div>
-				<br />
+						<label for="vehiclerankedit">Rank:</label>
+						<input
+							type="number"
+							name="vehiclerankedit"
+							id="vehiclerankedit"
+							min="1"
+							max="9"
+						/>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Rank of the vehicle. <br /><br />
+								Optional - if left empty, will be defaulted to 0.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehicletypeedit">Type:</label>
-				<select name="vehicletypeedit" id="vehicletypeedit">
-					<option value="researchable">Researchable</option>
-					<option value="premium">Premium</option>
-					<option value="event">Event</option>
-					<option value="squadron">Squadron</option>
-				</select>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Type of the vehicle. Non-researchable vehicles will be
-						automatically placed on premium sidebar of the tech-tree.</span
-					>
-				</div>
-				<br />
+						<label for="vehiclebredit">Battle rating:</label>
+						<input
+							type="number"
+							name="vehiclebredit"
+							id="vehiclebredit"
+							min="1"
+							max="99"
+						/>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Battle rating of the vehicle. It can be any number, I ommited
+								requirement for these to end in .0 / .3 / .7<br /><br />
+								Optional - if left empty, will be defaulted to 0.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehicleconnectionedit">Connected:</label>
-				<select name="vehicleconnectionedit" id="vehicleconnectionedit">
-					<option value="yes">Yes</option>
-					<option value="no">No</option>
-					<option value="folder">Folder</option>
-				</select>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Defines relation to the previous vehicle in the branch. Folder only
-						applies as long as there is vehicle above in the rank. Connection
-						only when there is one in a branch.</span
-					>
-				</div>
-				<br />
+						<label for="vehicletypeedit">Type:</label>
+						<select name="vehicletypeedit" id="vehicletypeedit">
+							<option value="researchable">Researchable</option>
+							<option value="premium">Premium</option>
+							<option value="event">Event</option>
+							<option value="squadron">Squadron</option>
+						</select>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Type of the vehicle. Non-researchable vehicles will be
+								automatically placed on premium sidebar of the tech-tree.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehiclebranchedit">Branch:</label>
-				<input
-					type="number"
-					name="vehiclebranchedit"
-					id="vehiclebranchedit"
-					min="1"
-					max="9"
-				/>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Defines which branch the vehicle belongs to (left to right vertical
-						lines of vehicles) <br /><br />
-						Optional - if left empty, will be defaulted to 0.</span
-					>
-				</div>
-				<br />
+						<label for="vehicleconnectionedit">Connected:</label>
+						<select name="vehicleconnectionedit" id="vehicleconnectionedit">
+							<option value="yes">Yes</option>
+							<option value="no">No</option>
+							<option value="folder">Folder</option>
+						</select>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Defines relation to the previous vehicle in the branch. Folder
+								only applies as long as there is vehicle above in the rank.
+								Connection only when there is one in a branch.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehiclefollowedit">Follow:</label>
-				<select id="vehiclefollowedit" name="vehiclefollowedit"></select>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>This setting allows you to override ordering of vehicles by BR, and
-						instead attach this vehicle after another vehicle.<br /><br />
-						In order for this to work, both vehicles need to be in the same rank
-						and branch.</span
-					>
-				</div>
-				<br />
+						<label for="vehiclebranchedit">Branch:</label>
+						<input
+							type="number"
+							name="vehiclebranchedit"
+							id="vehiclebranchedit"
+							min="1"
+							max="9"
+						/>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Defines which branch the vehicle belongs to (left to right
+								vertical lines of vehicles) <br /><br />
+								Optional - if left empty, will be defaulted to 0.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehiclethumbnailedit">Thumbnail:</label>
-				<input
-					type="text"
-					name="vehiclethumbnailedit"
-					id="vehiclethumbnailedit"
-				/>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Small image that displays on the tech tree.<br /><br />Optional.</span
-					>
-				</div>
-				<br />
+						<label for="vehiclefollowedit">Follow:</label>
+						<select id="vehiclefollowedit" name="vehiclefollowedit"></select>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>This setting allows you to override ordering of vehicles by BR,
+								and instead attach this vehicle after another vehicle.<br /><br />
+								In order for this to work, both vehicles need to be in the same
+								rank and branch.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehicledescriptionedit">Description:</label>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Description of the vehicle <br /><br />
-						Optional - although would be nice to have some ;)</span
-					>
-				</div>
-				<br />
-				<textarea
-					name="vehicledescriptionedit"
-					id="vehicledescriptionedit"
-					rows="10"
-					cols="50"
-					placeholder="This vehicle is awesome!"
-				></textarea>
+						<label for="vehiclethumbnailedit">Thumbnail:</label>
+						<input
+							type="text"
+							name="vehiclethumbnailedit"
+							id="vehiclethumbnailedit"
+						/>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Small image that displays on the tech tree.<br /><br />Optional.</span
+							>
+						</div>
+						<br />
 
-				<label for="vehicleimagelistedit">Images:</label>
-				<div class="tooltip">
-					❓
-					<span class="tooltiptext"
-						>Images to display after clicking on the vehicle.<br /><br />
-						Optional</span
-					>
+						<label for="vehicledescriptionedit">Description:</label>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Description of the vehicle <br /><br />
+								Optional - although would be nice to have some ;)</span
+							>
+						</div>
+						<br />
+						<textarea
+							name="vehicledescriptionedit"
+							id="vehicledescriptionedit"
+							rows="10"
+							cols="50"
+							placeholder="This vehicle is awesome!"
+						></textarea>
+
+						<label for="vehicleimagelistedit">Images:</label>
+						<div class="tooltip">
+							❓
+							<span class="tooltiptext"
+								>Images to display after clicking on the vehicle.<br /><br />
+								Optional</span
+							>
+						</div>
+						<br />
+						<button id="vehicleimagelisteditadd">
+							Add image <b style="color: green">+</b>
+						</button>
+						<ol id="vehicleimagelistedit"></ol>
+					</form>
 				</div>
-				<br />
-				<button id="vehicleimagelisteditadd">
-					Add image <b style="color: green">+</b>
-				</button>
-				<ol id="vehicleimagelistedit"></ol>
-			</form>
-		</details>
+			</div>
+		</div>
+
+		<div id="delModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<span class="close">&times;</span>
+					<h2>Delete vehicles</h2>
+				</div>
+				<div class="modal-body">
+					<select id="deleteVehicleSelect"></select>
+					<button id="deleteVehicleButton">Delete vehicle</button>
+					<div id="vehicleDeleteDisplay"></div>
+					<button id="deleteAllButton">CLEAR TECH TREE</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="orderModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<span class="close">&times;</span>
+					<h2>Order vehicles</h2>
+				</div>
+				<div class="modal-body">order</div>
+			</div>
+		</div>
+
+		<div id="exportModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<span class="close">&times;</span>
+					<h2>Export Tech Tree</h2>
+				</div>
+				<div class="modal-body">
+					<a href="https://neocities.org/" target="_blank">Neocities</a> is a
+					great free website for you to upload your tech tree for the whole
+					internet to see ;)
+				</div>
+			</div>
+		</div>
 
 		<div id="techtree"></div>
 
@@ -345,12 +417,12 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<span class="close">&times;</span>
-					<h2 id="modal_title"></h2>
+					<h2 id="modal_title">Delete vehicle</h2>
 				</div>
 				<div class="modal-gallery">
 					<div class="galleria" id="galleria"></div>
 				</div>
-				<div class="modal-body"></div>
+				<div class="modal-body" id="modalDesc"></div>
 			</div>
 		</div>
 		<script
@@ -359,15 +431,17 @@
 			crossorigin="anonymous"
 		></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/galleria.min.js"></script>
-		<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+		<script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
 		<script src="script.js"></script>
 	</body>
 </html>
 
 <!--
-<label for=""></label>
-<input type="text" name="" id="" placeholder="">
-<div class="tooltip">❓
-    <span class="tooltiptext">Tooltip text</span>
-</div><br>
+<a href="file:///C:/Users/zanju/Desktop/lol/tech_tree/index.html">tree</a>
+<a href="https://www.bcnp-wot.fr/nation/fr/game.html">WOT tree</a>
+<a href="https://www.youtube.com/watch?v=WiPLepeLbz0">sphinx</a>
+<a
+	href="https://forum.warthunder.com/index.php?/topic/492051-need-more-aa-in-tech-tree-non-sam/page/2/"
+	>forum</a
+>
 -->

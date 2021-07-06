@@ -13,8 +13,9 @@ warn or prevent multiple vehicles following same target
 	})
 
 	const descriptionTemplate =
-		'<p><em>Year: <strong>XXXX</strong></em>&nbsp;<em>Development stage:</em>&nbsp;<strong>X</strong></p><p><em>Primary weapon: <strong>X</strong></em></p><p><em>Secondary weapon: <strong>X</strong></em></p><p><em>Other info:</em></p><p><em>Proposed BR: <strong>X.X</strong></em></p><p><em>Links:</em></p>'
+		'<h3><em>Year:</em> <strong>XXXX</strong>&nbsp;<em>Development stage:</em>&nbsp;<strong>X</strong></h3>\n\n<p>Historical description...</p>\n\n<h3><em>Primary weapon:</em> <strong>X</strong></h3>\n\n<p>Primary weapon description...</p>\n\n<h3><em>Secondary weapon:</em> <strong>X</strong></h3>\n\n<p>Secondary weapon description...</p>\n\n<h3><em>Other info:</em></h3>\n\n<p>Crew, armor, mobility etc...</p>\n\n<h3><em>Proposed BR:</em> <strong>X.X</strong></h3>\n\n<p>Justification for Battle Rating placement...</p>\n\n<p><em>Links:</em></p>\n\n<ol>\n\t<li>Source 1...</li>\n\t<li>Source 2...</li>\n\t<li>WT forum discussion on the vehicle...</li>\n</ol>\n'
 
+	CKEDITOR.config.height = 500
 	CKEDITOR.replace('vehicledescription')
 	CKEDITOR.instances.vehicledescription.setData(descriptionTemplate)
 	CKEDITOR.replace('vehicledescriptionedit')
@@ -34,23 +35,60 @@ warn or prevent multiple vehicles following same target
 		}
 	})
 
-	// Get the modal
-	var modal = document.getElementById('myModal')
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName('close')[0]
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = () => {
+	document
+		.querySelector('#deleteVehicleSelect')
+		.addEventListener('change', (e) => {
+			if (e.target.value === 'undefined') return
+			const vehicle = vehicleList.find((vehicle) => {
+				return vehicle.id === e.target.value
+			})
+
+			const target = document.querySelector('#vehicleDeleteDisplay')
+			target.innerHTML = ''
+			target.appendChild(createVehicleBadge(vehicle))
+		})
+
+	document.querySelector('#navAdd').addEventListener('click', () => {
 		closeModal()
-	}
-	// When the user clicks anywhere outside of the modal, close it
+		document.querySelector('#addModal').style.display = 'block'
+	})
+
+	document.querySelector('#navEdit').addEventListener('click', () => {
+		closeModal()
+		document.querySelector('#editModal').style.display = 'block'
+	})
+
+	document.querySelector('#navDel').addEventListener('click', () => {
+		closeModal()
+		document.querySelector('#delModal').style.display = 'block'
+	})
+
+	document.querySelector('#navOrder').addEventListener('click', () => {
+		closeModal()
+		document.querySelector('#orderModal').style.display = 'block'
+	})
+
+	document.querySelector('#navExport').addEventListener('click', () => {
+		closeModal()
+		document.querySelector('#exportModal').style.display = 'block'
+	})
+
+	document.querySelectorAll('.close').forEach((item) => {
+		item.addEventListener('click', () => {
+			closeModal()
+		})
+	})
+
 	window.onclick = function (event) {
-		if (event.target == modal) {
+		if (event.target.classList.contains('modal')) {
 			closeModal()
 		}
 	}
 
 	function closeModal() {
-		modal.style.display = 'none'
+		document.querySelectorAll('.modal').forEach((modal) => {
+			modal.style.display = 'none'
+		})
 		$('.galleria')
 			.data('galleria')
 			.splice(0, $('.galleria').data('galleria').getDataLength())
@@ -71,27 +109,27 @@ warn or prevent multiple vehicles following same target
 		drawTree(organizedVehicles)
 	}
 
-	document.querySelector('#buttn1').addEventListener('click', () => {
+	document.querySelector('#addButton').addEventListener('click', () => {
 		readVehicleInput()
 		localStorage.setItem('save', JSON.stringify(vehicleList))
 		fillEditSelection(vehicleList)
 
 		const organizedVehicles = organizeTree(vehicleList)
 		drawTree(organizedVehicles)
+		closeModal()
 	})
 
-	document.querySelector('#buttn2').addEventListener('click', () => {
-		const organizedVehicles = organizeTree(vehicleList)
-		console.log(organizedVehicles)
-		drawTree(organizedVehicles)
+	document.querySelector('#deleteAllButton').addEventListener('click', () => {
+		const con = confirm(
+			`Do you want to delete ALL VEHICLES? This is irreversible!`
+		)
+		if (con === true) {
+			vehicleList.splice(0, vehicleList.length)
+			localStorage.clear()
+		}
 	})
 
-	document.querySelector('#buttn3').addEventListener('click', () => {
-		vehicleList.splice(0, vehicleList.length)
-		localStorage.clear()
-	})
-
-	document.querySelector('#buttn4').addEventListener('click', () => {
+	document.querySelector('#editButton').addEventListener('click', () => {
 		readVehicleEditInput()
 		localStorage.setItem('save', JSON.stringify(vehicleList))
 		fillEditSelection(vehicleList)
@@ -99,29 +137,35 @@ warn or prevent multiple vehicles following same target
 		const organizedVehicles = organizeTree(vehicleList)
 		drawTree(organizedVehicles)
 		document.querySelector('#vehicleimagelistedit').innerHTML = ''
+		closeModal()
 	})
 
-	document.querySelector('#buttn5').addEventListener('click', () => {
-		const id = document.querySelector('#editionSelect').value
-		const name = document.querySelector('#vehiclenameedit').value.trim()
+	document
+		.querySelector('#deleteVehicleButton')
+		.addEventListener('click', () => {
+			const id = document.querySelector('#deleteVehicleSelect').value
+			if (id === 'undefined') return
+			const name = vehicleList.find((vehicle) => {
+				return vehicle.id === id
+			}).name
 
-		const con = confirm(`Do you want to delete ${name}?`)
-		if (con === true) {
-			const newList = []
-			vehicleList.forEach((element) => {
-				if (element.id !== id) {
-					newList.push(element)
-				}
-			})
-			vehicleList = [...newList]
+			const con = confirm(`Do you want to delete ${name}?`)
+			if (con === true) {
+				const newList = []
+				vehicleList.forEach((element) => {
+					if (element.id !== id) {
+						newList.push(element)
+					}
+				})
+				vehicleList = [...newList]
 
-			localStorage.setItem('save', JSON.stringify(vehicleList))
-			fillEditSelection(vehicleList)
+				localStorage.setItem('save', JSON.stringify(vehicleList))
+				fillEditSelection(vehicleList)
 
-			const organizedVehicles = organizeTree(vehicleList)
-			drawTree(organizedVehicles)
-		}
-	})
+				const organizedVehicles = organizeTree(vehicleList)
+				drawTree(organizedVehicles)
+			}
+		})
 
 	document
 		.querySelector('#vehicleimagelistadd')
@@ -246,7 +290,7 @@ warn or prevent multiple vehicles following same target
 			$('.galleria')
 				.data('galleria')
 				.load([...vehicle.images])
-		document.querySelector('.modal-body').innerHTML = vehicle.description
+		document.querySelector('#modalDesc').innerHTML = vehicle.description
 		const info = document.querySelector('.galleria-info')
 		info.style.width = 'fit-content'
 		info.style.left = 'auto'
@@ -256,7 +300,7 @@ warn or prevent multiple vehicles following same target
 		document.querySelector('.galleria-info-text').style.backgroundColor =
 			'RGBA(0, 0, 0, 0.85)'
 		document.querySelector('.galleria-info-text').style.padding = '3px'
-		modal.style.display = 'block'
+		document.querySelector('#myModal').style.display = 'block'
 	})
 
 	document.querySelector('#editionSelect').addEventListener('change', (e) => {
@@ -379,7 +423,8 @@ warn or prevent multiple vehicles following same target
 		const selectArr = [
 			document.querySelector('#editionSelect'),
 			document.querySelector('#vehiclefollow'),
-			document.querySelector('#vehiclefollowedit')
+			document.querySelector('#vehiclefollowedit'),
+			document.querySelector('#deleteVehicleSelect')
 		]
 		selectArr.forEach((item) => {
 			item.innerHTML = ''
