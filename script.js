@@ -4,9 +4,7 @@ TODO
 warn or prevent multiple vehicles following same target
 */
 ;(() => {
-	Galleria.loadTheme(
-		'https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/themes/classic/galleria.classic.min.js'
-	)
+	Galleria.loadTheme('https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/themes/classic/galleria.classic.min.js')
 	Galleria.run('.galleria')
 	Galleria.configure({
 		_toggleInfo: false
@@ -19,6 +17,7 @@ warn or prevent multiple vehicles following same target
 	CKEDITOR.replace('vehicledescription')
 	CKEDITOR.instances.vehicledescription.setData(descriptionTemplate)
 	CKEDITOR.replace('vehicledescriptionedit')
+	CKEDITOR.replace('techtreemaindesc')
 	//CKEDITOR.config.uiColor = '#66AB16';
 
 	CKEDITOR.on('dialogDefinition', function (ev) {
@@ -35,18 +34,16 @@ warn or prevent multiple vehicles following same target
 		}
 	})
 
-	document
-		.querySelector('#deleteVehicleSelect')
-		.addEventListener('change', (e) => {
-			if (e.target.value === 'undefined') return
-			const vehicle = vehicleList.find((vehicle) => {
-				return vehicle.id === e.target.value
-			})
-
-			const target = document.querySelector('#vehicleDeleteDisplay')
-			target.innerHTML = ''
-			target.appendChild(createVehicleBadge(vehicle))
+	document.querySelector('#deleteVehicleSelect').addEventListener('change', (e) => {
+		if (e.target.value === 'undefined') return
+		const vehicle = vehicleList.find((vehicle) => {
+			return vehicle.id === e.target.value
 		})
+
+		const target = document.querySelector('#vehicleDeleteDisplay')
+		target.innerHTML = ''
+		target.appendChild(createVehicleBadge(vehicle))
+	})
 
 	document.querySelector('#navAdd').addEventListener('click', () => {
 		closeModal()
@@ -89,9 +86,7 @@ warn or prevent multiple vehicles following same target
 		document.querySelectorAll('.modal').forEach((modal) => {
 			modal.style.display = 'none'
 		})
-		$('.galleria')
-			.data('galleria')
-			.splice(0, $('.galleria').data('galleria').getDataLength())
+		$('.galleria').data('galleria').splice(0, $('.galleria').data('galleria').getDataLength())
 		$('.galleria').data('galleria').destroy()
 		Galleria.run('.galleria')
 	}
@@ -99,7 +94,7 @@ warn or prevent multiple vehicles following same target
 	let vehicleList = []
 
 	const save = localStorage.getItem('save')
-	if (save !== null) {
+	if (save) {
 		const arr = JSON.parse(save)
 		arr.forEach((element) => {
 			vehicleList.push(element)
@@ -108,6 +103,24 @@ warn or prevent multiple vehicles following same target
 		const organizedVehicles = organizeTree(vehicleList)
 		drawTree(organizedVehicles)
 	}
+	const techTreeTitle = localStorage.getItem('title')
+	if (techTreeTitle) {
+		document.querySelector('#techtreename').value = techTreeTitle
+	}
+	const techTreeDescription = localStorage.getItem('description')
+	if (techTreeDescription) {
+		CKEDITOR.instances.techtreemaindesc.setData(techTreeDescription)
+	}
+
+	document.querySelector('#techtreename').addEventListener('change', (e) => {
+		localStorage.setItem('title', e.target.value)
+	})
+	document.querySelector('#techtreename').addEventListener('change', (e) => {
+		localStorage.setItem('title', e.target.value)
+	})
+	CKEDITOR.instances.techtreemaindesc.on('change', () => {
+		localStorage.setItem('description', CKEDITOR.instances.techtreemaindesc.getData())
+	})
 
 	document.querySelector('#addButton').addEventListener('click', () => {
 		readVehicleInput()
@@ -120,9 +133,7 @@ warn or prevent multiple vehicles following same target
 	})
 
 	document.querySelector('#deleteAllButton').addEventListener('click', () => {
-		const con = confirm(
-			`Do you want to delete ALL VEHICLES? This is irreversible!`
-		)
+		const con = confirm(`Do you want to delete ALL VEHICLES? This is irreversible!`)
 		if (con === true) {
 			vehicleList.splice(0, vehicleList.length)
 			localStorage.clear()
@@ -140,48 +151,42 @@ warn or prevent multiple vehicles following same target
 		closeModal()
 	})
 
-	document
-		.querySelector('#deleteVehicleButton')
-		.addEventListener('click', () => {
-			const id = document.querySelector('#deleteVehicleSelect').value
-			if (id === 'undefined') return
-			const name = vehicleList.find((vehicle) => {
-				return vehicle.id === id
-			}).name
+	document.querySelector('#deleteVehicleButton').addEventListener('click', () => {
+		const id = document.querySelector('#deleteVehicleSelect').value
+		if (id === 'undefined') return
+		const name = vehicleList.find((vehicle) => {
+			return vehicle.id === id
+		}).name
 
-			const con = confirm(`Do you want to delete ${name}?`)
-			if (con === true) {
-				const newList = []
-				vehicleList.forEach((element) => {
-					if (element.id !== id) {
-						newList.push(element)
-					}
-				})
-				vehicleList = [...newList]
+		const con = confirm(`Do you want to delete ${name}?`)
+		if (con === true) {
+			const newList = []
+			vehicleList.forEach((element) => {
+				if (element.id !== id) {
+					newList.push(element)
+				}
+			})
+			vehicleList = [...newList]
 
-				localStorage.setItem('save', JSON.stringify(vehicleList))
-				fillEditSelection(vehicleList)
+			localStorage.setItem('save', JSON.stringify(vehicleList))
+			fillEditSelection(vehicleList)
 
-				const organizedVehicles = organizeTree(vehicleList)
-				drawTree(organizedVehicles)
-			}
-		})
+			const organizedVehicles = organizeTree(vehicleList)
+			drawTree(organizedVehicles)
+		}
+	})
 
-	document
-		.querySelector('#vehicleimagelistadd')
-		.addEventListener('click', (e) => {
-			e.preventDefault()
-			const list = document.querySelector('#vehicleimagelist')
-			list.appendChild(createImageListItem())
-		})
+	document.querySelector('#vehicleimagelistadd').addEventListener('click', (e) => {
+		e.preventDefault()
+		const list = document.querySelector('#vehicleimagelist')
+		list.appendChild(createImageListItem())
+	})
 
-	document
-		.querySelector('#vehicleimagelisteditadd')
-		.addEventListener('click', (e) => {
-			e.preventDefault()
-			const list = document.querySelector('#vehicleimagelistedit')
-			list.appendChild(createImageListItem())
-		})
+	document.querySelector('#vehicleimagelisteditadd').addEventListener('click', (e) => {
+		e.preventDefault()
+		const list = document.querySelector('#vehicleimagelistedit')
+		list.appendChild(createImageListItem())
+	})
 
 	function createImageListItem(url, description) {
 		let listItem = document.createElement('li')
@@ -297,8 +302,7 @@ warn or prevent multiple vehicles following same target
 		info.style.bottom = '50px'
 		info.style.top = 'auto'
 		info.style.right = '0px'
-		document.querySelector('.galleria-info-text').style.backgroundColor =
-			'RGBA(0, 0, 0, 0.85)'
+		document.querySelector('.galleria-info-text').style.backgroundColor = 'RGBA(0, 0, 0, 0.85)'
 		document.querySelector('.galleria-info-text').style.padding = '3px'
 		document.querySelector('#myModal').style.display = 'block'
 	})
@@ -441,8 +445,7 @@ warn or prevent multiple vehicles following same target
 		vehicles.sort((a, b) => {
 			return a.name.localeCompare(b.name)
 		})
-		const defaultOption =
-			'<option value="undefined">-- nothing selected --</option>'
+		const defaultOption = '<option value="undefined">-- nothing selected --</option>'
 		for (let select of selectArr) {
 			select.innerHTML += defaultOption
 			for (let vehicle of vehicles) {
@@ -457,13 +460,8 @@ warn or prevent multiple vehicles following same target
 	function organizeTree(vehicleList) {
 		const sortedVehicles = {}
 		for (let vehicle of vehicleList) {
-			const vehicleRegion = `rank_${vehicle.rank}_branch_${
-				vehicle.type !== 'researchable'
-					? `premium_${vehicle.branch}`
-					: vehicle.branch
-			}`
-			if (sortedVehicles[vehicleRegion] === undefined)
-				sortedVehicles[vehicleRegion] = []
+			const vehicleRegion = `rank_${vehicle.rank}_branch_${vehicle.type !== 'researchable' ? `premium_${vehicle.branch}` : vehicle.branch}`
+			if (sortedVehicles[vehicleRegion] === undefined) sortedVehicles[vehicleRegion] = []
 			sortedVehicles[vehicleRegion].push(vehicle)
 		}
 		for (let region in sortedVehicles) {
@@ -590,20 +588,16 @@ warn or prevent multiple vehicles following same target
 
 	function isClickable(vehicle) {
 		const images = vehicle.images?.length > 0
-		const description =
-			vehicle.description?.length > 0 &&
-			vehicle.description !== descriptionTemplate
+		const description = vehicle.description?.length > 0 && vehicle.description !== descriptionTemplate
 		return description || images
 	}
 
 	function createVehicleBadge(vehicle) {
 		let div = document.createElement('div')
 		let img = ''
-		if (vehicle.thumbnail !== undefined)
-			img = `<img src="${vehicle.thumbnail}">`
+		if (vehicle.thumbnail !== undefined) img = `<img src="${vehicle.thumbnail}">`
 		let branchLine = ''
-		if (vehicle.type === 'researchable')
-			branchLine = `badgeLine_${vehicle.branch}`
+		if (vehicle.type === 'researchable') branchLine = `badgeLine_${vehicle.branch}`
 		else branchLine = `badgeLine_premium_${vehicle.branch}`
 		div.innerHTML = `<table>
             <tbody>
@@ -673,10 +667,7 @@ warn or prevent multiple vehicles following same target
 			let connected = false
 			let arrow = false
 			while (lineArray.length > 0) {
-				if (
-					lineArray[0].classList.contains('connected_yes') ||
-					lineArray[0].classList.contains('connected_folder')
-				) {
+				if (lineArray[0].classList.contains('connected_yes') || lineArray[0].classList.contains('connected_folder')) {
 					connected = true
 					arrow = true
 					lineArray.shift()
@@ -708,10 +699,7 @@ warn or prevent multiple vehicles following same target
 				const vehicleBadges = [...lineItems].filter((item) => {
 					return item.classList.contains('vehicleBadge')
 				})
-				if (
-					vehicleBadges.length > 0 &&
-					vehicleBadges.pop().classList.contains('connected_folder')
-				) {
+				if (vehicleBadges.length > 0 && vehicleBadges.pop().classList.contains('connected_folder')) {
 					let connectors = [...lineItems].filter((item) => {
 						return item.classList.contains('badgeLine')
 					})
@@ -765,9 +753,7 @@ warn or prevent multiple vehicles following same target
 		let fillers = document.querySelectorAll('.fillerDiv')
 		fillers.forEach((div) => {
 			let y1 = div.getBoundingClientRect().y
-			let y2 =
-				div.parentNode.getBoundingClientRect().y +
-				div.parentNode.getBoundingClientRect().height
+			let y2 = div.parentNode.getBoundingClientRect().y + div.parentNode.getBoundingClientRect().height
 			div.style.height = `${y2 - y1}px`
 		})
 	}
@@ -798,4 +784,6 @@ warn or prevent multiple vehicles following same target
 		}
 		return roman
 	}
+
+	function exportToHtml() {}
 })()

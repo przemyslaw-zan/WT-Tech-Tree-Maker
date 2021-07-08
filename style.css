@@ -16,6 +16,7 @@ ul {
 }
 
 body {
+	padding-top: 50px;
 	font-family: 'Arial';
 	background-color: var(--tech_tree_bg);
 	color: var(--text_col);
@@ -63,6 +64,20 @@ body {
 	margin: 10px;
 	margin: auto;
 	border-radius: 10px;
+}
+
+#techtreename {
+	display: block;
+	margin: auto;
+	text-align: center;
+	height: 2rem;
+	font-size: 2rem;
+}
+
+#techtreenamelabel,
+#techtreemaindesclabel {
+	display: block;
+	text-align: center;
 }
 
 #deleteAllButton {
@@ -138,9 +153,7 @@ a {
 	text-align: right;
 	width: 30px;
 	height: 30px;
-	background: linear-gradient(to top right, transparent 50%, #000000 0) top
-			right/30px 30px no-repeat,
-		transparent;
+	background: linear-gradient(to top right, transparent 50%, #000000 0) top right/30px 30px no-repeat, transparent;
 }
 
 .vehicleBadge {
