@@ -10,19 +10,20 @@
 	</head>
 
 	<body>
-		<label id="techtreenamelabel" for="techtreename">Tech tree name:</label>
+		<label id="techtreenamelabel" for="techtreename"><h3>Tech tree name:</h3></label>
 		<input type="text" id="techtreename" name="techtreename" />
 		<br /><br />
 
-		<label id="techtreemaindesclabel" for="techtreemaindesc">Tech tree description:</label>
+		<label id="techtreemaindesclabel" for="techtreemaindesc"><h3>Tech tree description:</h3></label>
 		<textarea id="techtreemaindesc" name="techtreemaindesc">Here you can write description of your tech tree as a whole.</textarea>
 		<br /><br />
 		<nav>
-			<div id="navAdd" style="background-color: rgb(2, 133, 2)">Add vehicle</div>
-			<div id="navEdit" style="background-color: rgb(114, 74, 0)">Edit vehicle</div>
-			<div id="navDel" style="background-color: rgb(128, 0, 0)">Delete vehicle</div>
-			<div id="navOrder" style="background-color: rgb(0, 77, 128)">Vehicle ordering</div>
-			<div id="navExport" style="background-color: rgb(124, 0, 128)">Export tree</div>
+			<div id="navAdd" style="background-color: #091f93">Add vehicle</div>
+			<div id="navEdit" style="background-color: #115cb4">Edit vehicle</div>
+			<div id="navDel" style="background-color: #1c8612">Delete vehicle</div>
+			<div id="navOrder" style="background-color: #bd8c47">Vehicle ordering</div>
+			<div id="navBackup" style="background-color: #c4713a">Backup</div>
+			<div id="navExport" style="background-color: #b35050">Export tree</div>
 		</nav>
 
 		<div id="addModal" class="modal">
@@ -299,9 +300,31 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<span class="close">&times;</span>
-					<h2>Order vehicles</h2>
+					<h2>Vehicle ordering</h2>
 				</div>
-				<div class="modal-body">order</div>
+				<div class="modal-body">
+					<p>
+						There you can remove custom ordering of vehicles that overrides their ordering by BR. To add new connections, edit individual vehicle and
+						pick option in "follow" field.
+					</p>
+					<p id="multipleFollowWarning"></p>
+					<table>
+						<tbody id="vehicleOrderList"></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div id="backupModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<span class="close">&times;</span>
+					<h2>Download & Upload backup</h2>
+				</div>
+				<div class="modal-body">
+					<button id="backupDownload">Download Tech Tree Data</button>
+					Upload Tech Tree Data: <input id="backupUpload" type="file" accept=".json" />
+				</div>
 			</div>
 		</div>
 
@@ -312,8 +335,8 @@
 					<h2>Export Tech Tree</h2>
 				</div>
 				<div class="modal-body">
-					<a href="https://neocities.org/" target="_blank">Neocities</a> is a great free website for you to upload your tech tree for the whole
-					internet to see ;)
+					<button id="exportTechTreeButton">Download the Tech Tree</button>
+					<a href="https://neocities.org/" target="_blank">Neocities</a> is a great place where you can host your tech tree for free ;)
 				</div>
 			</div>
 		</div>
@@ -341,6 +364,7 @@
 		></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/galleria.min.js"></script>
 		<script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+		<script src="template.js"></script>
 		<script src="script.js"></script>
 	</body>
 </html>

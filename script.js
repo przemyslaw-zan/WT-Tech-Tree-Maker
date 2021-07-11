@@ -1,7 +1,7 @@
 'use strict'
 /*
 TODO
-warn or prevent multiple vehicles following same target
+-
 */
 ;(() => {
 	Galleria.loadTheme('https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/themes/classic/galleria.classic.min.js')
@@ -17,6 +17,7 @@ warn or prevent multiple vehicles following same target
 	CKEDITOR.replace('vehicledescription')
 	CKEDITOR.instances.vehicledescription.setData(descriptionTemplate)
 	CKEDITOR.replace('vehicledescriptionedit')
+	CKEDITOR.config.height = 200
 	CKEDITOR.replace('techtreemaindesc')
 	//CKEDITOR.config.uiColor = '#66AB16';
 
@@ -65,6 +66,11 @@ warn or prevent multiple vehicles following same target
 		document.querySelector('#orderModal').style.display = 'block'
 	})
 
+	document.querySelector('#navBackup').addEventListener('click', () => {
+		closeModal()
+		document.querySelector('#backupModal').style.display = 'block'
+	})
+
 	document.querySelector('#navExport').addEventListener('click', () => {
 		closeModal()
 		document.querySelector('#exportModal').style.display = 'block'
@@ -102,6 +108,7 @@ warn or prevent multiple vehicles following same target
 		fillEditSelection(vehicleList)
 		const organizedVehicles = organizeTree(vehicleList)
 		drawTree(organizedVehicles)
+		updateVehicleOrderList()
 	}
 	const techTreeTitle = localStorage.getItem('title')
 	if (techTreeTitle) {
@@ -115,13 +122,9 @@ warn or prevent multiple vehicles following same target
 	document.querySelector('#techtreename').addEventListener('change', (e) => {
 		localStorage.setItem('title', e.target.value)
 	})
-	document.querySelector('#techtreename').addEventListener('change', (e) => {
-		localStorage.setItem('title', e.target.value)
-	})
 	CKEDITOR.instances.techtreemaindesc.on('change', () => {
 		localStorage.setItem('description', CKEDITOR.instances.techtreemaindesc.getData())
 	})
-
 	document.querySelector('#addButton').addEventListener('click', () => {
 		readVehicleInput()
 		localStorage.setItem('save', JSON.stringify(vehicleList))
@@ -130,13 +133,21 @@ warn or prevent multiple vehicles following same target
 		const organizedVehicles = organizeTree(vehicleList)
 		drawTree(organizedVehicles)
 		closeModal()
+		updateVehicleOrderList()
 	})
 
 	document.querySelector('#deleteAllButton').addEventListener('click', () => {
-		const con = confirm(`Do you want to delete ALL VEHICLES? This is irreversible!`)
+		const con = confirm(`Do you want to delete ALL VEHICLES, tech tree name and it's description? This is irreversible!`)
 		if (con === true) {
 			vehicleList.splice(0, vehicleList.length)
-			localStorage.clear()
+			document.querySelector('#techtreename').value = ''
+			CKEDITOR.instances.techtreemaindesc.setData('')
+			//localStorage.clear()
+
+			const organizedVehicles = organizeTree(vehicleList)
+			drawTree(organizedVehicles)
+			closeModal()
+			updateVehicleOrderList()
 		}
 	})
 
@@ -145,9 +156,9 @@ warn or prevent multiple vehicles following same target
 		localStorage.setItem('save', JSON.stringify(vehicleList))
 		fillEditSelection(vehicleList)
 
-		const organizedVehicles = organizeTree(vehicleList)
-		drawTree(organizedVehicles)
+		drawTree(organizeTree(vehicleList))
 		document.querySelector('#vehicleimagelistedit').innerHTML = ''
+		updateVehicleOrderList()
 		closeModal()
 	})
 
@@ -171,8 +182,21 @@ warn or prevent multiple vehicles following same target
 			localStorage.setItem('save', JSON.stringify(vehicleList))
 			fillEditSelection(vehicleList)
 
-			const organizedVehicles = organizeTree(vehicleList)
-			drawTree(organizedVehicles)
+			drawTree(organizeTree(vehicleList))
+			updateVehicleOrderList()
+		}
+	})
+
+	document.querySelector('#vehicleOrderList').addEventListener('click', (e) => {
+		if (e.target.classList.contains('removeConnection')) {
+			const id = e.target.parentNode.id
+			const index = vehicleList.findIndex((vehicle) => {
+				return vehicle.id === id
+			})
+			vehicleList[index].follow = undefined
+			localStorage.setItem('save', JSON.stringify(vehicleList))
+			drawTree(organizeTree(vehicleList))
+			updateVehicleOrderList()
 		}
 	})
 
@@ -187,6 +211,49 @@ warn or prevent multiple vehicles following same target
 		const list = document.querySelector('#vehicleimagelistedit')
 		list.appendChild(createImageListItem())
 	})
+
+	function updateVehicleOrderList() {
+		const tbody = document.querySelector('#vehicleOrderList')
+		tbody.innerHTML = ''
+		const followers = []
+		const targets = []
+		vehicleList.forEach((vehicle) => {
+			if (vehicle.follow) followers.push(vehicle)
+		})
+		for (const follower of followers) {
+			const target = vehicleList.find((vehicle) => {
+				return vehicle.id === follower.follow
+			})
+			if (!target) {
+				follower.follow = undefined
+				return
+			}
+			targets.push(target)
+			let tr = document.createElement('tr')
+			tr.innerHTML = `<td>${follower.name}</td><td>→</td><td>${target.name}</td><th class="removeConnection">Remove this connection</th>`
+			tr.id = follower.id
+			tbody.appendChild(tr)
+		}
+
+		//Checking multiple follows on the same target
+		targets.forEach((item, index, arr) => {
+			arr[index] = item.name
+		})
+		const multipleFollows = []
+		for (const target of targets) {
+			if (!multipleFollows.includes(target) && targets.indexOf(target) !== targets.lastIndexOf(target)) multipleFollows.push(target)
+		}
+		if (multipleFollows.length > 0) {
+			document.querySelector('#navOrder').innerHTML = 'Vehicle ordering <b style="color:red;">WARNING!</b>'
+			const p = document.querySelector('#multipleFollowWarning')
+			p.innerHTML += '<b style="color:red;">WARNING!</b> Following vehicles have more than one vehicle placed behind them:<br>'
+			for (const follow of multipleFollows) p.innerHTML += `<br>${follow}`
+			p.innerHTML += '<br><br>This can cause problems with ordering, make sure each vehicle has no more than one follower.'
+		} else {
+			document.querySelector('#navOrder').innerHTML = 'Vehicle ordering'
+			document.querySelector('#multipleFollowWarning').innerHTML = ''
+		}
+	}
 
 	function createImageListItem(url, description) {
 		let listItem = document.createElement('li')
@@ -493,17 +560,6 @@ warn or prevent multiple vehicles following same target
 				}
 			}
 
-			function isFollowApplied(array) {
-				array = [...array]
-				while (array.length >= 2) {
-					if (![undefined, 'undefined'].includes(array[1].follow)) {
-						if (array[0].id !== array[1].follow) return false
-					}
-					array.shift()
-				}
-				return true
-			}
-
 			let temp = [...array]
 			array = []
 			for (let vehicle of temp) {
@@ -525,6 +581,25 @@ warn or prevent multiple vehicles following same target
 			sortedVehicles[region] = array
 		}
 		return sortedVehicles
+	}
+
+	function isFollowApplied(array) {
+		array = [...array]
+		if (![undefined, 'undefined'].includes(array[0].follow)) {
+			if (
+				array.some((vehicle) => {
+					return vehicle.id === array[0].follow
+				})
+			)
+				return false
+		}
+		while (array.length >= 2) {
+			if (![undefined, 'undefined'].includes(array[1].follow)) {
+				if (array[0].id !== array[1].follow) return false
+			}
+			array.shift()
+		}
+		return true
 	}
 
 	function drawTree(organizedVehicles) {
@@ -785,5 +860,77 @@ warn or prevent multiple vehicles following same target
 		return roman
 	}
 
-	function exportToHtml() {}
+	document.querySelector('#exportTechTreeButton').addEventListener('click', () => {
+		let title = document.querySelector('#techtreename').value
+		let description = CKEDITOR.instances.techtreemaindesc.getData()
+		let tree = document.querySelector('#techtree').innerHTML
+		var file = new Blob([createHtmlContent(title, description, tree)])
+		if (window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(file, 'index.html')
+		else {
+			var a = document.createElement('a'),
+				url = URL.createObjectURL(file)
+			a.href = url
+			a.download = 'index.html'
+			document.body.appendChild(a)
+			a.click()
+			setTimeout(function () {
+				document.body.removeChild(a)
+				window.URL.revokeObjectURL(url)
+			}, 0)
+		}
+	})
+
+	document.querySelector('#backupDownload').addEventListener('click', () => {
+		const title = document.querySelector('#techtreename').value
+		const description = CKEDITOR.instances.techtreemaindesc.getData()
+		const content = { title, description, vehicleList }
+		var file = new Blob([JSON.stringify(content)], { type: 'application/json' })
+		if (window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(file, 'WT_TECH_TREE_MAKER_SAVE')
+		else {
+			var a = document.createElement('a'),
+				url = URL.createObjectURL(file)
+			a.href = url
+			a.download = 'WT_TECH_TREE_MAKER_SAVE'
+			document.body.appendChild(a)
+			a.click()
+			setTimeout(function () {
+				document.body.removeChild(a)
+				window.URL.revokeObjectURL(url)
+			}, 0)
+		}
+	})
+
+	document.querySelector('#backupUpload').addEventListener('change', (e) => {
+		if (!e.target.files[0]) return
+		e.target.files[0].text().then((result) => {
+			try {
+				const loadedData = JSON.parse(result)
+				if (!loadedData.title || !loadedData.description || !loadedData.vehicleList) {
+					window.alert('Incorrect save file! Make sure you upload correct save file!')
+					return
+				}
+				const con = confirm(
+					`Do you want to load data from save file? This will override all current data, if you work on multiple trees, make sure to backup them first!`
+				)
+				if (con === true) {
+					document.querySelector('#techtreename').value = loadedData.title
+					CKEDITOR.instances.techtreemaindesc.setData(loadedData.description)
+					loadedData.vehicleList.forEach((element) => {
+						vehicleList.push(element)
+					})
+					fillEditSelection(vehicleList)
+					drawTree(organizeTree(vehicleList))
+					updateVehicleOrderList()
+
+					localStorage.setItem('title', loadedData.title)
+					localStorage.setItem('description', loadedData.description)
+					localStorage.setItem('save', JSON.stringify(vehicleList))
+
+					closeModal()
+				}
+			} catch (e) {
+				window.alert(`An error occured:\n${e}\nMake sure you upload correct save file!`)
+			}
+		})
+	})
 })()

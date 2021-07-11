@@ -16,7 +16,6 @@ ul {
 }
 
 body {
-	padding-top: 50px;
 	font-family: 'Arial';
 	background-color: var(--tech_tree_bg);
 	color: var(--text_col);
@@ -164,6 +163,20 @@ a {
 
 /*.fillerDiv {}*/
 
+#orderModal table {
+	margin: auto;
+	border-spacing: 10px;
+}
+
+#orderModal td {
+	border: none;
+}
+
+#orderModal th {
+	color: rgb(221, 0, 0);
+	cursor: pointer;
+}
+
 nav {
 	position: fixed;
 	left: 0;
@@ -174,7 +187,6 @@ nav {
 nav div {
 	background-color: cadetblue;
 	padding: 3px;
-	margin-top: 3px;
 	border-radius: 0 5px 5px 0;
 	border: 1px solid black;
 	border-left: none;
