@@ -296,6 +296,16 @@
 			targetField['default'] = '_blank'
 		}
 	})
+	CKEDITOR.on('instanceReady', function (e) {
+		// First time
+		e.editor.document.getBody().setStyle('background-color', 'rgb(36, 46, 51)')
+		e.editor.document.getBody().setStyle('color', 'white')
+		// in case the user switches to source and back
+		e.editor.on('contentDom', function () {
+			e.editor.document.getBody().setStyle('background-color', 'rgb(36, 46, 51)')
+			e.editor.document.getBody().setStyle('color', 'white')
+		})
+	})
 	//#endregion Main title & description listeners
 
 	//#region Tech tree building functions
@@ -909,7 +919,7 @@
 		CKEDITOR.instances.vehicledescription.setData(descriptionTemplate)
 		CKEDITOR.config.height = 200
 		CKEDITOR.replace('techtreemaindesc')
-		//CKEDITOR.config.uiColor = '#66AB16';
+		CKEDITOR.config.uiColor = '#A4D0E6'
 
 		//Loading save from local storage
 		const save = localStorage.getItem('save')
