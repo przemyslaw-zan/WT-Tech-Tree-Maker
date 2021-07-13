@@ -15,6 +15,75 @@ ul {
 	padding-left: 17px;
 }
 
+#nameInputDiv {
+	text-align: center;
+	padding-bottom: 15px;
+}
+
+blockquote {
+	font-style: italic;
+	border-left: 3px rgb(31, 31, 31) solid;
+	padding: 5px;
+}
+
+#editSelectDiv {
+	text-align: center;
+	padding-bottom: 15px;
+}
+
+#vehicleimagelisteditadd,
+#vehicleimagelistadd {
+	display: block;
+	margin-top: 5px;
+	background-color: rgb(78, 156, 0);
+	color: white;
+	border-radius: 3px;
+	border: 1px solid black;
+	cursor: pointer;
+}
+
+#addButton,
+#editButton {
+	display: block;
+	margin: auto;
+	margin-top: 15px;
+	font-size: 1.3rem;
+	background-color: rgb(78, 156, 0);
+	color: white;
+	border-radius: 3px;
+	border: 1px solid black;
+	cursor: pointer;
+}
+
+#modalDesc h1,
+#modalDesc h2,
+#modalDesc h3 {
+	font-weight: normal;
+}
+
+.flexWrapper {
+	width: 50%;
+	float: left;
+}
+
+.inputModalFlex {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.inputModalFlexChild {
+	padding: 3px;
+	width: fit-content;
+}
+
+.flexTitle {
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+	font-size: large;
+}
+
 body {
 	font-family: 'Arial';
 	background-color: var(--tech_tree_bg);
@@ -229,6 +298,11 @@ nav div {
 #vehicleimagelistedit td {
 	border: none;
 	transform: translateY(10px);
+}
+
+#vehicleimagelist input,
+#vehicleimagelistedit input {
+	width: 300px;
 }
 
 #vehicleimagelist,
