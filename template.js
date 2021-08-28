@@ -510,6 +510,7 @@ function createHtmlContent(title, description, tree, vehicles) {
         }
 
         function closeModal() {
+            document.querySelector('body').style.overflow = 'visible'
             document.querySelectorAll('.modal').forEach((modal) => {
                 modal.style.display = 'none'
             })
@@ -552,6 +553,7 @@ function createHtmlContent(title, description, tree, vehicles) {
             document.querySelector('.galleria-info-text').style.backgroundColor = 'RGBA(0, 0, 0, 0.85)'
             document.querySelector('.galleria-info-text').style.padding = '3px'
             document.querySelector('#vehicleDisplayModal').style.display = 'block'
+            document.querySelector('body').style.overflow = 'hidden'
         })
     </script>
 </html>

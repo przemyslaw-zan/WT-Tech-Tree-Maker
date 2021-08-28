@@ -10,26 +10,32 @@
 	document.querySelector('#navAdd').addEventListener('click', () => {
 		closeModal()
 		document.querySelector('#addModal').style.display = 'block'
+		document.querySelector('body').style.overflow = 'hidden'
 	})
 	document.querySelector('#navEdit').addEventListener('click', () => {
 		closeModal()
 		document.querySelector('#editModal').style.display = 'block'
+		document.querySelector('body').style.overflow = 'hidden'
 	})
 	document.querySelector('#navDel').addEventListener('click', () => {
 		closeModal()
 		document.querySelector('#delModal').style.display = 'block'
+		document.querySelector('body').style.overflow = 'hidden'
 	})
 	document.querySelector('#navOrder').addEventListener('click', () => {
 		closeModal()
 		document.querySelector('#orderModal').style.display = 'block'
+		document.querySelector('body').style.overflow = 'hidden'
 	})
 	document.querySelector('#navBackup').addEventListener('click', () => {
 		closeModal()
 		document.querySelector('#backupModal').style.display = 'block'
+		document.querySelector('body').style.overflow = 'hidden'
 	})
 	document.querySelector('#navExport').addEventListener('click', () => {
 		closeModal()
 		document.querySelector('#exportModal').style.display = 'block'
+		document.querySelector('body').style.overflow = 'hidden'
 	})
 	//#endregion Nav menu listeners
 
@@ -274,6 +280,7 @@
 		document.querySelector('.galleria-info-text').style.backgroundColor = 'RGBA(0, 0, 0, 0.85)'
 		document.querySelector('.galleria-info-text').style.padding = '3px'
 		document.querySelector('#vehicleDisplayModal').style.display = 'block'
+		document.querySelector('body').style.overflow = 'hidden'
 	})
 	//#endregion Tech tree listeners
 
@@ -898,6 +905,7 @@
 
 	//#region Other functions
 	function closeModal() {
+		document.querySelector('body').style.overflow = 'visible'
 		document.querySelectorAll('.modal').forEach((modal) => {
 			modal.style.display = 'none'
 		})
