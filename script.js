@@ -923,11 +923,10 @@
 		})
 
 		//Text editor initialization
-		CKEDITOR.config.height = 500
+		CKEDITOR.config.height = 350
 		CKEDITOR.replace('vehicledescription')
 		CKEDITOR.replace('vehicledescriptionedit')
 		CKEDITOR.instances.vehicledescription.setData(descriptionTemplate)
-		CKEDITOR.config.height = 200
 		CKEDITOR.replace('techtreemaindesc')
 		CKEDITOR.config.uiColor = '#A4D0E6'
 
