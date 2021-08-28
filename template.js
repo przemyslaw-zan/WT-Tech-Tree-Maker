@@ -1,4 +1,4 @@
-function createHtmlContent(title, description, tree) {
+function createHtmlContent(title, description, tree, vehicles) {
 	return `
 <!DOCTYPE html>
 <html lang="en">
@@ -9,13 +9,23 @@ function createHtmlContent(title, description, tree) {
         <title>${title}</title>
     </head>
     <body>
-        <h1>${title}</h1>
+        <h1 style="text-align: center; border-bottom: 1px solid black; padding: 5px">${title}</h1>
         <p>${description}</p>
         <div id="techtree">${tree}</div>
+        <div id="vehicleDisplayModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                    <h2 id="modal_title"></h2>
+                </div>
+                <div class="modal-gallery">
+                    <div class="galleria" id="galleria"></div>
+                </div>
+                <div class="modal-body" id="modalDesc"></div>
+            </div>
+        </div>
     </body>
     <style>
-        /*https://www.w3schools.com/css/css_tooltip.asp*/
-
         :root {
             --main_bg: rgb(48, 48, 48);
             --text_col: white;
@@ -31,8 +41,76 @@ function createHtmlContent(title, description, tree) {
             padding-left: 17px;
         }
 
+        #nameInputDiv {
+            text-align: center;
+            padding-bottom: 15px;
+        }
+
+        blockquote {
+            font-style: italic;
+            border-left: 3px rgb(31, 31, 31) solid;
+            padding: 5px;
+        }
+
+        #editSelectDiv {
+            text-align: center;
+            padding-bottom: 15px;
+        }
+
+        #vehicleimagelisteditadd,
+        #vehicleimagelistadd {
+            display: block;
+            margin-top: 5px;
+            background-color: rgb(78, 156, 0);
+            color: white;
+            border-radius: 3px;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+
+        #addButton,
+        #editButton {
+            display: block;
+            margin: auto;
+            margin-top: 15px;
+            font-size: 1.3rem;
+            background-color: rgb(78, 156, 0);
+            color: white;
+            border-radius: 3px;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+
+        #modalDesc h1,
+        #modalDesc h2,
+        #modalDesc h3 {
+            font-weight: normal;
+        }
+
+        .flexWrapper {
+            width: 50%;
+            float: left;
+        }
+
+        .inputModalFlex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .inputModalFlexChild {
+            padding: 3px;
+            width: fit-content;
+        }
+
+        .flexTitle {
+            width: 100%;
+            display: inline-block;
+            text-align: center;
+            font-size: large;
+        }
+
         body {
-            padding-top: 50px;
             font-family: 'Arial';
             background-color: var(--tech_tree_bg);
             color: var(--text_col);
@@ -180,6 +258,20 @@ function createHtmlContent(title, description, tree) {
 
         /*.fillerDiv {}*/
 
+        #orderModal table {
+            margin: auto;
+            border-spacing: 10px;
+        }
+
+        #orderModal td {
+            border: none;
+        }
+
+        #orderModal th {
+            color: rgb(221, 0, 0);
+            cursor: pointer;
+        }
+
         nav {
             position: fixed;
             left: 0;
@@ -190,7 +282,6 @@ function createHtmlContent(title, description, tree) {
         nav div {
             background-color: cadetblue;
             padding: 3px;
-            margin-top: 3px;
             border-radius: 0 5px 5px 0;
             border: 1px solid black;
             border-left: none;
@@ -233,6 +324,11 @@ function createHtmlContent(title, description, tree) {
         #vehicleimagelistedit td {
             border: none;
             transform: translateY(10px);
+        }
+
+        #vehicleimagelist input,
+        #vehicleimagelistedit input {
+            width: 300px;
         }
 
         #vehicleimagelist,
@@ -390,7 +486,74 @@ function createHtmlContent(title, description, tree) {
             }
         }
     </style>
-    <script></script>
+    <script
+        src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/galleria.min.js"></script>
+    <script>
+        const vehicleList = ${vehicles}
+        const descriptionTemplate =
+        '<h3><em>Year:</em> <strong>XXXX</strong>&nbsp;<em>Development stage:</em>&nbsp;<strong>X</strong></h3>\u005Cn\u005Cn<p>Historical description...</p>\u005Cn\u005Cn<h3><em>Primary weapon:</em> <strong>X</strong></h3>\u005Cn\u005Cn<p>Primary weapon description...</p>\u005Cn\u005Cn<h3><em>Secondary weapon:</em> <strong>X</strong></h3>\u005Cn\u005Cn<p>Secondary weapon description...</p>\u005Cn\u005Cn<h3><em>Other info:</em></h3>\u005Cn\u005Cn<p>Crew, armor, mobility etc...</p>\u005Cn\u005Cn<h3><em>Proposed BR:</em> <strong>X.X</strong></h3>\u005Cn\u005Cn<p>Justification for Battle Rating placement...</p>\u005Cn\u005Cn<p><em>Links:</em></p>\u005Cn\u005Cn<ol>\u005Cn\u005Ct<li>Source 1...</li>\u005Cn\u005Ct<li>Source 2...</li>\u005Cn\u005Ct<li>WT forum discussion on the vehicle...</li>\u005Cn</ol>\u005Cn'
+
+        Galleria.loadTheme('https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/themes/classic/galleria.classic.min.js')
+        Galleria.run('.galleria')
+        Galleria.configure({
+            _toggleInfo: false
+        })
+
+        function isClickable(vehicle) {
+            const images = vehicle.images?.length > 0
+            const description = vehicle.description?.length > 0 && vehicle.description !== descriptionTemplate
+            return description || images
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach((modal) => {
+                modal.style.display = 'none'
+            })
+            $('.galleria').data('galleria').splice(0, $('.galleria').data('galleria').getDataLength())
+            $('.galleria').data('galleria').destroy()
+            Galleria.run('.galleria')
+        }
+
+        document.querySelectorAll('.close').forEach((item) => {
+            item.addEventListener('click', () => {
+                closeModal()
+            })
+        })
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal')) {
+                closeModal()
+            }
+        }
+
+        document.querySelector('#techtree').addEventListener('click', (e) => {
+            let element = e.target
+            if (!element.id) element = element.parentNode
+            if (!element.id) return
+            const vehicle = vehicleList.find((item) => {
+                return item.id === element.id
+            })
+            if (!isClickable(vehicle)) return
+            document.querySelector('#modal_title').innerText = vehicle.name
+            if (vehicle.images)
+                $('.galleria')
+                    .data('galleria')
+                    .load([...vehicle.images])
+            document.querySelector('#modalDesc').innerHTML = vehicle.description
+            const info = document.querySelector('.galleria-info')
+            info.style.width = 'fit-content'
+            info.style.left = 'auto'
+            info.style.bottom = '50px'
+            info.style.top = 'auto'
+            info.style.right = '0px'
+            document.querySelector('.galleria-info-text').style.backgroundColor = 'RGBA(0, 0, 0, 0.85)'
+            document.querySelector('.galleria-info-text').style.padding = '3px'
+            document.querySelector('#vehicleDisplayModal').style.display = 'block'
+        })
+    </script>
 </html>
 
     `

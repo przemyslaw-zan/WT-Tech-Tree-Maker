@@ -229,16 +229,17 @@
 
 	//#region Export modal listeners
 	document.querySelector('#exportTechTreeButton').addEventListener('click', () => {
-		let title = document.querySelector('#techtreename').value
-		let description = CKEDITOR.instances.techtreemaindesc.getData()
-		let tree = document.querySelector('#techtree').innerHTML
-		var file = new Blob([createHtmlContent(title, description, tree)])
-		if (window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(file, 'index.html')
+		const title = document.querySelector('#techtreename').value
+		const description = CKEDITOR.instances.techtreemaindesc.getData()
+		const tree = document.querySelector('#techtree').innerHTML
+		const vehicles = JSON.stringify(vehicleList)
+		const file = new Blob([createHtmlContent(title, description, tree, vehicles)])
+		if (window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(file, 'exported_tech_tree.html')
 		else {
-			var a = document.createElement('a'),
+			let a = document.createElement('a'),
 				url = URL.createObjectURL(file)
 			a.href = url
-			a.download = 'index.html'
+			a.download = 'exported_tech_tree.html'
 			document.body.appendChild(a)
 			a.click()
 			setTimeout(function () {
@@ -272,7 +273,7 @@
 		info.style.right = '0px'
 		document.querySelector('.galleria-info-text').style.backgroundColor = 'RGBA(0, 0, 0, 0.85)'
 		document.querySelector('.galleria-info-text').style.padding = '3px'
-		document.querySelector('#myModal').style.display = 'block'
+		document.querySelector('#vehicleDisplayModal').style.display = 'block'
 	})
 	//#endregion Tech tree listeners
 
