@@ -153,7 +153,7 @@
 			vehicleList.splice(0, vehicleList.length)
 			document.querySelector('#techtreename').value = ''
 			CKEDITOR.instances.techtreemaindesc.setData('')
-			//localStorage.clear()
+			localStorage.clear()
 
 			const organizedVehicles = organizeTree(vehicleList)
 			drawTree(organizedVehicles)
@@ -213,6 +213,7 @@
 				if (con === true) {
 					document.querySelector('#techtreename').value = loadedData.title
 					CKEDITOR.instances.techtreemaindesc.setData(loadedData.description)
+					vehicleList.splice(0, vehicleList.length)
 					loadedData.vehicleList.forEach((element) => {
 						vehicleList.push(element)
 					})
