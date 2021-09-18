@@ -7,6 +7,12 @@
 	--tech_tree_bg: rgb(36, 46, 51);
 }
 
+.select2-search,
+.select2-results__option,
+.select2-container--default .select2-results__option--selected {
+	background-color: var(--tech_tree_bg);
+}
+
 td {
 	border: 1px black solid;
 }

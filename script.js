@@ -1,6 +1,6 @@
 'use strict'
 ;(() => {
-	let vehicleList = []
+	const vehicleList = []
 	const descriptionTemplate =
 		'<h3><em>Year:</em> <strong>XXXX</strong>&nbsp;<em>Development stage:</em>&nbsp;<strong>X</strong></h3>\n\n<p>Historical description...</p>\n\n<h3><em>Primary weapon:</em> <strong>X</strong></h3>\n\n<p>Primary weapon description...</p>\n\n<h3><em>Secondary weapon:</em> <strong>X</strong></h3>\n\n<p>Secondary weapon description...</p>\n\n<h3><em>Other info:</em></h3>\n\n<p>Crew, armor, mobility etc...</p>\n\n<h3><em>Proposed BR:</em> <strong>X.X</strong></h3>\n\n<p>Justification for Battle Rating placement...</p>\n\n<p><em>Links:</em></p>\n\n<ol>\n\t<li>Source 1...</li>\n\t<li>Source 2...</li>\n\t<li>WT forum discussion on the vehicle...</li>\n</ol>\n'
 	let sortingLoopError = false
@@ -93,7 +93,7 @@
 			updateVehicleOrderList()
 		}
 	})
-	document.querySelector('#editionSelect').addEventListener('change', (e) => {
+	$('#editionSelect').on('change', (e) => {
 		if (e.target.value === 'undefined') return
 		document.querySelector('#vehicleimagelistedit').innerHTML = ''
 		const vehicleId = e.target.value
@@ -135,7 +135,7 @@
 	//#endregion Edit modal listeners
 
 	//#region Delete modal listeners
-	document.querySelector('#deleteVehicleSelect').addEventListener('change', (e) => {
+	$('#deleteVehicleSelect').on('change', (e) => {
 		if (e.target.value === 'undefined') return
 		const vehicle = vehicleList.find((vehicle) => {
 			return vehicle.id === e.target.value
@@ -160,11 +160,13 @@
 					newList.push(element)
 				}
 			})
-			vehicleList = [...newList]
+
+			vehicleList.splice(0, vehicleList.length)
+			newList.forEach((item) => vehicleList.push(item))
 
 			localStorage.setItem('save', JSON.stringify(vehicleList))
 			fillEditSelection(vehicleList)
-
+			document.querySelector('#vehicleDeleteDisplay').innerHTML = ''
 			drawTree(organizeTree(vehicleList))
 			updateVehicleOrderList()
 		}
@@ -857,8 +859,6 @@
 		loopError.style.display = 'none'
 		document.querySelector('#navOrder').innerHTML = 'Vehicle ordering'
 		document.querySelector('#multipleFollowWarning').innerHTML = ''
-		console.log('order list update')
-		console.log(`infinite loop: ${sortingLoopError}`)
 		if (sortingLoopError || multipleFollows.length > 0) {
 			console.log('trigger #1')
 			document.querySelector('#navOrder').innerHTML = 'Vehicle ordering <b style="color:red;">WARNING!</b>'
@@ -987,6 +987,12 @@
 		Galleria.configure({
 			_toggleInfo: false
 		})
+
+		//Enabling advandced selection
+		$('#editionSelect').select2({ width: '15em' })
+		$('#vehiclefollow').select2({ width: '15em' })
+		$('#vehiclefollowedit').select2({ width: '15em' })
+		$('#deleteVehicleSelect').select2({ width: '15em' })
 
 		//Text editor initialization
 		CKEDITOR.config.height = 350
