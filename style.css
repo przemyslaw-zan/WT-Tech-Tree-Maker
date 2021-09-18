@@ -436,6 +436,14 @@ nav div {
 	padding: 10px;
 }
 
+#followLoopWarning {
+	display: none;
+}
+
+#followLoopWarning b {
+	color: red;
+}
+
 /* Modal Content */
 .modal-content {
 	position: relative;

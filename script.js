@@ -3,6 +3,7 @@
 	const vehicleList = []
 	const descriptionTemplate =
 		'<h3><em>Year:</em> <strong>XXXX</strong>&nbsp;<em>Development stage:</em>&nbsp;<strong>X</strong></h3>\n\n<p>Historical description...</p>\n\n<h3><em>Primary weapon:</em> <strong>X</strong></h3>\n\n<p>Primary weapon description...</p>\n\n<h3><em>Secondary weapon:</em> <strong>X</strong></h3>\n\n<p>Secondary weapon description...</p>\n\n<h3><em>Other info:</em></h3>\n\n<p>Crew, armor, mobility etc...</p>\n\n<h3><em>Proposed BR:</em> <strong>X.X</strong></h3>\n\n<p>Justification for Battle Rating placement...</p>\n\n<p><em>Links:</em></p>\n\n<ol>\n\t<li>Source 1...</li>\n\t<li>Source 2...</li>\n\t<li>WT forum discussion on the vehicle...</li>\n</ol>\n'
+	let sortingLoopError = false
 
 	init()
 
@@ -59,7 +60,6 @@
 		fillEditSelection(vehicleList)
 
 		drawTree(organizeTree(vehicleList))
-		closeModal()
 		updateVehicleOrderList()
 	})
 	document.querySelector('#vehicleimagelistadd').addEventListener('click', (e) => {
@@ -78,7 +78,6 @@
 		drawTree(organizeTree(vehicleList))
 		document.querySelector('#vehicleimagelistedit').innerHTML = ''
 		updateVehicleOrderList()
-		closeModal()
 	})
 	document.querySelector('#editionSelect').addEventListener('change', (e) => {
 		if (e.target.value === 'undefined') return
@@ -319,6 +318,7 @@
 
 	//#region Tech tree building functions
 	function organizeTree(vehicleList) {
+		sortingLoopError = false
 		const sortedVehicles = {}
 		for (let vehicle of vehicleList) {
 			const vehicleRegion = `rank_${vehicle.rank}_branch_${vehicle.type !== 'researchable' ? `premium_${vehicle.branch}` : vehicle.branch}`
@@ -350,7 +350,11 @@
 					}
 					//Anti infinite loop safety
 					i++
-					if (i > 1000) break
+					if (i > 1000) {
+						console.log('infinite loop detected')
+						sortingLoopError = true
+						break
+					}
 				}
 			}
 
@@ -688,6 +692,7 @@
 		vehicleList.push(vehicle)
 		document.querySelector('#newForm').reset()
 		CKEDITOR.instances.vehicledescription.setData(descriptionTemplate)
+		closeModal()
 	}
 	function readVehicleEditInput() {
 		const name = document.querySelector('#vehiclenameedit').value.trim()
@@ -733,6 +738,7 @@
 			}
 		})
 		document.querySelector('#editForm').reset()
+		closeModal()
 	}
 	function fillEditSelection(vehicleList) {
 		const selectArr = [
@@ -798,15 +804,26 @@
 		for (const target of targets) {
 			if (!multipleFollows.includes(target) && targets.indexOf(target) !== targets.lastIndexOf(target)) multipleFollows.push(target)
 		}
-		if (multipleFollows.length > 0) {
+		const loopError = document.querySelector('#followLoopWarning')
+		loopError.style.display = 'none'
+		document.querySelector('#navOrder').innerHTML = 'Vehicle ordering'
+		document.querySelector('#multipleFollowWarning').innerHTML = ''
+		console.log('order list update')
+		console.log(`infinite loop: ${sortingLoopError}`)
+		if (sortingLoopError || multipleFollows.length > 0) {
+			console.log('trigger #1')
 			document.querySelector('#navOrder').innerHTML = 'Vehicle ordering <b style="color:red;">WARNING!</b>'
+		}
+		if (sortingLoopError) {
+			console.log('trigger #2')
+			loopError.style.display = 'block'
+		}
+		if (multipleFollows.length > 0) {
+			console.log('trigger #3')
 			const p = document.querySelector('#multipleFollowWarning')
 			p.innerHTML += '<b style="color:red;">WARNING!</b> Following vehicles have more than one vehicle placed behind them:<br>'
 			for (const follow of multipleFollows) p.innerHTML += `<br>${follow}`
 			p.innerHTML += '<br><br>This can cause problems with ordering, make sure each vehicle has no more than one follower.'
-		} else {
-			document.querySelector('#navOrder').innerHTML = 'Vehicle ordering'
-			document.querySelector('#multipleFollowWarning').innerHTML = ''
 		}
 	}
 	function createImageListItem(url, description) {
