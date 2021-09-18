@@ -1,6 +1,6 @@
 'use strict'
 ;(() => {
-	const vehicleList = []
+	let vehicleList = []
 	const descriptionTemplate =
 		'<h3><em>Year:</em> <strong>XXXX</strong>&nbsp;<em>Development stage:</em>&nbsp;<strong>X</strong></h3>\n\n<p>Historical description...</p>\n\n<h3><em>Primary weapon:</em> <strong>X</strong></h3>\n\n<p>Primary weapon description...</p>\n\n<h3><em>Secondary weapon:</em> <strong>X</strong></h3>\n\n<p>Secondary weapon description...</p>\n\n<h3><em>Other info:</em></h3>\n\n<p>Crew, armor, mobility etc...</p>\n\n<h3><em>Proposed BR:</em> <strong>X.X</strong></h3>\n\n<p>Justification for Battle Rating placement...</p>\n\n<p><em>Links:</em></p>\n\n<ol>\n\t<li>Source 1...</li>\n\t<li>Source 2...</li>\n\t<li>WT forum discussion on the vehicle...</li>\n</ol>\n'
 	let sortingLoopError = false
@@ -60,6 +60,7 @@
 		fillEditSelection(vehicleList)
 
 		drawTree(organizeTree(vehicleList))
+		document.querySelector('#vehicleimagelist').innerHTML = ''
 		updateVehicleOrderList()
 	})
 	document.querySelector('#vehicleimagelistadd').addEventListener('click', (e) => {
