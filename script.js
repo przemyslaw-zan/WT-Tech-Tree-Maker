@@ -55,30 +55,43 @@
 
 	//#region Add modal listeners
 	document.querySelector('#addButton').addEventListener('click', () => {
-		readVehicleInput()
-		localStorage.setItem('save', JSON.stringify(vehicleList))
-		fillEditSelection(vehicleList)
+		const readSuccesful = readVehicleInput()
+		if (readSuccesful) {
+			localStorage.setItem('save', JSON.stringify(vehicleList))
+			fillEditSelection(vehicleList)
 
-		drawTree(organizeTree(vehicleList))
-		document.querySelector('#vehicleimagelist').innerHTML = ''
-		updateVehicleOrderList()
+			drawTree(organizeTree(vehicleList))
+			document.querySelector('#vehicleimagelist').innerHTML = ''
+			updateVehicleOrderList()
+		}
 	})
 	document.querySelector('#vehicleimagelistadd').addEventListener('click', (e) => {
 		e.preventDefault()
 		const list = document.querySelector('#vehicleimagelist')
 		list.appendChild(createImageListItem())
 	})
+	document.querySelector('#vehicletype').addEventListener('change', (e) => {
+		const choice = e.target.value
+		const connection = document.querySelector('#vehicleconnection')
+		if (choice === 'researchable') {
+			connection.value = 'yes'
+		} else {
+			connection.value = 'no'
+		}
+	})
 	//#endregion Add modal listeners
 
 	//#region Edit modal listeners
 	document.querySelector('#editButton').addEventListener('click', () => {
-		readVehicleEditInput()
-		localStorage.setItem('save', JSON.stringify(vehicleList))
-		fillEditSelection(vehicleList)
+		const readSuccesful = readVehicleEditInput()
+		if (readSuccesful) {
+			localStorage.setItem('save', JSON.stringify(vehicleList))
+			fillEditSelection(vehicleList)
 
-		drawTree(organizeTree(vehicleList))
-		document.querySelector('#vehicleimagelistedit').innerHTML = ''
-		updateVehicleOrderList()
+			drawTree(organizeTree(vehicleList))
+			document.querySelector('#vehicleimagelistedit').innerHTML = ''
+			updateVehicleOrderList()
+		}
 	})
 	document.querySelector('#editionSelect').addEventListener('change', (e) => {
 		if (e.target.value === 'undefined') return
@@ -109,6 +122,15 @@
 		e.preventDefault()
 		const list = document.querySelector('#vehicleimagelistedit')
 		list.appendChild(createImageListItem())
+	})
+	document.querySelector('#vehicletypeedit').addEventListener('change', (e) => {
+		const choice = e.target.value
+		const connection = document.querySelector('#vehicleconnectionedit')
+		if (choice === 'researchable') {
+			connection.value = 'yes'
+		} else {
+			connection.value = 'no'
+		}
 	})
 	//#endregion Edit modal listeners
 
@@ -657,13 +679,25 @@
 		const name = document.querySelector('#vehiclename').value.trim()
 		if (name.length === 0) {
 			window.alert('You have to provide name of the vehicle!')
-			return
+			return false
 		}
 		const rank = Number(document.querySelector('#vehiclerank').value)
+		if (!/^[1-9]$/.test(rank.toString())) {
+			window.alert('Rank has to be a natural number between 1 and 9!')
+			return false
+		}
 		const br = Number(document.querySelector('#vehiclebr').value)
+		if ((!/^\d+\.\d$/.test(br) && !/^\d+$/.test(br)) || br < 0 || br >= 100) {
+			window.alert('Battle rating must have one or zero decimal places, and be a non-negative number less than 100!')
+			return false
+		}
 		const type = document.querySelector('#vehicletype').value
 		const connection = document.querySelector('#vehicleconnection').value
 		const branch = Number(document.querySelector('#vehiclebranch').value)
+		if (!/^[1-9]$/.test(branch.toString())) {
+			window.alert('Branch has to be a natural number between 1 and 9!')
+			return false
+		}
 		const follow = document.querySelector('#vehiclefollowedit').value
 		const description = CKEDITOR.instances.vehicledescription.getData()
 		const id = 'v' + Date.now()
@@ -675,7 +709,7 @@
 			.forEach((item) => {
 				const image = item.querySelectorAll('input')[0].value
 				const description = item.querySelectorAll('input')[1].value.trim()
-				images.push({ image, description })
+				if (image) images.push({ image, description })
 			})
 		const vehicle = {
 			name,
@@ -694,18 +728,31 @@
 		document.querySelector('#newForm').reset()
 		CKEDITOR.instances.vehicledescription.setData(descriptionTemplate)
 		closeModal()
+		return true
 	}
 	function readVehicleEditInput() {
 		const name = document.querySelector('#vehiclenameedit').value.trim()
 		if (name.length === 0) {
 			window.alert('You have to provide name of the vehicle!')
-			return
+			return false
 		}
 		const rank = Number(document.querySelector('#vehiclerankedit').value)
+		if (!/^[1-9]$/.test(rank.toString())) {
+			window.alert('Rank has to be a natural number between 1 and 9!')
+			return false
+		}
 		const br = Number(document.querySelector('#vehiclebredit').value)
+		if ((!/^\d+\.\d$/.test(br) && !/^\d+$/.test(br)) || br < 0 || br >= 100) {
+			window.alert('Battle rating must have one or zero decimal places, and be a non-negative number less than 100!')
+			return false
+		}
 		const type = document.querySelector('#vehicletypeedit').value
 		const connection = document.querySelector('#vehicleconnectionedit').value
 		const branch = Number(document.querySelector('#vehiclebranchedit').value)
+		if (!/^[1-9]$/.test(branch.toString())) {
+			window.alert('Branch has to be a natural number between 1 and 9!')
+			return false
+		}
 		const follow = document.querySelector('#vehiclefollowedit').value
 		const description = CKEDITOR.instances.vehicledescriptionedit.getData()
 		CKEDITOR.instances.vehicledescriptionedit.setData('')
@@ -718,7 +765,7 @@
 			.forEach((item) => {
 				const image = item.querySelectorAll('input')[0].value
 				const description = item.querySelectorAll('input')[1].value.trim()
-				images.push({ image, description })
+				if (image) images.push({ image, description })
 			})
 		const vehicle = {
 			name,
@@ -740,6 +787,7 @@
 		})
 		document.querySelector('#editForm').reset()
 		closeModal()
+		return true
 	}
 	function fillEditSelection(vehicleList) {
 		const selectArr = [
