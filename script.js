@@ -207,13 +207,14 @@
 		const title = document.querySelector('#techtreename').value
 		const description = CKEDITOR.instances.techtreemaindesc.getData()
 		const content = { title, description, vehicleList }
+		const fileName = title.toLowerCase().trim().replaceAll(' ', '_') + '_backup.json'
 		var file = new Blob([JSON.stringify(content)], { type: 'application/json' })
-		if (window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(file, 'WT_TECH_TREE_MAKER_SAVE')
+		if (window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(file, fileName)
 		else {
 			var a = document.createElement('a'),
 				url = URL.createObjectURL(file)
 			a.href = url
-			a.download = 'WT_TECH_TREE_MAKER_SAVE'
+			a.download = fileName
 			document.body.appendChild(a)
 			a.click()
 			setTimeout(function () {
@@ -222,9 +223,10 @@
 			}, 0)
 		}
 	})
-	document.querySelector('#backupUpload').addEventListener('change', (e) => {
-		if (!e.target.files[0]) return
-		e.target.files[0].text().then((result) => {
+	document.querySelector('#loadBackup').addEventListener('click', () => {
+		const file = document.querySelector('#backupUpload').files[0]
+		if (!file) return
+		file.text().then((result) => {
 			try {
 				const loadedData = JSON.parse(result)
 				if (!loadedData.title || !loadedData.description || !loadedData.vehicleList) {
@@ -265,12 +267,13 @@
 		const tree = document.querySelector('#techtree').innerHTML
 		const vehicles = JSON.stringify(vehicleList)
 		const file = new Blob([createHtmlContent(title, description, tree, vehicles)])
-		if (window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(file, 'exported_tech_tree.html')
+		const fileName = title.toLowerCase().trim().replaceAll(' ', '_') + '.html'
+		if (window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(file, fileName)
 		else {
 			let a = document.createElement('a'),
 				url = URL.createObjectURL(file)
 			a.href = url
-			a.download = 'exported_tech_tree.html'
+			a.download = fileName
 			document.body.appendChild(a)
 			a.click()
 			setTimeout(function () {
@@ -842,7 +845,7 @@
 			}
 			targets.push(target)
 			let tr = document.createElement('tr')
-			tr.innerHTML = `<td>${follower.name}</td><td>→</td><td>${target.name}</td><th class="removeConnection">Remove this connection</th>`
+			tr.innerHTML = `<td>${target.name}</td><td>➡️</td><td>${follower.name}</td><th class="removeConnection">Remove this connection</th>`
 			tr.id = follower.id
 			tbody.appendChild(tr)
 		}

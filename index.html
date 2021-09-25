@@ -317,10 +317,13 @@
 					<h2>Delete vehicles</h2>
 				</div>
 				<div class="modal-body">
-					<select id="deleteVehicleSelect"></select>
-					<button id="deleteVehicleButton">Delete vehicle</button>
-					<div id="vehicleDeleteDisplay"></div>
 					<button id="deleteAllButton">CLEAR TECH TREE</button>
+					<br /><br /><br />
+					<div id="deleteSelectDiv">
+						<select id="deleteVehicleSelect"></select>
+						<button id="deleteVehicleButton">Delete vehicle</button>
+					</div>
+					<div id="vehicleDeleteDisplay"></div>
 				</div>
 			</div>
 		</div>
@@ -352,8 +355,17 @@
 					<h2>Download & Upload backup</h2>
 				</div>
 				<div class="modal-body">
-					<button id="backupDownload">Download Tech Tree Data</button>
-					Upload Tech Tree Data: <input id="backupUpload" type="file" accept=".json" />
+					<button id="backupDownload">Download Tech Tree Backup</button><br /><br />
+					Here, you can download backup that you can load back later for further editing. Use it for:
+					<ul>
+						<li>Securing your work from accidental loss while clearing your browser.</li>
+						<li>Moving your work to a different computer.</li>
+						<li>Working on multiple projects.</li>
+					</ul>
+					<br /><br />
+
+					Upload Tech Tree Backup: <input id="backupUpload" type="file" accept=".json" /> <br /><br />
+					<button id="loadBackup">Load the backup</button>
 				</div>
 			</div>
 		</div>
@@ -365,7 +377,11 @@
 					<h2>Export Tech Tree</h2>
 				</div>
 				<div class="modal-body">
-					<button id="exportTechTreeButton">Download the Tech Tree</button>
+					Get your ready tech tree here:
+					<br />
+					<button id="exportTechTreeButton">Export the Tech Tree</button>
+					<br />
+					<br />
 					<a href="https://neocities.org/" target="_blank">Neocities</a> is a great place where you can host your tech tree for free ;)
 				</div>
 			</div>
@@ -397,15 +413,3 @@
 		<script src="script.js"></script>
 	</body>
 </html>
-
-<!--
-<a href="file:///C:/Users/zanju/Desktop/lol/tech_tree/index.html">tree</a>
-<a href="https://www.bcnp-wot.fr/nation/fr/game.html">WOT tree</a>
-<a href="https://www.youtube.com/watch?v=WiPLepeLbz0">sphinx</a>
-<a
-	href="https://forum.warthunder.com/index.php?/topic/492051-need-more-aa-in-tech-tree-non-sam/page/2/"
-	>forum</a
->
-https://docs.google.com/spreadsheets/d/1w2Vnvn-rMRzkqlo8gQYffeUiISRG8ZvWK8Vu89mzXRE/edit#gid=871708433
-https://www.quora.com/Did-Free-France-produce-any-equipment-of-their-own-in-exile
--->
