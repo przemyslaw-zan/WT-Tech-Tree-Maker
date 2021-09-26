@@ -8,11 +8,11 @@ This tool allows creation of tech trees for the game [WarThunder](https://warthu
 
 1. [Working on the tech tree](#working-on-the-tech-tree)
    1. [Adding vehicles](#adding-vehicles)
-   1. [Editing vehicles](#editing-vehicles)
-   1. [Removing vehicles](#removing-vehicles)
-   1. [Vehicle ordering](#vehicle-ordering)
-   1. [Data backup](#data-backup)
-   1. [Exporting the tech tree](#exporting-the-tech-tree)
+   2. [Editing vehicles](#editing-vehicles)
+   3. [Removing vehicles](#removing-vehicles)
+   4. [Vehicle ordering](#vehicle-ordering)
+   5. [Data backup](#data-backup)
+   6. [Exporting the tech tree](#exporting-the-tech-tree)
 2. [Good practices](#good-practices)
 3. [Contributing to the tool](#contributing-to-the-tool)
 
