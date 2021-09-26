@@ -7,10 +7,17 @@ function createHtmlContent(title, description, tree, vehicles) {
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>${title}</title>
+        <meta name="description" content="${description}" />
+        <meta name="generator" content="https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker" />
+        <link rel="icon" href="https://warthunder.com/i/favicons/mstile-144x144.png" />
     </head>
     <body>
+        <span style="position: fixed; right: 10px">
+            Created using
+            <a href="https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker" target="_blank"> WT Tech Tree Maker </a>
+        </span>
         <h1 style="text-align: center; border-bottom: 1px solid black; padding: 5px">${title}</h1>
-        <p>${description}</p>
+        <p style="max-width: 750px">${description}</p>
         <div id="techtree">${tree}</div>
         <div id="vehicleDisplayModal" class="modal">
             <div class="modal-content">
