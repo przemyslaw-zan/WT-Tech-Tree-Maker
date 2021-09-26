@@ -17,7 +17,7 @@ function createHtmlContent(title, description, tree, vehicles) {
             <a href="https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker" target="_blank"> WT Tech Tree Maker </a>
         </span>
         <h1 style="text-align: center; border-bottom: 1px solid black; padding: 5px">${title}</h1>
-        <p style="max-width: 750px">${description}</p>
+        <div style="max-width: 1000px; margin: auto;">${description}</div>
         <div id="techtree">${tree}</div>
         <div id="vehicleDisplayModal" class="modal">
             <div class="modal-content">

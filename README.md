@@ -4,6 +4,8 @@ This tool allows creation of tech trees for the game [WarThunder](https://warthu
 
 ## [You can use the tool here!](https://przemyslaw-zan.github.io/WT-Tech-Tree-Maker/)
 
+### [Example output tree](https://przemyslaw-zan.github.io/WT-Tech-Tree-Maker/example_tree/french_ground_forces_rework.html)
+
 ## Table of Contents
 
 1. [Working on the tech tree](#working-on-the-tech-tree)
