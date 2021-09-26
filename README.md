@@ -2,17 +2,17 @@
 
 This tool allows creation of tech trees for the game [WarThunder](https://warthunder.com/en). Tech trees are used in game to organize vehicles of one or several nations into a progression system. An example of an official tech tree is [USA ground vehicles](https://wiki.warthunder.com/Category:USA_ground_vehicles). Some players of the game like to propose their custom tech trees, that are not in the game yet, and this tool is here to help them.
 
-## [You can use the tool here!]()
+## [You can use the tool here!](https://przemyslaw-zan.github.io/WT-Tech-Tree-Maker/)
 
 ## Table of Contents
 
 1. [Working on the tech tree](#working-on-the-tech-tree)
-   1.1. [Adding vehicles](#adding-vehicles)
-   1.2. [Editing vehicles](#editing-vehicles)
-   1.3. [Removing vehicles](#removing-vehicles)
-   1.4. [Vehicle ordering](#vehicle-ordering)
-   1.5. [Data backup](#data-backup)
-   1.6. [Exporting the tech tree](#exporting-the-tech-tree)
+   1. [Adding vehicles](#adding-vehicles)
+   1. [Editing vehicles](#editing-vehicles)
+   1. [Removing vehicles](#removing-vehicles)
+   1. [Vehicle ordering](#vehicle-ordering)
+   1. [Data backup](#data-backup)
+   1. [Exporting the tech tree](#exporting-the-tech-tree)
 2. [Good practices](#good-practices)
 3. [Contributing to the tool](#contributing-to-the-tool)
 
