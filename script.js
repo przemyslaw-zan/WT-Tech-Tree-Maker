@@ -73,7 +73,7 @@
 	document.querySelector('#vehicletype').addEventListener('change', (e) => {
 		const choice = e.target.value
 		const connection = document.querySelector('#vehicleconnection')
-		if (choice === 'researchable') {
+		if (['researchable', 'reserve'].includes(choice)) {
 			connection.value = 'yes'
 		} else {
 			connection.value = 'no'
@@ -126,7 +126,7 @@
 	document.querySelector('#vehicletypeedit').addEventListener('change', (e) => {
 		const choice = e.target.value
 		const connection = document.querySelector('#vehicleconnectionedit')
-		if (choice === 'researchable') {
+		if (['researchable', 'reserve'].includes(choice)) {
 			connection.value = 'yes'
 		} else {
 			connection.value = 'no'
@@ -349,7 +349,8 @@
 		sortingLoopError = false
 		const sortedVehicles = {}
 		for (let vehicle of vehicleList) {
-			const vehicleRegion = `rank_${vehicle.rank}_branch_${vehicle.type !== 'researchable' ? `premium_${vehicle.branch}` : vehicle.branch}`
+			const branchName = !['researchable', 'reserve'].includes(vehicle.type) ? `premium_${vehicle.branch}` : vehicle.branch
+			const vehicleRegion = `rank_${vehicle.rank}_branch_${branchName}`
 			if (sortedVehicles[vehicleRegion] === undefined) sortedVehicles[vehicleRegion] = []
 			sortedVehicles[vehicleRegion].push(vehicle)
 		}
@@ -628,8 +629,11 @@
 		let div = document.createElement('div')
 		let img = ''
 		if (vehicle.thumbnail !== undefined) img = `<img src="${vehicle.thumbnail}">`
+		let brLabel = ''
+		if (vehicle.type === 'reserve') brLabel = `<i>Reserve</i> (${vehicle.br.toFixed(1)})`
+		else brLabel = vehicle.br.toFixed(1)
 		let branchLine = ''
-		if (vehicle.type === 'researchable') branchLine = `badgeLine_${vehicle.branch}`
+		if (['researchable', 'reserve'].includes(vehicle.type)) branchLine = `badgeLine_${vehicle.branch}`
 		else branchLine = `badgeLine_premium_${vehicle.branch}`
 		div.innerHTML = `<table>
 			<tbody>
@@ -644,7 +648,7 @@
 							connected_${vehicle.connection}"
 						style="position:relative; ${isClickable(vehicle) ? 'cursor:pointer;' : ''}">
 						<span class="vehicleName">${vehicle.name}</span>
-						<b class="vehicleBr">${vehicle.br.toFixed(1)}</b>
+						<b class="vehicleBr">${brLabel}</b>
 						${img}
 					</td>
 				</tr>

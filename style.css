@@ -106,6 +106,7 @@ body {
 }
 
 .type_researchable,
+.type_reserve,
 .type_event {
 	background-color: rgb(46, 66, 80);
 }
