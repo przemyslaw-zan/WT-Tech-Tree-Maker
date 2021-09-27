@@ -53,20 +53,28 @@ You can also use the `CLEAR TECH TREE` button to remove title, description, and 
 
 ### Vehicle ordering
 
-All vehicles are placed in a specific branch and rank. Vehicles which find themselves in the same branch and rank, need to be ordered somehow. By default, they are ordered by the BR value. If that is equal, then vehicles get ordered by the order in which they were added to the tech tree.
+All vehicles are placed in a specific branch and rank. Vehicles in the same branch and rank are ordered by the BR value. If that is equal, then they are ordered by the order in which they were added to the tech tree.
 
-If vehicles are foldered, the same rules apply. Vehicle which is following the folder, is ordered after the last vehicle of the folder, not the first one, eg.:
+If vehicles are foldered, the same rules apply. In the following example, `Vehicle D` which is placed after the folder is considered to be placed after `Vehicle C` (the last vehicle of the folder) and not the `Vehicle A` (the "root" of the folder):
 
 - `Vehicle A [BR 1.0]`
   - `Vehicle B [BR 2.0]`
   - `Vehicle C [BR 3.0]`
 - `Vehicle D [BR 4.0]`
 
-In order to overwrite this ordering, `Follow` value of the vehicle can be used. If You were to give `Vehicle X [BR 2.0]` follow option of `Vehicle Y [BR 3.0]` the resulting ordering would look like that:
+In order to overwrite the default ordering, `Follow` value of the vehicle can be used. If You were to give `Vehicle X [BR 2.0]` follow option of `Vehicle Y [BR 3.0]` the resulting ordering would look like that:
 
 - `Vehicle Y [BR 3.0]`
 - `Vehicle X [BR 2.0]`
 - `Vehicle Z [BR 4.0]`
+
+When applying custom ordering with a folder, keep in mind that **vehicle placed after the folder should follow the last vehicle of the folder, not the "root" of the folder**.
+
+Example: If You want to have `Vehicle γ` foldered with `Vehicle α`, and then `Vehicle β` following after the folder, it is enough to give `Vehicle β` follow option of `Vehicle γ`. That way, `Vehicle γ` will be naturally placed after the `Vehicle α` due to it's higher BR, and `Vehicle β` will be placed after `Vehicle γ`, so after the folder.
+
+- `Vehicle α [BR 2.0]`
+  - `Vehicle γ [BR 4.0]`
+- `Vehicle β [BR 3.0]`
 
 In order to remove custom ordering, you can either edit each individual vehicle, or for convinience, visit the `Vehicle ordering` at the menu. Here, you can see, and remove every custom ordering included in the tech tree. This tab will also ligh up with warning if You accidentally create conficting follows, such as infinite loop of two vehicles following each other, or multiple vehicles following one vehicle.
 
