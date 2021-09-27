@@ -12,7 +12,7 @@ function createHtmlContent(title, description, tree, vehicles) {
         <link rel="icon" href="https://warthunder.com/i/favicons/mstile-144x144.png" />
     </head>
     <body>
-        <span style="position: fixed; right: 10px">
+        <span style="position: absolute; right: 10px">
             Created using
             <a href="https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker" target="_blank"> WT Tech Tree Maker </a>
         </span>
