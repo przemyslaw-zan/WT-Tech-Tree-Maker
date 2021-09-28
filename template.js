@@ -7,9 +7,10 @@ function createHtmlContent(title, description, tree, vehicles) {
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>${title}</title>
-		<meta name="description" content="This tech tree was generated using WT-Tech-Tree-Maker. ${description}" />
+        <meta name="description" content="This tech tree was generated using WT-Tech-Tree-Maker. ${description}" />
         <meta name="generator" content="https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker" />
         <link rel="icon" href="https://warthunder.com/i/favicons/mstile-144x144.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     </head>
     <body>
         <span style="position: absolute; right: 10px; top: 3px">
@@ -17,8 +18,10 @@ function createHtmlContent(title, description, tree, vehicles) {
             <a href="https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker" target="_blank"> WT Tech Tree Maker </a>
         </span>
         <h1 style="text-align: center; border-bottom: 1px solid black; padding: 5px">${title}</h1>
-        <div style="max-width: 1000px; margin: auto;">${description}</div>
-        <div id="techtree">${tree}</div>
+		<div style="max-width: 1000px; margin: auto; padding: 0 3px 0 3px">${description}</div>
+        <div id="techtree_wrapper">
+            <div id="techtree">${tree}</div>
+        </div>
         <div id="vehicleDisplayModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -40,12 +43,32 @@ function createHtmlContent(title, description, tree, vehicles) {
             --tech_tree_bg: rgb(36, 46, 51);
         }
 
+        html,
+        body {
+            margin: 0;
+        }
+
+        .select2-search,
+        .select2-results__option,
+        .select2-container--default .select2-results__option--selected {
+            background-color: var(--tech_tree_bg);
+        }
+
         td {
             border: 1px black solid;
         }
 
         ul {
             padding-left: 17px;
+        }
+
+        #deleteSelectDiv {
+            text-align: center;
+            padding-bottom: 15px;
+        }
+
+        #exportModal .modal-body {
+            text-align: center;
         }
 
         #nameInputDiv {
@@ -124,6 +147,7 @@ function createHtmlContent(title, description, tree, vehicles) {
         }
 
         .type_researchable,
+        .type_reserve,
         .type_event {
             background-color: rgb(46, 66, 80);
         }
@@ -148,6 +172,11 @@ function createHtmlContent(title, description, tree, vehicles) {
         #techtree {
             margin: auto;
             width: fit-content;
+        }
+
+        #techtree_wrapper {
+            width: 100%;
+            overflow: auto;
         }
 
         #techtree img,
@@ -422,7 +451,7 @@ function createHtmlContent(title, description, tree, vehicles) {
             margin: 15% auto;
             /* 15% from the top and centered */
             padding: 20px;
-            width: 80%;
+            width: 100%;
             /* Could be more or less, depending on screen size */
             max-width: 750px;
         }
@@ -469,12 +498,20 @@ function createHtmlContent(title, description, tree, vehicles) {
             padding: 10px;
         }
 
+        #followLoopWarning {
+            display: none;
+        }
+
+        #followLoopWarning b {
+            color: red;
+        }
+
         /* Modal Content */
         .modal-content {
             position: relative;
             margin: auto;
             padding: 0;
-            width: 80%;
+            width: 100%;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             animation-name: animatetop;
             animation-duration: 0.4s;

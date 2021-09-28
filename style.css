@@ -7,6 +7,11 @@
 	--tech_tree_bg: rgb(36, 46, 51);
 }
 
+html,
+body {
+	margin: 0;
+}
+
 .select2-search,
 .select2-results__option,
 .select2-container--default .select2-results__option--selected {
@@ -131,6 +136,11 @@ body {
 #techtree {
 	margin: auto;
 	width: fit-content;
+}
+
+#techtree_wrapper {
+	width: 100%;
+	overflow: auto;
 }
 
 #techtree img,
@@ -405,7 +415,7 @@ nav div {
 	margin: 15% auto;
 	/* 15% from the top and centered */
 	padding: 20px;
-	width: 80%;
+	width: 100%;
 	/* Could be more or less, depending on screen size */
 	max-width: 750px;
 }
@@ -465,7 +475,7 @@ nav div {
 	position: relative;
 	margin: auto;
 	padding: 0;
-	width: 80%;
+	width: 100%;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	animation-name: animatetop;
 	animation-duration: 0.4s;
