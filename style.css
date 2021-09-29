@@ -381,8 +381,12 @@ nav div {
 	top: 0px;
 }
 
-.foldertooltip:hover .foldertooltiptext {
-	visibility: visible;
+.foldertooltip .vehicleBadge {
+	cursor: pointer;
+}
+
+.foldertooltip .foldertooltiptext .vehicleBadge {
+	cursor: default;
 }
 
 /*ENDREGION TOOLTIPS*/

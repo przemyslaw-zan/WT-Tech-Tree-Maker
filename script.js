@@ -286,29 +286,37 @@
 
 	//#region Tech tree listeners
 	document.querySelector('#techtree').addEventListener('click', (e) => {
+		document.querySelectorAll('.foldertooltiptext').forEach((node) => {
+			node.style.visibility = 'hidden'
+		})
 		let element = e.target
 		if (!element.id) element = element.parentNode
 		if (!element.id) return
-		const vehicle = vehicleList.find((item) => {
-			return item.id === element.id
-		})
-		if (!isClickable(vehicle)) return
-		document.querySelector('#modal_title').innerText = vehicle.name
-		if (vehicle.images)
-			$('.galleria')
-				.data('galleria')
-				.load([...vehicle.images])
-		document.querySelector('#modalDesc').innerHTML = vehicle.description
-		const info = document.querySelector('.galleria-info')
-		info.style.width = 'fit-content'
-		info.style.left = 'auto'
-		info.style.bottom = '50px'
-		info.style.top = 'auto'
-		info.style.right = '0px'
-		document.querySelector('.galleria-info-text').style.backgroundColor = 'RGBA(0, 0, 0, 0.85)'
-		document.querySelector('.galleria-info-text').style.padding = '3px'
-		document.querySelector('#vehicleDisplayModal').style.display = 'block'
-		document.querySelector('body').style.overflow = 'hidden'
+		const folderDiv = isFolderRoot(element)
+		if (folderDiv) {
+			folderDiv.style.visibility = 'visible'
+		} else {
+			const vehicle = vehicleList.find((item) => {
+				return item.id === element.id
+			})
+			if (!isClickable(vehicle)) return
+			document.querySelector('#modal_title').innerText = vehicle.name
+			if (vehicle.images)
+				$('.galleria')
+					.data('galleria')
+					.load([...vehicle.images])
+			document.querySelector('#modalDesc').innerHTML = vehicle.description
+			const info = document.querySelector('.galleria-info')
+			info.style.width = 'fit-content'
+			info.style.left = 'auto'
+			info.style.bottom = '50px'
+			info.style.top = 'auto'
+			info.style.right = '0px'
+			document.querySelector('.galleria-info-text').style.backgroundColor = 'RGBA(0, 0, 0, 0.85)'
+			document.querySelector('.galleria-info-text').style.padding = '3px'
+			document.querySelector('#vehicleDisplayModal').style.display = 'block'
+			document.querySelector('body').style.overflow = 'hidden'
+		}
 	})
 	//#endregion Tech tree listeners
 
@@ -680,6 +688,25 @@
 		const images = vehicle.images?.length > 0
 		const description = vehicle.description?.length > 0 && vehicle.description !== descriptionTemplate
 		return description || images
+	}
+	function isFolderRoot(node) {
+		const initialNode = node
+		const nodesWithId = []
+		let output
+		while (!node.classList.contains('foldertooltip')) {
+			node = node.parentNode
+			if (node.classList.contains('branch')) {
+				return false
+			}
+		}
+		output = node.querySelector('.foldertooltiptext')
+		for (const childNode of node.querySelectorAll('*')) {
+			if (childNode.id) nodesWithId.push(childNode)
+		}
+		if (initialNode.isSameNode(nodesWithId[0])) {
+			return output
+		}
+		return false
 	}
 	//#endregion Vehicle badge functions
 

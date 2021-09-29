@@ -10,7 +10,7 @@ function createHtmlContent(title, description, tree, vehicles) {
         <meta name="description" content="This tech tree was generated using WT-Tech-Tree-Maker. ${description}" />
         <meta name="generator" content="https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker" />
         <link rel="icon" href="https://warthunder.com/i/favicons/mstile-144x144.png" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     </head>
     <body>
         <span style="position: absolute; right: 10px; top: 3px">
@@ -18,7 +18,7 @@ function createHtmlContent(title, description, tree, vehicles) {
             <a href="https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker" target="_blank"> WT Tech Tree Maker </a>
         </span>
         <h1 style="text-align: center; border-bottom: 1px solid black; padding: 5px">${title}</h1>
-		<div style="max-width: 1000px; margin: auto; padding: 0 3px 0 3px">${description}</div>
+        <div style="max-width: 1000px; margin: auto; padding: 0 3px 0 3px">${description}</div>
         <div id="techtree_wrapper">
             <div id="techtree">${tree}</div>
         </div>
@@ -417,8 +417,12 @@ function createHtmlContent(title, description, tree, vehicles) {
             top: 0px;
         }
 
-        .foldertooltip:hover .foldertooltiptext {
-            visibility: visible;
+        .foldertooltip .vehicleBadge {
+            cursor: pointer;
+        }
+
+        .foldertooltip .foldertooltiptext .vehicleBadge {
+            cursor: default;
         }
 
         /*ENDREGION TOOLTIPS*/
@@ -553,6 +557,26 @@ function createHtmlContent(title, description, tree, vehicles) {
             return description || images
         }
 
+        function isFolderRoot(node) {
+            const initialNode = node
+            const nodesWithId = []
+            let output
+            while (!node.classList.contains('foldertooltip')) {
+                node = node.parentNode
+                if (node.classList.contains('branch')) {
+                    return false
+                }
+            }
+            output = node.querySelector('.foldertooltiptext')
+            for (const childNode of node.querySelectorAll('*')) {
+                if (childNode.id) nodesWithId.push(childNode)
+            }
+            if (initialNode.isSameNode(nodesWithId[0])) {
+                return output
+            }
+            return false
+        }
+
         function closeModal() {
             document.querySelector('body').style.overflow = 'visible'
             document.querySelectorAll('.modal').forEach((modal) => {
@@ -575,32 +599,39 @@ function createHtmlContent(title, description, tree, vehicles) {
         }
 
         document.querySelector('#techtree').addEventListener('click', (e) => {
+            document.querySelectorAll('.foldertooltiptext').forEach((node) => {
+                node.style.visibility = 'hidden'
+            })
             let element = e.target
             if (!element.id) element = element.parentNode
             if (!element.id) return
-            const vehicle = vehicleList.find((item) => {
-                return item.id === element.id
-            })
-            if (!isClickable(vehicle)) return
-            document.querySelector('#modal_title').innerText = vehicle.name
-            if (vehicle.images)
-                $('.galleria')
-                    .data('galleria')
-                    .load([...vehicle.images])
-            document.querySelector('#modalDesc').innerHTML = vehicle.description
-            const info = document.querySelector('.galleria-info')
-            info.style.width = 'fit-content'
-            info.style.left = 'auto'
-            info.style.bottom = '50px'
-            info.style.top = 'auto'
-            info.style.right = '0px'
-            document.querySelector('.galleria-info-text').style.backgroundColor = 'RGBA(0, 0, 0, 0.85)'
-            document.querySelector('.galleria-info-text').style.padding = '3px'
-            document.querySelector('#vehicleDisplayModal').style.display = 'block'
-            document.querySelector('body').style.overflow = 'hidden'
+            const folderDiv = isFolderRoot(element)
+            if (folderDiv) {
+                folderDiv.style.visibility = 'visible'
+            } else {
+                const vehicle = vehicleList.find((item) => {
+                    return item.id === element.id
+                })
+                if (!isClickable(vehicle)) return
+                document.querySelector('#modal_title').innerText = vehicle.name
+                if (vehicle.images)
+                    $('.galleria')
+                        .data('galleria')
+                        .load([...vehicle.images])
+                document.querySelector('#modalDesc').innerHTML = vehicle.description
+                const info = document.querySelector('.galleria-info')
+                info.style.width = 'fit-content'
+                info.style.left = 'auto'
+                info.style.bottom = '50px'
+                info.style.top = 'auto'
+                info.style.right = '0px'
+                document.querySelector('.galleria-info-text').style.backgroundColor = 'RGBA(0, 0, 0, 0.85)'
+                document.querySelector('.galleria-info-text').style.padding = '3px'
+                document.querySelector('#vehicleDisplayModal').style.display = 'block'
+                document.querySelector('body').style.overflow = 'hidden'
+            }
         })
     </script>
 </html>
-
-    `
+`
 }
