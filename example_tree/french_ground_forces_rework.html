@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>French Ground Forces Rework</title>
-        <meta name="description" content="<h2>I got lazy&nbsp;&macr;\_(ツ)_/&macr;</h2>
+        <meta name="description" content="This tech tree was generated using WT-Tech-Tree-Maker. <h2>I got lazy&nbsp;&macr;\_(ツ)_/&macr;</h2>
 
 <p>Check out <strong>FCM 2C</strong> and <strong>FCM 1A (early)</strong> in rank 1 to see how properly descibed vehicle looks like. Later on, I got somewhat lazy and didn&#39;t make descriptions for all of the vehicles, just links to the forum.</p>
 
@@ -35,14 +35,15 @@
 " />
         <meta name="generator" content="https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker" />
         <link rel="icon" href="https://warthunder.com/i/favicons/mstile-144x144.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     </head>
     <body>
-        <span style="position: fixed; right: 10px">
+        <span style="position: absolute; right: 10px; top: 3px">
             Created using
             <a href="https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker" target="_blank"> WT Tech Tree Maker </a>
         </span>
         <h1 style="text-align: center; border-bottom: 1px solid black; padding: 5px">French Ground Forces Rework</h1>
-        <div style="max-width: 1000px; margin: auto;"><h2>I got lazy&nbsp;&macr;\_(ツ)_/&macr;</h2>
+		<div style="max-width: 1000px; margin: auto; padding: 0 3px 0 3px"><h2>I got lazy&nbsp;&macr;\_(ツ)_/&macr;</h2>
 
 <p>Check out <strong>FCM 2C</strong> and <strong>FCM 1A (early)</strong> in rank 1 to see how properly descibed vehicle looks like. Later on, I got somewhat lazy and didn&#39;t make descriptions for all of the vehicles, just links to the forum.</p>
 
@@ -69,7 +70,8 @@
 
 <p>IMHO this is more sensible vehicle arrangement.&nbsp; Early cavalry tanks (ranks 1-2) such as H.39 and S.35, split from very much different light tanks of later era. (ranks 3-7).&nbsp;Similarly, Heavy tank line ends at AMX 50, and then new line of MBTs with entirely different design philosophy begins after that. I am also aware that at the moment, no tech tree in game has 6 lines. I&#39;ve added 6th one just because i&#39;ve felt like it was distinct from all other ones, but it could easily be included in TD line.</p>
 </div>
-        <div id="techtree"><div class="rank"><div class="rankNumber"><div class="rankNumberText">Rank <b>I</b></div></div><div class="branch"><div><table>
+        <div id="techtree_wrapper">
+            <div id="techtree"><div class="rank"><div class="rankNumber"><div class="rankNumberText">Rank <b>I</b></div></div><div class="branch"><div><table>
 			<tbody>
 				<tr>
 					<td rowspan="3" class="badgeSide"></td>
@@ -2787,6 +2789,7 @@
 				</tr>
 			</tbody>
 		</table></div><div class="fillerDiv badgeLine_premium_1" style="height: 282px;"></div></div><div class="branch"><div class="fillerDiv badgeLine_premium_2" style="height: 376px;"></div></div></div></div>
+        </div>
         <div id="vehicleDisplayModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -2808,12 +2811,32 @@
             --tech_tree_bg: rgb(36, 46, 51);
         }
 
+        html,
+        body {
+            margin: 0;
+        }
+
+        .select2-search,
+        .select2-results__option,
+        .select2-container--default .select2-results__option--selected {
+            background-color: var(--tech_tree_bg);
+        }
+
         td {
             border: 1px black solid;
         }
 
         ul {
             padding-left: 17px;
+        }
+
+        #deleteSelectDiv {
+            text-align: center;
+            padding-bottom: 15px;
+        }
+
+        #exportModal .modal-body {
+            text-align: center;
         }
 
         #nameInputDiv {
@@ -2892,6 +2915,7 @@
         }
 
         .type_researchable,
+        .type_reserve,
         .type_event {
             background-color: rgb(46, 66, 80);
         }
@@ -2916,6 +2940,11 @@
         #techtree {
             margin: auto;
             width: fit-content;
+        }
+
+        #techtree_wrapper {
+            width: 100%;
+            overflow: auto;
         }
 
         #techtree img,
@@ -3190,7 +3219,7 @@
             margin: 15% auto;
             /* 15% from the top and centered */
             padding: 20px;
-            width: 80%;
+            width: 100%;
             /* Could be more or less, depending on screen size */
             max-width: 750px;
         }
@@ -3237,12 +3266,20 @@
             padding: 10px;
         }
 
+        #followLoopWarning {
+            display: none;
+        }
+
+        #followLoopWarning b {
+            color: red;
+        }
+
         /* Modal Content */
         .modal-content {
             position: relative;
             margin: auto;
             padding: 0;
-            width: 80%;
+            width: 100%;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             animation-name: animatetop;
             animation-duration: 0.4s;
