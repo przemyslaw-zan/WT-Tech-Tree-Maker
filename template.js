@@ -367,6 +367,7 @@ function createHtmlContent(title, description, tree, vehicles) {
             -webkit-box-align: center;
                 -ms-flex-align: center;
                     align-items: center;
+            min-width: 1.2rem;
         }
 
         .rankNumberText {
