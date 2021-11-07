@@ -352,6 +352,12 @@
 	})
 	//#endregion Main title & description listeners
 
+	//#region Miscellaneous listeners
+	window.onbeforeunload = () => {
+		return 'Do you really want to leave this page?';
+	};
+	//#endregion Miscellaneous listeners
+
 	//#region Tech tree building functions
 	function organizeTree(vehicleList) {
 		sortingLoopError = false
