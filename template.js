@@ -123,13 +123,20 @@ function createHtmlContent(title, description, tree, vehicles) {
         }
 
         .inputModalFlex {
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
         }
 
         .inputModalFlexChild {
             padding: 3px;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
             width: fit-content;
         }
 
@@ -171,6 +178,8 @@ function createHtmlContent(title, description, tree, vehicles) {
 
         #techtree {
             margin: auto;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
             width: fit-content;
         }
 
@@ -190,6 +199,8 @@ function createHtmlContent(title, description, tree, vehicles) {
 
         #vehicleDeleteDisplay {
             background-color: var(--tech_tree_bg);
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
             width: fit-content;
             margin: 10px;
             margin: auto;
@@ -243,7 +254,11 @@ function createHtmlContent(title, description, tree, vehicles) {
             border-left: 2px solid white;
             border-right: 2px solid white;
             border-bottom: 2px solid white;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
             width: fit-content;
         }
 
@@ -255,7 +270,8 @@ function createHtmlContent(title, description, tree, vehicles) {
             width: 182px;
             display: inline-block;
             vertical-align: top;
-            flex-shrink: 0;
+            -ms-flex-negative: 0;
+                flex-shrink: 0;
         }
 
         .vehicleName {
@@ -283,6 +299,8 @@ function createHtmlContent(title, description, tree, vehicles) {
             text-align: right;
             width: 30px;
             height: 30px;
+            background: -webkit-gradient(linear, left bottom, right top, color-stop(50%, transparent), color-stop(0, #000000)) top right/30px 30px no-repeat, transparent;
+            background: -o-linear-gradient(bottom left, transparent 50%, #000000 0) top right/30px 30px no-repeat, transparent;
             background: linear-gradient(to top right, transparent 50%, #000000 0) top right/30px 30px no-repeat, transparent;
         }
 
@@ -343,23 +361,35 @@ function createHtmlContent(title, description, tree, vehicles) {
 
         .rankNumber {
             border-right: 2px solid white;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
-            align-items: center;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
         }
 
         .rankNumberText {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
+            -webkit-writing-mode: vertical-rl;
+                -ms-writing-mode: tb-rl;
+                    writing-mode: vertical-rl;
+            -webkit-text-orientation: mixed;
+                    text-orientation: mixed;
             padding: 3px;
+            height: -webkit-fit-content;
+            height: -moz-fit-content;
             height: fit-content;
             -webkit-transform: rotate(180deg);
-            transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+                transform: rotate(180deg);
         }
 
         #vehicleimagelist td,
         #vehicleimagelistedit td {
             border: none;
-            transform: translateY(10px);
+            -webkit-transform: translateY(10px);
+                -ms-transform: translateY(10px);
+                    transform: translateY(10px);
         }
 
         #vehicleimagelist input,
@@ -516,12 +546,26 @@ function createHtmlContent(title, description, tree, vehicles) {
             margin: auto;
             padding: 0;
             width: 100%;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            animation-name: animatetop;
-            animation-duration: 0.4s;
+            -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-animation-name: animatetop;
+                    animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+                    animation-duration: 0.4s;
         }
 
         /* Add Animation */
+        @-webkit-keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0;
+            }
+
+            to {
+                top: 0;
+                opacity: 1;
+            }
+        }
         @keyframes animatetop {
             from {
                 top: -300px;
