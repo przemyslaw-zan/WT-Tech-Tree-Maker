@@ -29,6 +29,7 @@
 			<div id="navOrder" style="background-color: #bd8c47">Vehicle ordering</div>
 			<div id="navBackup" style="background-color: #c4713a">Backup</div>
 			<div id="navExport" style="background-color: #b35050">Export tree</div>
+			<div id="navClone" style="background-color: #000000">Clone WT Wiki</div>
 		</nav>
 
 		<div id="addModal" class="modal">
@@ -420,6 +421,70 @@
 					>
 					or message me on <a href="https://www.reddit.com/user/zanju13" target="_blank">Reddit</a> - I would love to see Your creations :)
 				</div>
+			</div>
+		</div>
+
+		<div id="cloneModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<span class="close">&times;</span>
+					<h2>Clone WT Wiki</h2>
+				</div>
+				<div class="modal-body">
+					<h3>Work in progress</h3>
+					This is an experimental function that allows you to clone tech trees from WT's wiki. Some things will not work properly <b>yet</b>:
+					<ul>
+						<li>Connections are not taken into consideration, and all vehicles in the tech tree will be connected, and all vehicles
+							in the premium tab will not</li>
+						<li>Helicopter trees are messed up - this is hard to fix in code, and easy to fix by the user by simply editing vehicles</li>
+					</ul>
+					<hr>
+					This utility allows you to clone tech tree from WT Wiki page. Each vehicle will have:
+					<ul>
+						<li>Name</li>
+						<li>Thumbnail</li>
+						<li>Correct Branch/Rank Placement</li>
+						<li>Type (researchable / premium / squadron / event)</li>
+						<li>Folder (if it has one in the tree)</li>
+					</ul>
+					Tech tree page on the wiki sadly does not display some vehicle data, and this utility will not provide you with:
+					<ul>
+						<li>Battle Rating</li>
+						<li>Class</li>
+					</ul>
+
+					<h3>Step by step guide</h3>
+
+					<ol>
+						<li>Click here to → <button id="copyCloneUtility">Copy the utility</button></li>
+						<li>Visit your desired tech tree (eg.
+							<a href="https://wiki.warthunder.com/Category:Germany_ground_vehicles" target="_blank">
+								Germany ground vehicles)</a></li>
+						<li>Open the console
+							<ul>
+								<li><b style="background-color: lightgray; color: black;">F12</b> on most browsers <i>or</i></li>
+								<li><b style="background-color: lightgray; color: black;">ctrl + shift + c</b> on Chrome <i>or</i></li>
+								<li><b style="background-color: lightgray; color: black;">ctrl + shift + i</b> on Firefox</li>
+							</ul>
+						</li>
+						<li>Console is usually represented by
+							<b style="background-color: lightgray; color: black;">></b> or
+							<b style="background-color: lightgray; color: black;">>></b> symbols.
+							You can type there freely and execute commands by pressing 
+							<b style="background-color: lightgray; color: black;">enter</b>
+							- <i>do not worry</i>, anything you might break here will go back to normal as soon as
+							you refresh the page you're on!</li>
+						<li>Paste the utility into the console
+							<ul>
+								<li><b style="background-color: lightgray; color: black;">ctrl + v</b> <i>or</i></li>
+								<li><b style="background-color: lightgray; color: black;">right click + paste</b></li>
+							</ul>
+						</li>
+						<li>Press <b style="background-color: lightgray; color: black;">enter</b> to run the utility</li>
+						<li>This should download a backup file on your computer that you can upload to the tech tree maker!</li>
+					</ol>
+
+					</div>
 			</div>
 		</div>
 

@@ -127,6 +127,11 @@
 		document.querySelector( '#exportModal' ).style.display = 'block';
 		document.querySelector( 'body' ).style.overflow = 'hidden';
 	} );
+	document.querySelector( '#navClone' ).addEventListener( 'click', () => {
+		closeModal();
+		document.querySelector( '#cloneModal' ).style.display = 'block';
+		document.querySelector( 'body' ).style.overflow = 'hidden';
+	} );
 	// #endregion Nav menu listeners
 
 	// #region General modal listeners
@@ -379,6 +384,117 @@
 		}
 	} );
 	// #endregion Export modal listeners
+
+	// #region Clone modal listeners
+	document.querySelector( '#copyCloneUtility' ).addEventListener( 'click', () => {
+		const cloneUtility = `
+		resBranches = Number( document.querySelectorAll( '.tree th' )[ 1 ].getAttribute( 'colspan' ) || 0 );
+		i = 0;
+		vehicleList = [ ...document.querySelectorAll( '.tree-item' ) ].map( node => {
+			const vehicle = {};
+		
+			i++;
+			vehicle.id = 'v' + i;
+		
+			vehicle.name = node.innerText;
+		
+			vehicle.thumbnail = node.querySelector( '.tree-item-img img' ).src;
+		
+			vehicle.type = node.querySelector( '.tree-item-background img' ).src.match( /_([^\\/]+)\\.png/ )[ 1 ];
+		
+			switch ( vehicle.type ) {
+			case 'own':
+				vehicle.type = 'researchable';
+				break;
+			case 'prem':
+				vehicle.type = 'premium';
+				break;
+			case 'squad':
+				vehicle.type = 'squadron';
+			}
+		
+			const parentNode = node.parentNode;
+			if ( parentNode.classList.contains( 'tree-group-collapse' ) ) {
+				if ( [ ...parentNode.querySelectorAll( '.tree-item' ) ][ 0 ].innerText === vehicle.name ) {
+					vehicle.connection = 'first';
+				} else {
+					vehicle.connection = 'folder';
+				}
+			}
+		
+			while ( node.tagName !== 'TD' ) {
+				node = node.parentNode;
+			}
+			node = node.parentNode;
+		
+			vehicle.branch = [ ...node.querySelectorAll( 'td' ) ].findIndex( td => {
+				const vehiclesInBranch = [ ...td.querySelectorAll( '.tree-item' ) ].map( vehicle => vehicle.innerText );
+				return vehiclesInBranch.includes( vehicle.name );
+			} ) + 1;
+		
+			if ( vehicle.branch > resBranches ) {
+				vehicle.branch = vehicle.branch - resBranches;
+				if ( vehicle.type === 'researchable' ) {
+					vehicle.type = 'event';
+				}
+			}
+		
+			node = node.parentNode;
+		
+			vehicle.rank = [ ...node.querySelectorAll( 'tr' ) ].findIndex( tr => {
+				const vehiclesInRank = [ ...tr.querySelectorAll( '.tree-item' ) ].map( vehicle => vehicle.innerText );
+				return vehiclesInRank.includes( vehicle.name );
+			} );
+		
+			vehicle.br = 0;
+		
+			if ( vehicle.connection !== 'folder' ) {
+				vehicle.connection = 'yes';
+			}
+			if ( vehicle.type !== 'researchable' ) {
+				vehicle.connection = 'no';
+			}
+			vehicle.name = vehicle.name.trim().replace( /\\s/g, '\\u0020' )
+				.replace( /[^\\x00-\\xFF]/g, '\\u002a' );
+		
+			return vehicle;
+		} );
+		title = document.querySelector( '#firstHeading' ).innerText;
+		description = 'This tech tree was cloned from the WT wiki on ' + new Date();
+		
+		content = {
+			title,
+			description,
+			vehicleList
+		};
+		fileName = title.toLowerCase().trim()
+			.replaceAll( ' ', '_' ) + '_backup.json';
+		file = new Blob( [ JSON.stringify( content ) ], {
+			type: 'application/json'
+		} );
+		if ( window.navigator.msSaveOrOpenBlob ) window.navigator.msSaveOrOpenBlob( file, fileName );
+		else {
+			var a = document.createElement( 'a' ),
+				url = URL.createObjectURL( file );
+			a.href = url;
+			a.download = fileName;
+			document.body.appendChild( a );
+			a.click();
+			setTimeout( function () {
+				document.body.removeChild( a );
+				window.URL.revokeObjectURL( url );
+			}, 0 );
+		}
+		`;
+		navigator.clipboard.writeText( cloneUtility )
+			.then( () => {
+				alert( 'Successfully copied the utility!' );
+			} )
+			.catch( err => {
+				alert( 'Error during copying: ', err );
+			} );
+	} );
+	// #endregion Clone modal listeners
 
 	// #region Tech tree listeners
 	document.querySelector( '#techtree' ).addEventListener( 'click', ( e ) => {
