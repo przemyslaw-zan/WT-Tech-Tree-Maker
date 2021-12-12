@@ -100,6 +100,29 @@ function createHtmlContent ( title, description, tree, vehicles ) {
             cursor: pointer;
         }
 
+        #vehicleclassicons,
+        #vehicleclassiconsedit {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: space-evenly;
+                -ms-flex-pack: space-evenly;
+                    justify-content: space-evenly;
+            padding: 15px;
+        }
+
+        #vehicleclassicons svg,
+        #vehicleclassiconsedit svg {
+            padding: 5px;
+            border-bottom: 4px transparent solid;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .classIconContainer input:checked ~ svg {
+            border-color: green !important;
+        }
+
         #addButton,
         #editButton {
             display: block;
@@ -311,7 +334,14 @@ function createHtmlContent ( title, description, tree, vehicles ) {
             height: 50px;
             border: 1px black solid !important;
         }
-
+        
+        .vehicleBadge svg {
+            position: absolute;
+            bottom: 19px;
+            right: 3px;
+            z-index: 1;
+        }
+        
         /*.fillerDiv {}*/
 
         #orderModal table {
