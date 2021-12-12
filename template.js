@@ -462,6 +462,10 @@ function createHtmlContent ( title, description, tree, vehicles ) {
             visibility: visible;
         }
 
+        .tooltiptext {
+            top: 30px
+        }
+        
         .foldertooltip {
             margin-bottom: -4px;
             position: relative;
