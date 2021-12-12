@@ -4,6 +4,94 @@
 	const vehicleList = [];
 	const descriptionTemplate =
 		'<h3><em>Year:</em> <strong>XXXX</strong>&nbsp;<em>Development stage:</em>&nbsp;<strong>X</strong></h3>\n\n<p>Historical description...</p>\n\n<h3><em>Primary weapon:</em> <strong>X</strong></h3>\n\n<p>Primary weapon description...</p>\n\n<h3><em>Secondary weapon:</em> <strong>X</strong></h3>\n\n<p>Secondary weapon description...</p>\n\n<h3><em>Other info:</em></h3>\n\n<p>Crew, armor, mobility etc...</p>\n\n<h3><em>Proposed BR:</em> <strong>X.X</strong></h3>\n\n<p>Justification for Battle Rating placement...</p>\n\n<p><em>Links:</em></p>\n\n<ol>\n\t<li>Source 1...</li>\n\t<li>Source 2...</li>\n\t<li>WT forum discussion on the vehicle...</li>\n</ol>\n';
+	const classIcons = [
+		{
+			id: 'none',
+			name: 'None',
+			shapes: [
+				{ type: 'line', 'stroke-width': '2', y2: '14', x2: '17', y1: '1', x1: '4', stroke: '#ff0000' },
+				{ type: 'line', 'stroke-width': '2', y2: '14', x2: '4', y1: '1', x1: '17', stroke: '#ff0000' }
+			]
+		},
+		{
+			id: 'lt',
+			name: 'Light Tank',
+			shapes: [ { type: 'rect', height: '9', width: '21', y: '3', x: '0', fill: '#ffeeee' } ]
+		},
+		{
+			id: 'mt',
+			name: 'Medium Tank',
+			shapes: [
+				{ type: 'rect', height: '9', width: '21', y: '3', x: '0', fill: '#ffaaaa' },
+				{ type: 'rect', height: '4', width: '6', y: '11', x: '0', fill: '#ffaaaa' },
+				{ type: 'rect', height: '4', width: '6', y: '11', x: '15', fill: '#ffaaaa' }
+			]
+		},
+		{
+			id: 'ht',
+			name: 'Heavy Tank',
+			shapes: [
+				{ type: 'rect', height: '9', width: '21', y: '3', x: '0', fill: '#ff6666' },
+				{ type: 'rect', height: '4', width: '6', y: '11', x: '0', fill: '#ff6666' },
+				{ type: 'rect', height: '4', width: '6', y: '11', x: '15', fill: '#ff6666' },
+				{ type: 'rect', height: '4', width: '7', y: '0', x: '7', fill: '#ff6666' }
+			]
+		},
+		{
+			id: 'td',
+			name: 'Tank Destroyer',
+			shapes: [
+				{ type: 'rect', height: '5', width: '21', y: '10', x: '0', fill: '#bde9b5' },
+				{ type: 'line', y2: '10', x2: '0', y1: '0', x1: '21', 'stroke-width': '3', stroke: '#bde9b5' }
+			]
+		},
+		{
+			id: 'spaa',
+			name: 'Self Propelled Anti-Air',
+			shapes: [
+				{ type: 'rect', height: '5', width: '21', y: '10', x: '0', fill: '#c6a0ff' },
+				{ type: 'rect', height: '11', width: '4', y: '0', x: '4', fill: '#c6a0ff' },
+				{ type: 'rect', height: '11', width: '4', y: '0', x: '13', fill: '#c6a0ff' }
+			]
+		},
+		{
+			id: 'fighter',
+			name: 'Fighter',
+			shapes: [
+				{ type: 'path', d: 'm0,7.5l10.5,-7.5l10.5,7.5l-10.5,7.5l-10.5,-7.5z', fill: '#ffac6f' }
+			]
+		},
+		{
+			id: 'attacker',
+			name: 'Attacker',
+			shapes: [
+				{ type: 'path', d: 'm0,7.5l10.5,-5l10.5,5l-10.5,5l-10.5,-5z', fill: '#bde9b5' }
+			]
+		},
+		{
+			id: 'bomber',
+			name: 'Bomber',
+			shapes: [
+				{ type: 'rect', height: '7.5', width: '21', y: '0', x: '0', fill: '#a3b1ff' },
+				{ type: 'path', d: 'm0,7.5l10.5,-7.5l10.5,7.5l-10.5,7.5l-10.5,-7.5z', fill: '#a3b1ff' }
+			]
+		},
+		{
+			id: 'ahel',
+			name: 'Attack Helicopter',
+			shapes: [
+				{ type: 'path', d: 'm0,7.5l10.5,-5l10.5,5l-10.5,5l-10.5,-5z', fill: '#f2f266' }
+			]
+		},
+		{
+			id: 'uhel',
+			name: 'Utility Helicopter',
+			shapes: [
+				{ type: 'rect', height: '7.5', width: '21', y: '0', x: '0', fill: '#9bf266' },
+				{ type: 'path', d: 'm0,7.5l10.5,-7.5l10.5,7.5l-10.5,7.5l-10.5,-7.5z', fill: '#9bf266' }
+			]
+		}
+	];
 	let sortingLoopError = false;
 
 	init();
@@ -117,6 +205,11 @@
 				const desc = image.description ? image.description : '';
 				list.appendChild( createImageListItem( url, desc ) );
 			}
+		}
+		if ( vehicle.classIcon ) {
+			document.querySelector( `#${ vehicle.classIcon }edit` ).click();
+		} else {
+			document.querySelector( '#noneedit' ).click();
 		}
 	} );
 	document.querySelector( '#vehicleimagelisteditadd' ).addEventListener( 'click', ( e ) => {
@@ -646,6 +739,10 @@
 		const div = document.createElement( 'div' );
 		let img = '';
 		if ( vehicle.thumbnail !== undefined ) img = `<img src="${ vehicle.thumbnail }">`;
+		let svg = '';
+		if ( vehicle.classIcon ) {
+			svg = createSvg( classIcons.find( classIcon => classIcon.id === vehicle.classIcon ) );
+		}
 		let brLabel = '';
 		if ( vehicle.type === 'reserve' ) brLabel = `<i>Reserve</i> (${ vehicle.br.toFixed( 1 ) })`;
 		else brLabel = vehicle.br.toFixed( 1 );
@@ -667,6 +764,7 @@ style="position:relative; ${ isClickable( vehicle ) ? 'cursor:pointer;' : '' }">
 <span class="vehicleName">${ vehicle.name }</span>
 <b class="vehicleBr">${ brLabel }</b>
 ${ img }
+${ svg }
 </td>
 </tr>
 <tr>
@@ -716,6 +814,19 @@ ${ img }
 		}
 		return false;
 	}
+	function createSvg ( icon ) {
+		const shapes = icon.shapes.map( shape => {
+			const shapesSvg = [];
+			for ( const property in shape ) {
+				if ( property === 'type' ) {
+					continue;
+				}
+				shapesSvg.push( `${ property }="${ shape[ property ] }"` );
+			}
+			return `<${ shape.type } ${ shapesSvg.join( ' ' ) }/>`;
+		} ).join();
+		return `<svg width="21" height="15" xmlns="http://www.w3.org/2000/svg"><g>${ shapes }</g></svg>`;
+	}
 	// #endregion Vehicle badge functions
 
 	// #region Miscellaneous menu functions
@@ -742,6 +853,10 @@ ${ img }
 			window.alert( 'Branch has to be a natural number between 1 and 9!' );
 			return false;
 		}
+		let classIcon = document.querySelector( 'input[name="classIcons"]:checked' ).value;
+		if ( classIcon === 'none' ) {
+			classIcon = undefined;
+		}
 		const follow = document.querySelector( '#vehiclefollowedit' ).value;
 		const description = CKEDITOR.instances.vehicledescription.getData();
 		const id = 'v' + Date.now();
@@ -755,6 +870,7 @@ ${ img }
 				const description = item.querySelectorAll( 'input' )[ 1 ].value.trim();
 				if ( image ) images.push( { image, description } );
 			} );
+
 		const vehicle = {
 			name,
 			rank,
@@ -762,6 +878,7 @@ ${ img }
 			type,
 			connection,
 			branch,
+			classIcon,
 			follow,
 			description,
 			id,
@@ -770,6 +887,7 @@ ${ img }
 		};
 		vehicleList.push( vehicle );
 		document.querySelector( '#newForm' ).reset();
+		document.querySelector( '#none' ).checked = true;
 		CKEDITOR.instances.vehicledescription.setData( descriptionTemplate );
 		closeModal();
 		return true;
@@ -797,6 +915,10 @@ ${ img }
 			window.alert( 'Branch has to be a natural number between 1 and 9!' );
 			return false;
 		}
+		let classIcon = document.querySelector( 'input[name="classIconsedit"]:checked' ).value;
+		if ( classIcon === 'none' ) {
+			classIcon = undefined;
+		}
 		const follow = document.querySelector( '#vehiclefollowedit' ).value;
 		const description = CKEDITOR.instances.vehicledescriptionedit.getData();
 		CKEDITOR.instances.vehicledescriptionedit.setData( '' );
@@ -811,6 +933,7 @@ ${ img }
 				const description = item.querySelectorAll( 'input' )[ 1 ].value.trim();
 				if ( image ) images.push( { image, description } );
 			} );
+
 		const vehicle = {
 			name,
 			rank,
@@ -818,6 +941,7 @@ ${ img }
 			type,
 			connection,
 			branch,
+			classIcon,
 			follow,
 			description,
 			id,
@@ -830,6 +954,7 @@ ${ img }
 			}
 		} );
 		document.querySelector( '#editForm' ).reset();
+		document.querySelector( '#noneedit' ).checked = true;
 		closeModal();
 		return true;
 	}
@@ -1025,6 +1150,42 @@ ${ img }
 			.destroy();
 		Galleria.run( '.galleria' );
 	}
+	function fillClassSelection ( edit ) {
+		const targetHtml = document.querySelector( edit ? '#vehicleclassiconsedit' : '#vehicleclassicons' );
+		for ( const classIcon of classIcons ) {
+			const div = document.createElement( 'div' );
+			div.classList.add( 'tooltip' );
+
+			const span = document.createElement( 'span' );
+			span.classList.add( 'tooltiptext' );
+			span.innerText = classIcon.name.replace( /\s/g, '\u00A0' ).replace( /-/g, '\u2011' );
+			span.style.width = 'fit-content';
+			span.style.maxWidth = '999px';
+			span.style.padding = '3px';
+
+			const label = document.createElement( 'label' );
+			label.htmlFor = classIcon.id + ( edit ? 'edit' : '' );
+			label.classList.add( 'classIconContainer' );
+
+			const input = document.createElement( 'input' );
+			input.type = 'radio';
+			input.id = classIcon.id + ( edit ? 'edit' : '' );
+			input.name = 'classIcons' + ( edit ? 'edit' : '' );
+			input.value = classIcon.id;
+			input.style.display = 'none';
+			if ( input.id === 'none' ) {
+				input.checked = true;
+			}
+
+			label.appendChild( input );
+			label.innerHTML += createSvg( classIcon );
+			div.appendChild( label );
+			div.appendChild( span );
+			targetHtml.appendChild( div );
+
+			document.querySelector( `#none${ edit ? 'edit' : '' }` ).click();
+		}
+	}
 	function init () {
 		// Modal slideshow initialization
 		Galleria.loadTheme( 'https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/themes/classic/galleria.classic.min.js' );
@@ -1033,7 +1194,7 @@ ${ img }
 			_toggleInfo: false
 		} );
 
-		// Enabling advandced selection
+		// Enabling advanced selection
 		$( '#editionSelect' ).select2( { width: '15em' } );
 		$( '#vehiclefollow' ).select2( { width: '15em' } );
 		$( '#vehiclefollowedit' ).select2( { width: '15em' } );
@@ -1046,6 +1207,10 @@ ${ img }
 		CKEDITOR.instances.vehicledescription.setData( descriptionTemplate );
 		CKEDITOR.replace( 'techtreemaindesc' );
 		CKEDITOR.config.uiColor = '#A4D0E6';
+
+		// Adding class icon selection
+		fillClassSelection( false );
+		fillClassSelection( true );
 
 		// Loading save from local storage
 		const save = localStorage.getItem( 'save' );

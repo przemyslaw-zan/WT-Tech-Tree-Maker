@@ -67,6 +67,25 @@ blockquote {
 	cursor: pointer;
 }
 
+#vehicleclassicons,
+#vehicleclassiconsedit {
+	display: flex;
+	justify-content: space-evenly;
+	padding: 15px;
+}
+
+#vehicleclassicons svg,
+#vehicleclassiconsedit svg {
+	padding: 5px;
+	border-bottom: 4px transparent solid;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.classIconContainer input:checked ~ svg {
+	border-color: green !important;
+}
+
 #addButton,
 #editButton {
 	display: block;
@@ -279,6 +298,13 @@ a {
 	border: 1px black solid !important;
 }
 
+.vehicleBadge svg {
+	position: absolute;
+	bottom: 19px;
+	right: 3px;
+	z-index: 1;
+}
+
 /*.fillerDiv {}*/
 
 #orderModal table {
@@ -397,6 +423,10 @@ nav div {
 
 .tooltip:hover .tooltiptext {
 	visibility: visible;
+}
+
+.tooltiptext {
+	top: 30px
 }
 
 .foldertooltip {
