@@ -117,6 +117,8 @@ function createHtmlContent ( title, description, tree, vehicles ) {
             border-bottom: 4px transparent solid;
             border-radius: 5px;
             cursor: pointer;
+            -webkit-filter: drop-shadow( 0px 0px 5px rgb(0, 0, 0));
+                    filter: drop-shadow( 0px 0px 5px rgb(0, 0, 0));
         }
 
         .classIconContainer input:checked ~ svg {
@@ -324,8 +326,8 @@ function createHtmlContent ( title, description, tree, vehicles ) {
             text-align: right;
             width: 30px;
             height: 30px;
-            background: -webkit-gradient(linear, left bottom, right top, color-stop(50%, transparent), color-stop(0, #000000)) top right/30px 30px no-repeat, transparent;
             background: -o-linear-gradient(bottom left, transparent 50%, #000000 0) top right/30px 30px no-repeat, transparent;
+            background: -webkit-gradient(linear, left bottom, right top, color-stop(50%, transparent), color-stop(0, #000000)) top right/30px 30px no-repeat, transparent;
             background: linear-gradient(to top right, transparent 50%, #000000 0) top right/30px 30px no-repeat, transparent;
         }
 
@@ -334,14 +336,16 @@ function createHtmlContent ( title, description, tree, vehicles ) {
             height: 50px;
             border: 1px black solid !important;
         }
-        
+
         .vehicleBadge svg {
             position: absolute;
             bottom: 19px;
             right: 3px;
             z-index: 1;
+            -webkit-filter: drop-shadow( 0px 0px 5px rgb(0, 0, 0));
+                    filter: drop-shadow( 0px 0px 5px rgb(0, 0, 0));
         }
-        
+
         /*.fillerDiv {}*/
 
         #orderModal table {
