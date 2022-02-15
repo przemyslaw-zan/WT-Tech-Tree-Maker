@@ -73,8 +73,8 @@ blockquote {
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-pack: space-evenly;
-	    -ms-flex-pack: space-evenly;
-	        justify-content: space-evenly;
+	-ms-flex-pack: space-evenly;
+	justify-content: space-evenly;
 	padding: 15px;
 }
 
@@ -84,11 +84,11 @@ blockquote {
 	border-bottom: 4px transparent solid;
 	border-radius: 5px;
 	cursor: pointer;
-	-webkit-filter: drop-shadow( 0px 0px 5px rgb(0, 0, 0));
-	        filter: drop-shadow( 0px 0px 5px rgb(0, 0, 0));
+	-webkit-filter: drop-shadow(0px 0px 5px rgb(0, 0, 0));
+	filter: drop-shadow(0px 0px 5px rgb(0, 0, 0));
 }
 
-.classIconContainer input:checked ~ svg {
+.classIconContainer input:checked~svg {
 	border-color: green !important;
 }
 
@@ -121,10 +121,10 @@ blockquote {
 	display: -ms-flexbox;
 	display: flex;
 	-ms-flex-wrap: wrap;
-	    flex-wrap: wrap;
+	flex-wrap: wrap;
 	-webkit-box-pack: center;
-	    -ms-flex-pack: center;
-	        justify-content: center;
+	-ms-flex-pack: center;
+	justify-content: center;
 }
 
 .inputModalFlexChild {
@@ -265,7 +265,7 @@ a {
 	display: inline-block;
 	vertical-align: top;
 	-ms-flex-negative: 0;
-	    flex-shrink: 0;
+	flex-shrink: 0;
 }
 
 .vehicleName {
@@ -309,8 +309,8 @@ a {
 	bottom: 19px;
 	right: 3px;
 	z-index: 1;
-	-webkit-filter: drop-shadow( 0px 0px 5px rgb(0, 0, 0));
-	        filter: drop-shadow( 0px 0px 5px rgb(0, 0, 0));
+	-webkit-filter: drop-shadow(0px 0px 5px rgb(0, 0, 0));
+	filter: drop-shadow(0px 0px 5px rgb(0, 0, 0));
 }
 
 /*.fillerDiv {}*/
@@ -368,32 +368,32 @@ nav div {
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-align: center;
-	    -ms-flex-align: center;
-	        align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
 	min-width: 1.2rem;
 }
 
 .rankNumberText {
 	-webkit-writing-mode: vertical-rl;
-	    -ms-writing-mode: tb-rl;
-	        writing-mode: vertical-rl;
+	-ms-writing-mode: tb-rl;
+	writing-mode: vertical-rl;
 	-webkit-text-orientation: mixed;
-	        text-orientation: mixed;
+	text-orientation: mixed;
 	padding: 3px;
 	height: -webkit-fit-content;
 	height: -moz-fit-content;
 	height: fit-content;
 	-webkit-transform: rotate(180deg);
 	-ms-transform: rotate(180deg);
-	    transform: rotate(180deg);
+	transform: rotate(180deg);
 }
 
 #vehicleimagelist td,
 #vehicleimagelistedit td {
 	border: none;
 	-webkit-transform: translateY(10px);
-	    -ms-transform: translateY(10px);
-	        transform: translateY(10px);
+	-ms-transform: translateY(10px);
+	transform: translateY(10px);
 }
 
 #vehicleimagelist input,
@@ -555,11 +555,11 @@ nav div {
 	padding: 0;
 	width: 100%;
 	-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	-webkit-animation-name: animatetop;
-	        animation-name: animatetop;
+	animation-name: animatetop;
 	-webkit-animation-duration: 0.4s;
-	        animation-duration: 0.4s;
+	animation-duration: 0.4s;
 }
 
 /* Add Animation */
@@ -574,6 +574,7 @@ nav div {
 		opacity: 1;
 	}
 }
+
 @keyframes animatetop {
 	from {
 		top: -300px;
