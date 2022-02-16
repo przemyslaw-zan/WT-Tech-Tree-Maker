@@ -337,13 +337,17 @@ nav {
 }
 
 nav div {
-	background-color: cadetblue;
+	background-color: rgb(5, 35, 36);
 	padding: 3px;
 	border-radius: 0 5px 5px 0;
 	border: 1px solid black;
 	border-left: none;
 	cursor: pointer;
 	text-align: center;
+}
+
+nav div:nth-child(odd) {
+	background-color: rgb(38, 74, 75);
 }
 
 .lineDiv {

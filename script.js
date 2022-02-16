@@ -156,6 +156,7 @@
 		}
 	];
 	let sortingLoopError = false;
+	let menuVisible = true;
 
 	init();
 
@@ -194,6 +195,27 @@
 		closeModal();
 		document.querySelector( '#cloneModal' ).style.display = 'block';
 		document.querySelector( 'body' ).style.overflow = 'hidden';
+	} );
+	document.querySelector( '#navHide' ).addEventListener( 'click', ev => {
+		const navTabs = [
+			'#navAdd',
+			'#navEdit',
+			'#navDel',
+			'#navOrder',
+			'#navBackup',
+			'#navExport',
+			'#navClone'
+		];
+
+		if ( menuVisible ) {
+			menuVisible = false;
+			ev.target.innerText = 'Show Menu';
+			navTabs.forEach( tab => document.querySelector( tab ).style.display = 'none' );
+		} else {
+			menuVisible = true;
+			ev.target.innerText = 'Hide Menu';
+			navTabs.forEach( tab => document.querySelector( tab ).style.display = 'block' );
+		}
 	} );
 	// #endregion Nav menu listeners
 
