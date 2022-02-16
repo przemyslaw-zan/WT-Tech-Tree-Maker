@@ -587,8 +587,12 @@
 			node.style.visibility = 'hidden';
 		} );
 		let element = e.target;
-		if ( !element.id ) element = element.parentNode;
-		if ( !element.id ) return;
+
+		while ( !/^v\d+$/.test( element.id ) ) {
+			if ( element.id === 'techtree' ) return;
+			element = element.parentNode;
+		}
+
 		const folderDiv = isFolderRoot( element );
 		if ( folderDiv ) {
 			folderDiv.style.visibility = 'visible';
@@ -744,12 +748,18 @@
 		const ranks = [];
 		const branches = [];
 		for ( const region in organizedVehicles ) {
-			const rank = region.slice( 5, 6 );
+			const rank = Number( region.match( /_(\d+)_/ )[ 1 ] );
 			if ( !ranks.includes( rank ) ) ranks.push( rank );
-			const branch = region.slice( 14 );
+			const branch = region.match( /(?<=branch_).+$/gm )[ 0 ];
 			if ( !branches.includes( branch ) ) branches.push( branch );
 		}
-		ranks.sort();
+		const topRank = Math.max( ...ranks );
+		for ( let i = 1; i < topRank; i++ ) {
+			if ( !ranks.includes( i ) ) {
+				ranks.push( i );
+			}
+		}
+		ranks.sort( ( a, b ) => Number( a ) - Number( b ) );
 		branches.sort();
 		const techtree = document.querySelector( '#techtree' );
 		techtree.innerHTML = '';
@@ -1038,8 +1048,8 @@ ${ svg }
 			return false;
 		}
 		const rank = Number( document.querySelector( '#vehiclerank' ).value );
-		if ( !/^[1-9]$/.test( rank.toString() ) ) {
-			window.alert( 'Rank has to be a natural number between 1 and 9!' );
+		if ( !/^[0-9]{1,2}$/.test( rank.toString() ) || rank === 0 ) {
+			window.alert( 'Rank has to be a natural number between 1 and 99!' );
 			return false;
 		}
 		const br = Number( document.querySelector( '#vehiclebr' ).value );
@@ -1100,8 +1110,8 @@ ${ svg }
 			return false;
 		}
 		const rank = Number( document.querySelector( '#vehiclerankedit' ).value );
-		if ( !/^[1-9]$/.test( rank.toString() ) ) {
-			window.alert( 'Rank has to be a natural number between 1 and 9!' );
+		if ( !/^[0-9]{1,2}$/.test( rank.toString() ) || rank === 0 ) {
+			window.alert( 'Rank has to be a natural number between 1 and 99!' );
 			return false;
 		}
 		const br = Number( document.querySelector( '#vehiclebredit' ).value );

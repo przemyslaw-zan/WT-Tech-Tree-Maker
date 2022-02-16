@@ -70,7 +70,6 @@
 		"prefer-const": "error",
 		"spaced-comment": "error",
 		"strict": "error",
-		"brace-style": "error",
 		"comma-spacing": "error",
 		"comma-style": "error",
 		"computed-property-spacing": [
