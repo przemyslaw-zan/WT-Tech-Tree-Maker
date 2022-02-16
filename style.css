@@ -72,9 +72,9 @@ blockquote {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
-	-webkit-box-pack: space-evenly;
-	-ms-flex-pack: space-evenly;
-	justify-content: space-evenly;
+	-webkit-box-pack: space-between;
+	-ms-flex-pack: space-between;
+	justify-content: space-between;
 	padding: 15px;
 }
 

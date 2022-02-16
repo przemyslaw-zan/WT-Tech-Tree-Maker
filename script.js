@@ -90,6 +90,69 @@
 				{ type: 'rect', height: '7.5', width: '21', y: '0', x: '0', fill: '#9bf266' },
 				{ type: 'path', d: 'm0,7.5l10.5,-7.5l10.5,7.5l-10.5,7.5l-10.5,-7.5z', fill: '#9bf266' }
 			]
+		},
+		{
+			id: 'tboat',
+			name: 'Torpedo Boat',
+			shapes: [
+				{ type: 'path', 'stroke-width': '2', d: 'M20 1L.75 7 20 13z', stroke: '#01d1de', fill: 'none' }
+			]
+		},
+		{
+			id: 'gboat',
+			name: 'Gun Boat',
+			shapes: [
+				{ type: 'path', 'stroke-width': '2', d: 'M20 1L.75 7 20 13z', stroke: '#a3b1ff', fill: '#a3b1ff' }
+			]
+		},
+		{
+			id: 'barge',
+			name: 'Barge',
+			shapes: [
+				{ type: 'path', 'stroke-width': '2', d: 'M1 1h19v12H1z', stroke: '#f8cdae', fill: 'none' }
+			]
+		},
+		{
+			id: 'dd',
+			name: 'Frigate / Destroyer',
+			shapes: [
+				{ type: 'path', 'stroke-width': '2', d: 'M20 1H7L.75 7 7 13h13z', stroke: '#f8a86d', fill: 'none' }
+			]
+		},
+		{
+			id: 'cl',
+			name: 'Light Cruiser',
+			shapes: [
+				{ type: 'path', 'stroke-width': '2', d: 'M20 1H7L.75 7 7 13h13z', stroke: '#f8a6a6', fill: 'none' },
+				{ type: 'path', 'stroke-width': '2', d: 'M15.75 1v12', stroke: '#f8a6a6' }
+			]
+		},
+		{
+			id: 'ca',
+			name: 'Heavy Cruiser',
+			shapes: [
+				{ type: 'path', 'stroke-width': '2', d: 'M20 1H7L.75 7 7 13h13z', stroke: '#ffaaaa', fill: 'none' },
+				{ type: 'path', 'stroke-width': '2', d: 'M16 1H20v12h-4z', stroke: '#ffaaaa', fill: '#ffaaaa' }
+			]
+		},
+		{
+			id: 'cc',
+			name: 'Battlecruiser',
+			shapes: [
+				{ type: 'path', 'stroke-width': '2', d: 'M20 1H7L.75 7 7 13h13z', stroke: '#fda9a9', fill: 'none' },
+				{ type: 'path', 'stroke-width': '2', d: 'M18 1H20v12h-2z', stroke: '#fda9a9', fill: '#ffaaaa' },
+				{ type: 'path', 'stroke-width': '2', d: 'M11 1H13v12h-2z', stroke: '#fda9a9', fill: '#ffaaaa' }
+			]
+		},
+		{
+			id: 'bb',
+			name: 'Battleship',
+			shapes: [
+				{ type: 'path', 'stroke-width': '2', d: 'M20 1H7L.75 7 7 13h13z', stroke: '#fd6565', fill: 'none' },
+				{ type: 'path', 'stroke-width': '2', d: 'M16 1v12', stroke: '#fd6565' },
+				{ type: 'path', 'stroke-width': '2', d: 'M12 1v12', stroke: '#fd6565' },
+				{ type: 'path', 'stroke-width': '2', d: 'M8 1v12', stroke: '#fd6565' }
+			]
 		}
 	];
 	let sortingLoopError = false;
