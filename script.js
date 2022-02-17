@@ -945,7 +945,7 @@
 								}
 
 								if ( item.classList.contains( 'connected_yes' ) ) {
-									break loop;
+									continue loop;
 								}
 							}
 						}
