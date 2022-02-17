@@ -1,7 +1,10 @@
+/* ⚠️ Programming gore below, not for the faint of heart ⚠️ */
+
 'use strict';
 /* eslint-disable no-undef */
 ( () => {
 	const vehicleList = [];
+	let branchTitles = {};
 	const descriptionTemplate =
 		'<h3><em>Year:</em> <strong>XXXX</strong>&nbsp;<em>Development stage:</em>&nbsp;<strong>X</strong></h3>\n\n<p>Historical description...</p>\n\n<h3><em>Primary weapon:</em> <strong>X</strong></h3>\n\n<p>Primary weapon description...</p>\n\n<h3><em>Secondary weapon:</em> <strong>X</strong></h3>\n\n<p>Secondary weapon description...</p>\n\n<h3><em>Other info:</em></h3>\n\n<p>Crew, armor, mobility etc...</p>\n\n<h3><em>Proposed BR:</em> <strong>X.X</strong></h3>\n\n<p>Justification for Battle Rating placement...</p>\n\n<p><em>Links:</em></p>\n\n<ol>\n\t<li>Source 1...</li>\n\t<li>Source 2...</li>\n\t<li>WT forum discussion on the vehicle...</li>\n</ol>\n';
 	const classIcons = [
@@ -358,6 +361,7 @@
 	document.querySelector( '#deleteAllButton' ).addEventListener( 'click', () => {
 		const con = confirm( 'Do you want to delete ALL VEHICLES, tech tree name and it\'s description? This is irreversible!' );
 		if ( con === true ) {
+			branchTitles = {};
 			vehicleList.splice( 0, vehicleList.length );
 			document.querySelector( '#techtreename' ).value = '';
 			CKEDITOR.instances.techtreemaindesc.setData( '' );
@@ -390,7 +394,7 @@
 	document.querySelector( '#backupDownload' ).addEventListener( 'click', () => {
 		const title = document.querySelector( '#techtreename' ).value;
 		const description = CKEDITOR.instances.techtreemaindesc.getData();
-		const content = { title, description, vehicleList };
+		const content = { title, description, vehicleList, branchTitles };
 		const fileName = title.toLowerCase().trim()
 			.replaceAll( ' ', '_' ) + '_backup.json';
 		var file = new Blob( [ JSON.stringify( content ) ], { type: 'application/json' } );
@@ -422,6 +426,14 @@
 					'Do you want to load data from save file? This will override all current data, if you work on multiple trees, make sure to backup them first!'
 				);
 				if ( con === true ) {
+					if ( loadedData.branchTitles ) {
+						localStorage.setItem( 'branchTitles', JSON.stringify( loadedData.branchTitles ) );
+						branchTitles = loadedData.branchTitles;
+					} else {
+						localStorage.removeItem( 'branchTitles' );
+						branchTitles = {};
+					}
+
 					document.querySelector( '#techtreename' ).value = loadedData.title;
 					CKEDITOR.instances.techtreemaindesc.setData( loadedData.description );
 					vehicleList.splice( 0, vehicleList.length );
@@ -447,9 +459,23 @@
 
 	// #region Export modal listeners
 	document.querySelector( '#exportTechTreeButton' ).addEventListener( 'click', () => {
+		[ ...document.querySelectorAll( '.branchHeaderBold' ) ].forEach( span => {
+			if ( !span.dataset.branch.includes( 'premium' ) ) {
+				const input = document.querySelector( '#branchHeaderInput' + span.dataset.branch );
+				span.innerText = input.value;
+			} else {
+				span.innerText = '';
+			}
+		} );
+
+		[ ...document.querySelectorAll( '.branchHeaderClear' ) ].forEach( node => node.remove() );
+
 		const title = document.querySelector( '#techtreename' ).value;
 		const description = CKEDITOR.instances.techtreemaindesc.getData();
 		const tree = document.querySelector( '#techtree' ).innerHTML;
+
+		drawTree( organizeTree( vehicleList ) );
+
 		const vehicles = JSON.stringify( vehicleList );
 		const file = new Blob( [ createHtmlContent( title, description, tree, vehicles ) ] );
 		const fileName = title.toLowerCase().trim()
@@ -619,6 +645,12 @@
 			document.querySelector( 'body' ).style.overflow = 'hidden';
 		}
 	} );
+	document.querySelector( '#techtree' ).addEventListener( 'input', ( e ) => {
+		const element = e.target;
+		if ( !element.id.startsWith( 'branchHeaderInput' ) ) return;
+		branchTitles[ element.id ] = element.value;
+		localStorage.setItem( 'branchTitles', JSON.stringify( branchTitles ) );
+	} );
 	// #endregion Tech tree listeners
 
 	// #region Main title & description listeners
@@ -754,7 +786,8 @@
 			if ( !branches.includes( branch ) ) branches.push( branch );
 		}
 		const topRank = Math.max( ...ranks );
-		for ( let i = 1; i < topRank; i++ ) {
+		const bottomRank = Math.min( ...ranks );
+		for ( let i = bottomRank; i < topRank; i++ ) {
 			if ( !ranks.includes( i ) ) {
 				ranks.push( i );
 			}
@@ -805,6 +838,7 @@
 		sanitizeFolderLeftover( branches );
 		sanitizeFolderLines();
 		setFillerSizes();
+		addBranchHeaders();
 	}
 	function romanize ( num ) {
 		var lookup = {
@@ -941,6 +975,46 @@
 			const y1 = div.getBoundingClientRect().y;
 			const y2 = div.parentNode.getBoundingClientRect().y + div.parentNode.getBoundingClientRect().height;
 			div.style.height = `${ y2 - y1 }px`;
+		} );
+	}
+	function addBranchHeaders () {
+		[ ...document.querySelectorAll( '.rank:first-child .branch' ) ].forEach( branch => {
+			const branchName = [ ...branch.querySelectorAll( 'div' ) ]
+				.map( child => {
+					return [ ...child.classList ].find( cls => {
+						return /badgeLine_/.test( cls );
+					} );
+				} )
+				.find( Boolean )
+				.split( '_' )
+				.slice( 1 )
+				.join( ' ' );
+
+			const bold = document.createElement( 'b' );
+			bold.style.display = 'block';
+			bold.style.textAlign = 'center';
+			bold.style.padding = '10px';
+			bold.style.height = '1rem';
+			bold.innerText = `Branch: ${ branchName }`;
+			bold.classList.add( 'branchHeaderBold' );
+			bold.dataset.branch = branchName;
+
+			if ( !branchName.includes( 'premium' ) ) {
+				const input = document.createElement( 'input' );
+				input.style.margin = 'auto';
+				input.style.display = 'block';
+				input.classList.add( 'branchHeaderClear' );
+				input.id = 'branchHeaderInput' + branchName;
+				if ( branchTitles[ input.id ] ) input.value = branchTitles[ input.id ];
+				branch.prepend( input );
+			} else {
+				const div = document.createElement( 'div' );
+				div.style.height = '21px';
+				div.classList.add( 'branchHeaderClear' );
+				branch.prepend( div );
+			}
+
+			branch.prepend( bold );
 		} );
 	}
 	// #endregion Tech tree building functions
@@ -1424,6 +1498,10 @@ ${ svg }
 		fillClassSelection( true );
 
 		// Loading save from local storage
+		const branchTitlesSave = localStorage.getItem( 'branchTitles' );
+		if ( branchTitlesSave ) {
+			branchTitles = JSON.parse( branchTitlesSave );
+		}
 		const save = localStorage.getItem( 'save' );
 		if ( save ) {
 			const arr = JSON.parse( save );
