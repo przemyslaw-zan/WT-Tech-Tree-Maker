@@ -159,6 +159,7 @@
 		}
 	];
 	let sortingLoopError = false;
+	let screenshotMode = false;
 	let menuVisible = true;
 
 	init();
@@ -199,6 +200,16 @@
 		document.querySelector( '#cloneModal' ).style.display = 'block';
 		document.querySelector( 'body' ).style.overflow = 'hidden';
 	} );
+	document.querySelector( '#navScreenshot' ).addEventListener( 'click', ev => {
+		if ( screenshotMode ) {
+			screenshotMode = false;
+			ev.target.style.backgroundColor = '';
+		} else {
+			screenshotMode = true;
+			ev.target.style.backgroundColor = 'green';
+		}
+		drawTree( organizeTree( vehicleList ) );
+	} );
 	document.querySelector( '#navHide' ).addEventListener( 'click', ev => {
 		const navTabs = [
 			'#navAdd',
@@ -207,6 +218,7 @@
 			'#navOrder',
 			'#navBackup',
 			'#navExport',
+			'#navScreenshot',
 			'#navClone'
 		];
 
@@ -459,25 +471,39 @@
 
 	// #region Export modal listeners
 	document.querySelector( '#exportTechTreeButton' ).addEventListener( 'click', () => {
-		[ ...document.querySelectorAll( '.branchHeaderBold' ) ].forEach( span => {
-			if ( !span.dataset.branch.includes( 'premium' ) ) {
-				const input = document.querySelector( '#branchHeaderInput' + span.dataset.branch );
-				span.innerText = input.value;
-			} else {
-				span.innerText = '';
-			}
-		} );
+		// Exported tree should not be in screenshot mode.
+		if ( screenshotMode ) {
+			screenshotMode = false;
+			drawTree( organizeTree( vehicleList ) );
+			screenshotMode = true;
+		}
 
-		[ ...document.querySelectorAll( '.branchHeaderClear' ) ].forEach( node => node.remove() );
-
+		// Collecting data
 		const title = document.querySelector( '#techtreename' ).value;
 		const description = CKEDITOR.instances.techtreemaindesc.getData();
+		consumeBranchHeaders();
 		const tree = document.querySelector( '#techtree' ).innerHTML;
+		const vehicles = JSON.stringify( vehicleList );
+		const cssRules = [ ...document.styleSheets ]
+			.find( sheet => sheet.title === 'WT_TECH_TREE_MAKER_STYLES' )
+			.cssRules;
+		const packedStyles = [ ...cssRules ]
+			.map( rule => rule.cssText )
+			.join( '' );
 
+		const data = {
+			title,
+			description,
+			tree,
+			vehicles,
+			styles: packedStyles
+		};
+
+		// Refreshing the tree
 		drawTree( organizeTree( vehicleList ) );
 
-		const vehicles = JSON.stringify( vehicleList );
-		const file = new Blob( [ createHtmlContent( title, description, tree, vehicles ) ] );
+		// Saving the file
+		const file = new Blob( [ createHtmlContent( data ) ] );
 		const fileName = title.toLowerCase().trim()
 			.replaceAll( ' ', '_' ) + '.html';
 		if ( window.navigator.msSaveOrOpenBlob ) window.navigator.msSaveOrOpenBlob( file, fileName );
@@ -509,7 +535,7 @@
 		
 			vehicle.name = node.innerText;
 		
-			vehicle.thumbnail = node.querySelector( '.tree-item-img img' ).src;
+			vehicle.thumbnail = node.querySelector( '.tree-item-img img' )?.src;
 		
 			vehicle.type = node.querySelector( '.tree-item-background img' ).src.match( /_([^\\/]+)\\.png/ )[ 1 ];
 		
@@ -609,9 +635,12 @@
 
 	// #region Tech tree listeners
 	document.querySelector( '#techtree' ).addEventListener( 'click', ( e ) => {
-		document.querySelectorAll( '.foldertooltiptext' ).forEach( ( node ) => {
-			node.style.visibility = 'hidden';
-		} );
+		if ( !screenshotMode ) {
+			document.querySelectorAll( '.foldertooltiptext' ).forEach( ( node ) => {
+				node.style.visibility = 'hidden';
+			} );
+		}
+
 		let element = e.target;
 
 		while ( !/^v\d+$/.test( element.id ) ) {
@@ -754,6 +783,44 @@
 			}
 			sortedVehicles[ region ] = array;
 		}
+
+		if ( !screenshotMode ) return sortedVehicles;
+
+
+		for ( const section in sortedVehicles ) {
+
+			const gapsToFill = [];
+
+			sortedVehicles[ section ].forEach( ( entry, index ) => {
+				if ( entry.constructor === Array ) {
+					gapsToFill.push( {
+						order: index + 1,
+						amount: entry.length - 1,
+						branch: entry[ 0 ].branch,
+						rank: entry[ 0 ].rank
+					} );
+				}
+			} );
+
+			gapsToFill.sort( ( a, b ) => b.order - a.order )
+				.forEach( ( gap, index ) => {
+					const fakes = [];
+					for ( let i = 0; i < gap.amount; i++ ) {
+						const id = `fake${ gap.rank }${ gap.branch }${ index }${ i }`;
+						fakes.push( {
+							br: 0,
+							branch: gap.branch,
+							rank: gap.rank,
+							connection: 'yes',
+							type: 'researchable',
+							name: id,
+							id
+						} );
+					}
+					sortedVehicles[ section ].splice( gap.order, 0, ...fakes );
+				} );
+		}
+
 		return sortedVehicles;
 	}
 	function isFollowApplied ( array ) {
@@ -839,6 +906,14 @@
 		sanitizeFolderLines();
 		setFillerSizes();
 		addBranchHeaders();
+
+		if ( screenshotMode ) {
+			document.querySelectorAll( '.foldertooltiptext' ).forEach( ( node ) => {
+				node.style.visibility = 'visible';
+			} );
+
+			consumeBranchHeaders();
+		}
 	}
 	function romanize ( num ) {
 		var lookup = {
@@ -994,7 +1069,6 @@
 			bold.style.display = 'block';
 			bold.style.textAlign = 'center';
 			bold.style.padding = '10px';
-			bold.style.height = '1rem';
 			bold.innerText = `Branch: ${ branchName }`;
 			bold.classList.add( 'branchHeaderBold' );
 			bold.dataset.branch = branchName;
@@ -1015,6 +1089,29 @@
 			}
 
 			branch.prepend( bold );
+		} );
+	}
+	function consumeBranchHeaders () {
+		const headers = [ ...document.querySelectorAll( '.branchHeaderBold' ) ];
+
+		headers.forEach( span => {
+			if ( !span.dataset.branch.includes( 'premium' ) ) {
+				const input = document.querySelector( '#branchHeaderInput' + span.dataset.branch );
+				span.innerText = input.value;
+			} else {
+				span.innerText = '';
+			}
+		} );
+		[ ...document.querySelectorAll( '.branchHeaderClear' ) ].forEach( node => node.remove() );
+
+		headers.forEach( header => header.style.padding = '0px' );
+		const maxHeight = Math.max( ...headers.map( header => header.offsetHeight ) );
+
+		if ( !maxHeight ) return;
+
+		headers.forEach( header => {
+			header.style.height = `${ maxHeight }px`;
+			header.style.marginTop = '5px';
 		} );
 	}
 	// #endregion Tech tree building functions
@@ -1062,6 +1159,11 @@ ${ svg }
 	function createFolder ( folder ) {
 		const folderDiv = document.createElement( 'div' );
 		const tooltipText = document.createElement( 'span' );
+
+		const carpet = document.createElement( 'div' );
+		carpet.classList.add( 'carpet' );
+		tooltipText.appendChild( carpet );
+
 		folderDiv.appendChild( createVehicleBadge( folder[ 0 ] ) );
 		folderDiv.classList.add( 'foldertooltip' );
 		tooltipText.classList.add( 'foldertooltiptext' );

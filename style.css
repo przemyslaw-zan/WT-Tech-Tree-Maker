@@ -449,8 +449,6 @@ nav div:nth-child(odd) {
 
 .foldertooltip .foldertooltiptext {
 	visibility: hidden;
-	background-color: rgb(64, 85, 97);
-	border-radius: 6px;
 	position: absolute;
 	z-index: 2;
 }
@@ -465,6 +463,23 @@ nav div:nth-child(odd) {
 
 .foldertooltip .foldertooltiptext .vehicleBadge {
 	cursor: default;
+}
+
+.carpet {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: calc(100% - 22px);
+	height: calc(100% - 32px);
+	margin: 16px 11px;
+	background-color: rgb(62, 77, 85);
+	border-radius: 3px;
+}
+
+.foldertooltiptext .lineArrow,
+.foldertooltiptext .lineDiv {
+	position: relative;
+	z-index: 1;
 }
 
 /*ENDREGION TOOLTIPS*/
