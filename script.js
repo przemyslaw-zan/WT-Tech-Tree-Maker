@@ -236,9 +236,7 @@
 
 	// #region General modal listeners
 	document.querySelectorAll( '.close' ).forEach( ( item ) => {
-		item.addEventListener( 'click', () => {
-			closeModal();
-		} );
+		item.addEventListener( 'click', closeModal );
 	} );
 	window.onclick = function ( event ) {
 		if ( event.target.classList.contains( 'modal' ) ) {
@@ -490,13 +488,20 @@
 		const packedStyles = [ ...cssRules ]
 			.map( rule => rule.cssText )
 			.join( '' );
+		const functions = [
+			techTreeClickProcessor,
+			isFolderRoot,
+			isClickable,
+			closeModal
+		];
 
 		const data = {
 			title,
 			description,
 			tree,
 			vehicles,
-			styles: packedStyles
+			styles: packedStyles,
+			functions
 		};
 
 		// Refreshing the tree
@@ -634,7 +639,8 @@
 	// #endregion Clone modal listeners
 
 	// #region Tech tree listeners
-	document.querySelector( '#techtree' ).addEventListener( 'click', ( e ) => {
+	document.querySelector( '#techtree' ).addEventListener( 'click', techTreeClickProcessor );
+	function techTreeClickProcessor ( e ) {
 		if ( !screenshotMode ) {
 			document.querySelectorAll( '.foldertooltiptext' ).forEach( ( node ) => {
 				node.style.visibility = 'hidden';
@@ -673,7 +679,7 @@
 			document.querySelector( '#vehicleDisplayModal' ).style.display = 'block';
 			document.querySelector( 'body' ).style.overflow = 'hidden';
 		}
-	} );
+	}
 	document.querySelector( '#techtree' ).addEventListener( 'input', ( e ) => {
 		const element = e.target;
 		if ( !element.id.startsWith( 'branchHeaderInput' ) ) return;
