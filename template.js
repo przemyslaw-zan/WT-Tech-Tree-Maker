@@ -21,8 +21,8 @@ function createHtmlContent ( data ) {
         </span>
         <h1 style="text-align: center; border-bottom: 1px solid black; padding: 5px">${ data.title }</h1>
         <div style="max-width: 1000px; margin: auto; padding: 0 3px 0 3px">${ data.description }</div>
-        <div id="techtree_wrapper">
-            <div id="techtree">${ data.tree }</div>
+        <div id="techTreeWrapper">
+            <div id="techTree">${ data.tree }</div>
         </div>
         <div id="vehicleDisplayModal" class="modal">
             <div class="modal-content">
@@ -65,7 +65,7 @@ function createHtmlContent ( data ) {
             }
         }
 
-        document.querySelector( '#techtree' ).addEventListener( 'click', techTreeClickProcessor );
+        document.querySelector( '#techTree' ).addEventListener( 'click', techTreeClickProcessor );
 
         ${ data.functions.map( fn => fn.toString() ).join( ';' ) }
     </script>

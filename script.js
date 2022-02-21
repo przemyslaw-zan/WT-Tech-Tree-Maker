@@ -247,24 +247,24 @@
 
 	// #region Add modal listeners
 	document.querySelector( '#addButton' ).addEventListener( 'click', () => {
-		const readSuccesful = readVehicleInput();
-		if ( readSuccesful ) {
+		const readSuccessful = readVehicleInput();
+		if ( readSuccessful ) {
 			localStorage.setItem( 'save', JSON.stringify( vehicleList ) );
 			fillEditSelection( vehicleList );
 
 			drawTree( organizeTree( vehicleList ) );
-			document.querySelector( '#vehicleimagelist' ).innerHTML = '';
+			document.querySelector( '#vehicleImageList' ).innerHTML = '';
 			updateVehicleOrderList();
 		}
 	} );
-	document.querySelector( '#vehicleimagelistadd' ).addEventListener( 'click', ( e ) => {
+	document.querySelector( '#vehicleImageListAdd' ).addEventListener( 'click', ( e ) => {
 		e.preventDefault();
-		const list = document.querySelector( '#vehicleimagelist' );
+		const list = document.querySelector( '#vehicleImageList' );
 		list.appendChild( createImageListItem() );
 	} );
-	document.querySelector( '#vehicletype' ).addEventListener( 'change', ( e ) => {
+	document.querySelector( '#vehicleType' ).addEventListener( 'change', ( e ) => {
 		const choice = e.target.value;
-		const connection = document.querySelector( '#vehicleconnection' );
+		const connection = document.querySelector( '#vehicleConnection' );
 		if ( [ 'researchable', 'reserve' ].includes( choice ) ) {
 			connection.value = 'yes';
 		} else {
@@ -275,34 +275,34 @@
 
 	// #region Edit modal listeners
 	document.querySelector( '#editButton' ).addEventListener( 'click', () => {
-		const readSuccesful = readVehicleEditInput();
-		if ( readSuccesful ) {
+		const readSuccessful = readVehicleEditInput();
+		if ( readSuccessful ) {
 			localStorage.setItem( 'save', JSON.stringify( vehicleList ) );
 			fillEditSelection( vehicleList );
 
 			drawTree( organizeTree( vehicleList ) );
-			document.querySelector( '#vehicleimagelistedit' ).innerHTML = '';
+			document.querySelector( '#vehicleImageListEdit' ).innerHTML = '';
 			updateVehicleOrderList();
 		}
 	} );
 	$( '#editionSelect' ).on( 'change', ( e ) => {
 		if ( e.target.value === 'undefined' ) return;
-		document.querySelector( '#vehicleimagelistedit' ).innerHTML = '';
+		document.querySelector( '#vehicleImageListEdit' ).innerHTML = '';
 		const vehicleId = e.target.value;
 		const vehicle = vehicleList.find( ( item ) => {
 			return item.id === vehicleId;
 		} );
-		document.querySelector( '#vehiclenameedit' ).value = vehicle.name;
-		document.querySelector( '#vehiclerankedit' ).value = vehicle.rank;
-		document.querySelector( '#vehiclebredit' ).value = vehicle.br;
-		document.querySelector( '#vehicletypeedit' ).value = vehicle.type;
-		document.querySelector( '#vehicleconnectionedit' ).value = vehicle.connection;
-		document.querySelector( '#vehiclebranchedit' ).value = vehicle.branch;
-		document.querySelector( '#vehiclefollowedit' ).value = vehicle.follow;
-		CKEDITOR.instances.vehicledescriptionedit.setData( vehicle.description );
-		document.querySelector( '#vehiclethumbnailedit' ).value = vehicle.thumbnail;
+		document.querySelector( '#vehicleNameEdit' ).value = vehicle.name;
+		document.querySelector( '#vehicleRankEdit' ).value = vehicle.rank;
+		document.querySelector( '#vehicleBrEdit' ).value = vehicle.br;
+		document.querySelector( '#vehicleTypeEdit' ).value = vehicle.type;
+		document.querySelector( '#vehicleConnectionEdit' ).value = vehicle.connection;
+		document.querySelector( '#vehicleBranchEdit' ).value = vehicle.branch;
+		document.querySelector( '#vehicleFollowEdit' ).value = vehicle.follow;
+		CKEDITOR.instances.vehicleDescriptionEdit.setData( vehicle.description );
+		document.querySelector( '#vehicleThumbnailEdit' ).value = vehicle.thumbnail;
 		if ( vehicle.images ) {
-			const list = document.querySelector( '#vehicleimagelistedit' );
+			const list = document.querySelector( '#vehicleImageListEdit' );
 			for ( const image of vehicle.images ) {
 				const url = image.image ? image.image : '';
 				const desc = image.description ? image.description : '';
@@ -310,19 +310,19 @@
 			}
 		}
 		if ( vehicle.classIcon ) {
-			document.querySelector( `#${ vehicle.classIcon }edit` ).click();
+			document.querySelector( `#${ vehicle.classIcon }Edit` ).click();
 		} else {
-			document.querySelector( '#noneedit' ).click();
+			document.querySelector( '#noneEdit' ).click();
 		}
 	} );
-	document.querySelector( '#vehicleimagelisteditadd' ).addEventListener( 'click', ( e ) => {
+	document.querySelector( '#vehicleImageListEditAdd' ).addEventListener( 'click', ( e ) => {
 		e.preventDefault();
-		const list = document.querySelector( '#vehicleimagelistedit' );
+		const list = document.querySelector( '#vehicleImageListEdit' );
 		list.appendChild( createImageListItem() );
 	} );
-	document.querySelector( '#vehicletypeedit' ).addEventListener( 'change', ( e ) => {
+	document.querySelector( '#vehicleTypeEdit' ).addEventListener( 'change', ( e ) => {
 		const choice = e.target.value;
-		const connection = document.querySelector( '#vehicleconnectionedit' );
+		const connection = document.querySelector( '#vehicleConnectionEdit' );
 		if ( [ 'researchable', 'reserve' ].includes( choice ) ) {
 			connection.value = 'yes';
 		} else {
@@ -373,8 +373,8 @@
 		if ( con === true ) {
 			branchTitles = {};
 			vehicleList.splice( 0, vehicleList.length );
-			document.querySelector( '#techtreename' ).value = '';
-			CKEDITOR.instances.techtreemaindesc.setData( '' );
+			document.querySelector( '#techTreeName' ).value = '';
+			CKEDITOR.instances.techTreeMainDesc.setData( '' );
 			localStorage.clear();
 
 			const organizedVehicles = organizeTree( vehicleList );
@@ -402,8 +402,8 @@
 
 	// #region Backup modal listeners
 	document.querySelector( '#backupDownload' ).addEventListener( 'click', () => {
-		const title = document.querySelector( '#techtreename' ).value;
-		const description = CKEDITOR.instances.techtreemaindesc.getData();
+		const title = document.querySelector( '#techTreeName' ).value;
+		const description = CKEDITOR.instances.techTreeMainDesc.getData();
 		const content = { title, description, vehicleList, branchTitles };
 		const fileName = title.toLowerCase().trim()
 			.replaceAll( ' ', '_' ) + '_backup.json';
@@ -444,8 +444,8 @@
 						branchTitles = {};
 					}
 
-					document.querySelector( '#techtreename' ).value = loadedData.title;
-					CKEDITOR.instances.techtreemaindesc.setData( loadedData.description );
+					document.querySelector( '#techTreeName' ).value = loadedData.title;
+					CKEDITOR.instances.techTreeMainDesc.setData( loadedData.description );
 					vehicleList.splice( 0, vehicleList.length );
 					loadedData.vehicleList.forEach( ( element ) => {
 						vehicleList.push( element );
@@ -461,7 +461,7 @@
 					closeModal();
 				}
 			} catch ( e ) {
-				window.alert( `An error occured:\n${ e }\nMake sure you upload correct save file!` );
+				window.alert( `An error occurred:\n${ e }\nMake sure you upload correct save file!` );
 			}
 		} );
 	} );
@@ -477,10 +477,10 @@
 		}
 
 		// Collecting data
-		const title = document.querySelector( '#techtreename' ).value;
-		const description = CKEDITOR.instances.techtreemaindesc.getData();
+		const title = document.querySelector( '#techTreeName' ).value;
+		const description = CKEDITOR.instances.techTreeMainDesc.getData();
 		consumeBranchHeaders();
-		const tree = document.querySelector( '#techtree' ).innerHTML;
+		const tree = document.querySelector( '#techTree' ).innerHTML;
 		const vehicles = JSON.stringify( vehicleList );
 		const cssRules = [ ...document.styleSheets ]
 			.find( sheet => sheet.title === 'WT_TECH_TREE_MAKER_STYLES' )
@@ -639,10 +639,10 @@
 	// #endregion Clone modal listeners
 
 	// #region Tech tree listeners
-	document.querySelector( '#techtree' ).addEventListener( 'click', techTreeClickProcessor );
+	document.querySelector( '#techTree' ).addEventListener( 'click', techTreeClickProcessor );
 	function techTreeClickProcessor ( e ) {
 		if ( !screenshotMode ) {
-			document.querySelectorAll( '.foldertooltiptext' ).forEach( ( node ) => {
+			document.querySelectorAll( '.folderTooltipText' ).forEach( ( node ) => {
 				node.style.visibility = 'hidden';
 			} );
 		}
@@ -650,7 +650,7 @@
 		let element = e.target;
 
 		while ( !/^v\d+$/.test( element.id ) ) {
-			if ( element.id === 'techtree' ) return;
+			if ( element.id === 'techTree' ) return;
 			element = element.parentNode;
 		}
 
@@ -680,7 +680,7 @@
 			document.querySelector( 'body' ).style.overflow = 'hidden';
 		}
 	}
-	document.querySelector( '#techtree' ).addEventListener( 'input', ( e ) => {
+	document.querySelector( '#techTree' ).addEventListener( 'input', ( e ) => {
 		const element = e.target;
 		if ( !element.id.startsWith( 'branchHeaderInput' ) ) return;
 		branchTitles[ element.id ] = element.value;
@@ -689,11 +689,11 @@
 	// #endregion Tech tree listeners
 
 	// #region Main title & description listeners
-	document.querySelector( '#techtreename' ).addEventListener( 'change', ( e ) => {
+	document.querySelector( '#techTreeName' ).addEventListener( 'change', ( e ) => {
 		localStorage.setItem( 'title', e.target.value );
 	} );
-	CKEDITOR.instances.techtreemaindesc.on( 'change', () => {
-		localStorage.setItem( 'description', CKEDITOR.instances.techtreemaindesc.getData() );
+	CKEDITOR.instances.techTreeMainDesc.on( 'change', () => {
+		localStorage.setItem( 'description', CKEDITOR.instances.techTreeMainDesc.getData() );
 	} );
 	CKEDITOR.on( 'dialogDefinition', function ( ev ) {
 		const dialogName = ev.data.name;
@@ -848,7 +848,7 @@
 		return true;
 	}
 	function drawTree ( organizedVehicles ) {
-		const tbody = document.querySelector( '#techtree' );
+		const tbody = document.querySelector( '#techTree' );
 		tbody.innerHTML = '';
 		const ranks = [];
 		const branches = [];
@@ -867,8 +867,8 @@
 		}
 		ranks.sort( ( a, b ) => Number( a ) - Number( b ) );
 		branches.sort();
-		const techtree = document.querySelector( '#techtree' );
-		techtree.innerHTML = '';
+		const techTree = document.querySelector( '#techTree' );
+		techTree.innerHTML = '';
 		for ( const rank of ranks ) {
 			let firstPremiumBranch = true;
 			const rankDiv = document.createElement( 'div' );
@@ -903,7 +903,7 @@
 				branchDiv.appendChild( filler );
 				rankDiv.appendChild( branchDiv );
 			}
-			techtree.appendChild( rankDiv );
+			techTree.appendChild( rankDiv );
 		}
 
 		affixFolderNumbers();
@@ -912,7 +912,7 @@
 		addBranchHeaders();
 
 		if ( screenshotMode ) {
-			document.querySelectorAll( '.foldertooltiptext' ).forEach( ( node ) => {
+			document.querySelectorAll( '.folderTooltipText' ).forEach( ( node ) => {
 				node.style.visibility = 'visible';
 			} );
 
@@ -1011,7 +1011,7 @@
 		}
 
 		// #2 - folder arrows
-		[ ...document.querySelectorAll( '.foldertooltiptext' ) ].forEach( folder => {
+		[ ...document.querySelectorAll( '.folderTooltipText' ) ].forEach( folder => {
 			const folderLines = [ ...folder.querySelectorAll( '.badgeLine' ) ];
 
 			for ( let i = 1; i < folderLines.length - 1; i++ ) {
@@ -1144,8 +1144,8 @@ ${ svg }
 		tooltipText.appendChild( carpet );
 
 		folderDiv.appendChild( createVehicleBadge( folder[ 0 ] ) );
-		folderDiv.classList.add( 'foldertooltip' );
-		tooltipText.classList.add( 'foldertooltiptext' );
+		folderDiv.classList.add( 'folderTooltip' );
+		tooltipText.classList.add( 'folderTooltipText' );
 
 		for ( const vehicle of folder ) {
 			tooltipText.appendChild( createVehicleBadge( vehicle ) );
@@ -1165,13 +1165,13 @@ ${ svg }
 	function isFolderRoot ( node ) {
 		const initialNode = node;
 		const nodesWithId = [];
-		while ( !node.classList.contains( 'foldertooltip' ) ) {
+		while ( !node.classList.contains( 'folderTooltip' ) ) {
 			node = node.parentNode;
 			if ( node.classList.contains( 'branch' ) ) {
 				return false;
 			}
 		}
-		const output = node.querySelector( '.foldertooltiptext' );
+		const output = node.querySelector( '.folderTooltipText' );
 		for ( const childNode of node.querySelectorAll( '*' ) ) {
 			if ( childNode.id ) nodesWithId.push( childNode );
 		}
@@ -1181,8 +1181,8 @@ ${ svg }
 		return false;
 	}
 	function isInFolder ( node ) {
-		while ( node.id !== 'techtree' ) {
-			if ( node.classList.contains( 'foldertooltiptext' ) ) return true;
+		while ( node.id !== 'techTree' ) {
+			if ( node.classList.contains( 'folderTooltipText' ) ) return true;
 			node = node.parentNode;
 		}
 		return false;
@@ -1204,24 +1204,24 @@ ${ svg }
 
 	// #region Miscellaneous menu functions
 	function readVehicleInput () {
-		const name = document.querySelector( '#vehiclename' ).value.trim();
+		const name = document.querySelector( '#vehicleName' ).value.trim();
 		if ( name.length === 0 ) {
 			window.alert( 'You have to provide name of the vehicle!' );
 			return false;
 		}
-		const rank = Number( document.querySelector( '#vehiclerank' ).value );
+		const rank = Number( document.querySelector( '#vehicleRank' ).value );
 		if ( !/^[0-9]{1,2}$/.test( rank.toString() ) || rank === 0 ) {
 			window.alert( 'Rank has to be a natural number between 1 and 99!' );
 			return false;
 		}
-		const br = Number( document.querySelector( '#vehiclebr' ).value );
+		const br = Number( document.querySelector( '#vehicleBr' ).value );
 		if ( ( !/^\d+\.\d$/.test( br ) && !/^\d+$/.test( br ) ) || br < 0 || br >= 100 ) {
 			window.alert( 'Battle rating must have one or zero decimal places, and be a non-negative number less than 100!' );
 			return false;
 		}
-		const type = document.querySelector( '#vehicletype' ).value;
-		const connection = document.querySelector( '#vehicleconnection' ).value;
-		const branch = Number( document.querySelector( '#vehiclebranch' ).value );
+		const type = document.querySelector( '#vehicleType' ).value;
+		const connection = document.querySelector( '#vehicleConnection' ).value;
+		const branch = Number( document.querySelector( '#vehicleBranch' ).value );
 		if ( !/^[1-9]$/.test( branch.toString() ) ) {
 			window.alert( 'Branch has to be a natural number between 1 and 9!' );
 			return false;
@@ -1230,13 +1230,13 @@ ${ svg }
 		if ( classIcon === 'none' ) {
 			classIcon = undefined;
 		}
-		const follow = document.querySelector( '#vehiclefollowedit' ).value;
-		const description = CKEDITOR.instances.vehicledescription.getData();
+		const follow = document.querySelector( '#vehicleFollowEdit' ).value;
+		const description = CKEDITOR.instances.vehicleDescription.getData();
 		const id = 'v' + Date.now();
-		const thumbnail = document.querySelector( '#vehiclethumbnail' ).value;
+		const thumbnail = document.querySelector( '#vehicleThumbnail' ).value;
 		const images = [];
 		document
-			.querySelector( '#vehicleimagelist' )
+			.querySelector( '#vehicleImageList' )
 			.querySelectorAll( 'li' )
 			.forEach( ( item ) => {
 				const image = item.querySelectorAll( 'input' )[ 0 ].value;
@@ -1261,45 +1261,45 @@ ${ svg }
 		vehicleList.push( vehicle );
 		document.querySelector( '#newForm' ).reset();
 		document.querySelector( '#none' ).checked = true;
-		CKEDITOR.instances.vehicledescription.setData( descriptionTemplate );
+		CKEDITOR.instances.vehicleDescription.setData( descriptionTemplate );
 		closeModal();
 		return true;
 	}
 	function readVehicleEditInput () {
-		const name = document.querySelector( '#vehiclenameedit' ).value.trim();
+		const name = document.querySelector( '#vehicleNameEdit' ).value.trim();
 		if ( name.length === 0 ) {
 			window.alert( 'You have to provide name of the vehicle!' );
 			return false;
 		}
-		const rank = Number( document.querySelector( '#vehiclerankedit' ).value );
+		const rank = Number( document.querySelector( '#vehicleRankEdit' ).value );
 		if ( !/^[0-9]{1,2}$/.test( rank.toString() ) || rank === 0 ) {
 			window.alert( 'Rank has to be a natural number between 1 and 99!' );
 			return false;
 		}
-		const br = Number( document.querySelector( '#vehiclebredit' ).value );
+		const br = Number( document.querySelector( '#vehicleBrEdit' ).value );
 		if ( ( !/^\d+\.\d$/.test( br ) && !/^\d+$/.test( br ) ) || br < 0 || br >= 100 ) {
 			window.alert( 'Battle rating must have one or zero decimal places, and be a non-negative number less than 100!' );
 			return false;
 		}
-		const type = document.querySelector( '#vehicletypeedit' ).value;
-		const connection = document.querySelector( '#vehicleconnectionedit' ).value;
-		const branch = Number( document.querySelector( '#vehiclebranchedit' ).value );
+		const type = document.querySelector( '#vehicleTypeEdit' ).value;
+		const connection = document.querySelector( '#vehicleConnectionEdit' ).value;
+		const branch = Number( document.querySelector( '#vehicleBranchEdit' ).value );
 		if ( !/^[1-9]$/.test( branch.toString() ) ) {
 			window.alert( 'Branch has to be a natural number between 1 and 9!' );
 			return false;
 		}
-		let classIcon = document.querySelector( 'input[name="classIconsedit"]:checked' ).value;
+		let classIcon = document.querySelector( 'input[name="classIconsEdit"]:checked' ).value;
 		if ( classIcon === 'none' ) {
 			classIcon = undefined;
 		}
-		const follow = document.querySelector( '#vehiclefollowedit' ).value;
-		const description = CKEDITOR.instances.vehicledescriptionedit.getData();
-		CKEDITOR.instances.vehicledescriptionedit.setData( '' );
+		const follow = document.querySelector( '#vehicleFollowEdit' ).value;
+		const description = CKEDITOR.instances.vehicleDescriptionEdit.getData();
+		CKEDITOR.instances.vehicleDescriptionEdit.setData( '' );
 		const id = document.querySelector( '#editionSelect' ).value;
-		const thumbnail = document.querySelector( '#vehiclethumbnailedit' ).value;
+		const thumbnail = document.querySelector( '#vehicleThumbnailEdit' ).value;
 		const images = [];
 		document
-			.querySelector( '#vehicleimagelistedit' )
+			.querySelector( '#vehicleImageListEdit' )
 			.querySelectorAll( 'li' )
 			.forEach( ( item ) => {
 				const image = item.querySelectorAll( 'input' )[ 0 ].value;
@@ -1327,15 +1327,15 @@ ${ svg }
 			}
 		} );
 		document.querySelector( '#editForm' ).reset();
-		document.querySelector( '#noneedit' ).checked = true;
+		document.querySelector( '#noneEdit' ).checked = true;
 		closeModal();
 		return true;
 	}
 	function fillEditSelection ( vehicleList ) {
 		const selectArr = [
 			document.querySelector( '#editionSelect' ),
-			document.querySelector( '#vehiclefollow' ),
-			document.querySelector( '#vehiclefollowedit' ),
+			document.querySelector( '#vehicleFollow' ),
+			document.querySelector( '#vehicleFollowEdit' ),
 			document.querySelector( '#deleteVehicleSelect' )
 		];
 		selectArr.forEach( ( item ) => {
@@ -1524,26 +1524,26 @@ ${ svg }
 		Galleria.run( '.galleria' );
 	}
 	function fillClassSelection ( edit ) {
-		const targetHtml = document.querySelector( edit ? '#vehicleclassiconsedit' : '#vehicleclassicons' );
+		const targetHtml = document.querySelector( edit ? '#vehicleClassIconsEdit' : '#vehicleClassIcons' );
 		for ( const classIcon of classIcons ) {
 			const div = document.createElement( 'div' );
 			div.classList.add( 'tooltip' );
 
 			const span = document.createElement( 'span' );
-			span.classList.add( 'tooltiptext' );
+			span.classList.add( 'tooltipText' );
 			span.innerText = classIcon.name.replace( /\s/g, '\u00A0' ).replace( /-/g, '\u2011' );
 			span.style.width = 'fit-content';
 			span.style.maxWidth = '999px';
 			span.style.padding = '3px';
 
 			const label = document.createElement( 'label' );
-			label.htmlFor = classIcon.id + ( edit ? 'edit' : '' );
+			label.htmlFor = classIcon.id + ( edit ? 'Edit' : '' );
 			label.classList.add( 'classIconContainer' );
 
 			const input = document.createElement( 'input' );
 			input.type = 'radio';
-			input.id = classIcon.id + ( edit ? 'edit' : '' );
-			input.name = 'classIcons' + ( edit ? 'edit' : '' );
+			input.id = classIcon.id + ( edit ? 'Edit' : '' );
+			input.name = 'classIcons' + ( edit ? 'Edit' : '' );
 			input.value = classIcon.id;
 			input.style.display = 'none';
 			if ( input.id === 'none' ) {
@@ -1556,7 +1556,7 @@ ${ svg }
 			div.appendChild( span );
 			targetHtml.appendChild( div );
 
-			document.querySelector( `#none${ edit ? 'edit' : '' }` ).click();
+			document.querySelector( `#none${ edit ? 'Edit' : '' }` ).click();
 		}
 	}
 	function init () {
@@ -1569,16 +1569,16 @@ ${ svg }
 
 		// Enabling advanced selection
 		$( '#editionSelect' ).select2( { width: '15em' } );
-		$( '#vehiclefollow' ).select2( { width: '15em' } );
-		$( '#vehiclefollowedit' ).select2( { width: '15em' } );
+		$( '#vehicleFollow' ).select2( { width: '15em' } );
+		$( '#vehicleFollowEdit' ).select2( { width: '15em' } );
 		$( '#deleteVehicleSelect' ).select2( { width: '15em' } );
 
 		// Text editor initialization
 		CKEDITOR.config.height = 350;
-		CKEDITOR.replace( 'vehicledescription' );
-		CKEDITOR.replace( 'vehicledescriptionedit' );
-		CKEDITOR.instances.vehicledescription.setData( descriptionTemplate );
-		CKEDITOR.replace( 'techtreemaindesc' );
+		CKEDITOR.replace( 'vehicleDescription' );
+		CKEDITOR.replace( 'vehicleDescriptionEdit' );
+		CKEDITOR.instances.vehicleDescription.setData( descriptionTemplate );
+		CKEDITOR.replace( 'techTreeMainDesc' );
 		CKEDITOR.config.uiColor = '#A4D0E6';
 
 		// Adding class icon selection
@@ -1603,11 +1603,11 @@ ${ svg }
 		}
 		const techTreeTitle = localStorage.getItem( 'title' );
 		if ( techTreeTitle ) {
-			document.querySelector( '#techtreename' ).value = techTreeTitle;
+			document.querySelector( '#techTreeName' ).value = techTreeTitle;
 		}
 		const techTreeDescription = localStorage.getItem( 'description' );
 		if ( techTreeDescription ) {
-			CKEDITOR.instances.techtreemaindesc.setData( techTreeDescription );
+			CKEDITOR.instances.techTreeMainDesc.setData( techTreeDescription );
 		}
 	}
 	// #endregion Other functions

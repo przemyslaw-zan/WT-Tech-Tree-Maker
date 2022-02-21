@@ -56,8 +56,8 @@ blockquote {
 	padding-bottom: 15px;
 }
 
-#vehicleimagelisteditadd,
-#vehicleimagelistadd {
+#vehicleImageListEditAdd,
+#vehicleImageListAdd {
 	display: block;
 	margin-top: 5px;
 	background-color: rgb(78, 156, 0);
@@ -67,8 +67,8 @@ blockquote {
 	cursor: pointer;
 }
 
-#vehicleclassicons,
-#vehicleclassiconsedit {
+#vehicleClassIcons,
+#vehicleClassIconsEdit {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -78,8 +78,8 @@ blockquote {
 	padding: 15px;
 }
 
-#vehicleclassicons svg,
-#vehicleclassiconsedit svg {
+#vehicleClassIcons svg,
+#vehicleClassIconsEdit svg {
 	padding: 5px;
 	border-bottom: 4px transparent solid;
 	border-radius: 5px;
@@ -170,19 +170,19 @@ body {
 	padding: 0px;
 }
 
-#techtree {
+#techTree {
 	margin: auto;
 	width: -webkit-fit-content;
 	width: -moz-fit-content;
 	width: fit-content;
 }
 
-#techtree_wrapper {
+#techTreeWrapper {
 	width: 100%;
 	overflow: auto;
 }
 
-#techtree img,
+#techTree img,
 #delModal .modal-body img {
 	position: absolute;
 	bottom: 0px;
@@ -201,7 +201,7 @@ body {
 	border-radius: 10px;
 }
 
-#techtreename {
+#techTreeName {
 	display: block;
 	margin: auto;
 	text-align: center;
@@ -209,8 +209,8 @@ body {
 	font-size: 2rem;
 }
 
-#techtreenamelabel,
-#techtreemaindesclabel {
+#techTreeNameLabel,
+#techTreeMainDescLabel {
 	display: block;
 	text-align: center;
 }
@@ -231,13 +231,13 @@ a {
 	color: greenyellow;
 }
 
-#techtree table,
+#techTree table,
 #delModal .modal-body table {
 	border-collapse: separate;
 	border-spacing: 0;
 }
 
-#techtree td,
+#techTree td,
 #delModal .modal-body td {
 	border-color: rgba(0, 0, 0, 0);
 	border-top-width: 0px;
@@ -392,26 +392,26 @@ nav div:nth-child(odd) {
 	transform: rotate(180deg);
 }
 
-#vehicleimagelist td,
-#vehicleimagelistedit td {
+#vehicleImageList td,
+#vehicleImageListEdit td {
 	border: none;
 	-webkit-transform: translateY(10px);
 	-ms-transform: translateY(10px);
 	transform: translateY(10px);
 }
 
-#vehicleimagelist input,
-#vehicleimagelistedit input {
+#vehicleImageList input,
+#vehicleImageListEdit input {
 	width: 300px;
 }
 
-#vehicleimagelist,
-#vehicleimagelistedit {
+#vehicleImageList,
+#vehicleImageListEdit {
 	margin-top: 0;
 }
 
-#vehicleimagelist li::marker,
-#vehicleimagelistedit li::marker {
+#vehicleImageList li::marker,
+#vehicleImageListEdit li::marker {
 	font-size: 2rem;
 }
 
@@ -421,7 +421,7 @@ nav div:nth-child(odd) {
 	display: inline-block;
 }
 
-.tooltip .tooltiptext {
+.tooltip .tooltipText {
 	visibility: hidden;
 	width: 300px;
 	background-color: black;
@@ -433,35 +433,35 @@ nav div:nth-child(odd) {
 	z-index: 2;
 }
 
-.tooltip:hover .tooltiptext {
+.tooltip:hover .tooltipText {
 	visibility: visible;
 }
 
-.tooltiptext {
+.tooltipText {
 	top: 30px
 }
 
-.foldertooltip {
+.folderTooltip {
 	margin-bottom: -4px;
 	position: relative;
 	display: inline-block;
 }
 
-.foldertooltip .foldertooltiptext {
+.folderTooltip .folderTooltipText {
 	visibility: hidden;
 	position: absolute;
 	z-index: 2;
 }
 
-.foldertooltiptext {
+.folderTooltipText {
 	top: 0px;
 }
 
-.foldertooltip .vehicleBadge {
+.folderTooltip .vehicleBadge {
 	cursor: pointer;
 }
 
-.foldertooltip .foldertooltiptext .vehicleBadge {
+.folderTooltip .folderTooltipText .vehicleBadge {
 	cursor: default;
 }
 
@@ -476,8 +476,8 @@ nav div:nth-child(odd) {
 	border-radius: 3px;
 }
 
-.foldertooltiptext .lineArrow,
-.foldertooltiptext .lineDiv {
+.folderTooltipText .lineArrow,
+.folderTooltipText .lineDiv {
 	position: relative;
 	z-index: 1;
 }
@@ -575,14 +575,14 @@ nav div:nth-child(odd) {
 	width: 100%;
 	-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	-webkit-animation-name: animatetop;
-	animation-name: animatetop;
+	-webkit-animation-name: animateTop;
+	animation-name: animateTop;
 	-webkit-animation-duration: 0.4s;
 	animation-duration: 0.4s;
 }
 
 /* Add Animation */
-@-webkit-keyframes animatetop {
+@-webkit-keyframes animateTop {
 	from {
 		top: -300px;
 		opacity: 0;
@@ -594,7 +594,7 @@ nav div:nth-child(odd) {
 	}
 }
 
-@keyframes animatetop {
+@keyframes animateTop {
 	from {
 		top: -300px;
 		opacity: 0;
