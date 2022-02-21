@@ -907,9 +907,7 @@
 		}
 
 		affixFolderNumbers();
-		affixBranchLines( branches );
-		sanitizeFolderLeftover( branches );
-		sanitizeFolderLines();
+		createBranchArrows();
 		setFillerSizes();
 		addBranchHeaders();
 
@@ -957,96 +955,71 @@
 			item.remove();
 		} );
 	}
-	function affixBranchLines ( branches ) {
-		branches.forEach( ( branchIndex ) => {
-			const nodes = document.querySelectorAll( `.badgeLine_${ branchIndex }` );
-			const lineArray = [];
-			nodes.forEach( ( node ) => {
-				lineArray.push( node );
-			} );
-			while ( !lineArray[ 0 ].classList.contains( 'vehicleBadge' ) ) lineArray.shift();
-			lineArray.reverse();
-			while ( !lineArray[ 0 ].classList.contains( 'vehicleBadge' ) ) lineArray.shift();
-
-			let connected = false;
-			let arrow = false;
-			while ( lineArray.length > 0 ) {
-				if ( lineArray[ 0 ].classList.contains( 'connected_yes' ) || lineArray[ 0 ].classList.contains( 'connected_folder' ) ) {
-					connected = true;
-					arrow = true;
-					lineArray.shift();
-					continue;
-				}
-				if ( arrow ) {
-					arrow = false;
-					lineArray[ 0 ].innerHTML += '<div class="lineArrow"></div>';
-					lineArray.shift();
-					continue;
-				}
-				if ( lineArray[ 0 ].classList.contains( 'connected_no' ) ) {
-					connected = false;
-				}
-				if ( connected ) {
-					lineArray[ 0 ].innerHTML += '<div class="lineDiv"></div>';
-					lineArray.shift();
-					continue;
-				}
-				lineArray.shift();
+	function createBranchArrows () {
+		// #1 - general tree arrows
+		const branchLines = [];
+		document.querySelectorAll( '.vehicleBadge' ).forEach( vehicleBadge => {
+			const badgeLine_ = [ ...vehicleBadge.classList ].find( cls => cls.startsWith( 'badgeLine_' ) );
+			if ( !branchLines.includes( badgeLine_ ) ) {
+				branchLines.push( badgeLine_ );
 			}
 		} );
-	}
-	function sanitizeFolderLeftover ( branches ) {
-		for ( const rank of document.querySelectorAll( '.rank' ) ) {
-			loop: for ( const branch of branches ) {
-				const lineItems = rank.querySelectorAll( `.badgeLine_${ branch }` );
-				const vehicleBadges = [ ...lineItems ].filter( ( item ) => {
-					return item.classList.contains( 'vehicleBadge' );
-				} );
-				if ( vehicleBadges.length > 0 && vehicleBadges.pop().classList.contains( 'connected_folder' ) ) {
-					let connectors = [ ...lineItems ].filter( ( item ) => {
-						return item.classList.contains( 'badgeLine' );
-					} );
-					connectors = connectors.filter( ( item ) => {
-						item = item.parentNode.parentNode.parentNode.parentNode.parentNode;
-						return !item.classList.contains( 'foldertooltiptext' );
-					} );
-					const lastConnector = connectors.pop();
-					let reachedConnector = false;
-					let firstVehicle = true;
-					for ( const item of document.querySelectorAll( `.badgeLine_${ branch }` ) ) {
-						if ( reachedConnector ) {
-							if ( item.classList.contains( 'vehicleBadge' ) ) {
-								if ( firstVehicle ) {
-									firstVehicle = false;
-									continue;
-								}
-								if ( item.classList.contains( 'connected_no' ) ) {
-									lastConnector.innerHTML = '';
-									break loop;
-								}
 
-								if ( item.classList.contains( 'connected_yes' ) ) {
-									continue loop;
-								}
-							}
-						}
-						if ( item.isSameNode( lastConnector ) ) reachedConnector = true;
-					}
-					lastConnector.innerHTML = '';
+		for ( const line of branchLines ) {
+			const nodes = [ ...document.querySelectorAll( `.${ line }` ) ]
+				.filter( node => !isInFolder( node ) );
+
+
+			const indexesOfVehicles = [];
+
+			nodes.forEach( ( node, index ) => {
+				if ( node.classList.contains( 'vehicleBadge' ) ) {
+					indexesOfVehicles.push( index );
 				}
+			} );
+
+			if ( indexesOfVehicles.length < 2 ) {
+				return;
+			}
+
+			const firstVehicle = indexesOfVehicles.shift();
+			const lastVehicle = indexesOfVehicles.pop();
+
+			const trimmedLine = nodes.slice( firstVehicle + 1, lastVehicle + 1 );
+
+			const gapsToFill = [];
+			let tmpArr = [];
+
+			trimmedLine.forEach( node => {
+				const isVehicle = node.classList.contains( 'vehicleBadge' ) ;
+				if ( !isVehicle ) {
+					tmpArr.push( node );
+				} else {
+					if ( node.classList.contains( 'connected_yes' ) ) {
+						gapsToFill.push( tmpArr );
+					}
+					tmpArr = [];
+				}
+			} );
+
+			for ( const gap of gapsToFill ) {
+				while ( gap.length > 1 ) {
+					gap.shift().innerHTML += '<div class="lineDiv"></div>';
+				}
+				gap[ 0 ].innerHTML += '<div class="lineArrow"></div>';
 			}
 		}
-	}
-	function sanitizeFolderLines () {
-		const folders = document.querySelectorAll( '.foldertooltiptext' );
-		folders.forEach( ( folder ) => {
-			folder = [ ...folder.querySelectorAll( '.badgeLine' ) ];
-			if ( folder[ 0 ].children[ 0 ] !== undefined ) {
-				folder[ 0 ].children[ 0 ].style.borderColor = 'rgba(0, 0, 0, 0)';
-			}
-			folder.reverse();
-			if ( folder[ 0 ].children[ 0 ] !== undefined ) {
-				folder[ 0 ].children[ 0 ].style.backgroundColor = 'rgba(0, 0, 0, 0)';
+
+		// #2 - folder arrows
+		[ ...document.querySelectorAll( '.foldertooltiptext' ) ].forEach( folder => {
+			const folderLines = [ ...folder.querySelectorAll( '.badgeLine' ) ];
+
+			for ( let i = 1; i < folderLines.length - 1; i++ ) {
+				if ( i % 2 === 0 ) {
+					folderLines[ i ].innerHTML += '<div class="lineArrow"></div>';
+				} else {
+					folderLines[ i ].innerHTML += '<div class="lineDiv"></div>';
+				}
 			}
 		} );
 	}
@@ -1204,6 +1177,13 @@ ${ svg }
 		}
 		if ( initialNode.isSameNode( nodesWithId[ 0 ] ) ) {
 			return output;
+		}
+		return false;
+	}
+	function isInFolder ( node ) {
+		while ( node.id !== 'techtree' ) {
+			if ( node.classList.contains( 'foldertooltiptext' ) ) return true;
+			node = node.parentNode;
 		}
 		return false;
 	}
