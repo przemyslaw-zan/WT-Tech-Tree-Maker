@@ -1076,7 +1076,7 @@
 		headers.forEach( span => {
 			if ( !span.dataset.branch.includes( 'premium' ) ) {
 				const input = document.querySelector( '#branchHeaderInput' + span.dataset.branch );
-				span.innerText = input.value.replace( / \/ /g, '\n' );
+				span.innerText = input.value.replace( /\/\/\//g, '\n' );
 			} else {
 				span.innerText = '';
 			}

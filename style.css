@@ -605,3 +605,44 @@ nav div:nth-child(odd) {
 		opacity: 1;
 	}
 }
+
+footer {
+	margin-top: 50px;
+	padding: 25px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: space-evenly;
+	-ms-flex-pack: space-evenly;
+	justify-content: space-evenly;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	max-width: 750px;
+	margin: auto;
+}
+
+footer div {
+	text-align: center;
+	padding: 5px;
+}
+
+footer a {
+	display: block;
+	border-bottom: 2px solid white;
+	border-radius: 5px;
+	padding: 3px;
+	text-decoration: none;
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	width: fit-content;
+	margin: auto;
+}
+
+footer i {
+	display: block;
+	padding-top: 3px;
+}
+
+footer img {
+	width: 32px;
+}
