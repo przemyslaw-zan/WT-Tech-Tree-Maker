@@ -910,6 +910,7 @@
 		createBranchArrows();
 		setFillerSizes();
 		addBranchHeaders();
+		fitOverflowingFolder();
 
 		if ( screenshotMode ) {
 			document.querySelectorAll( '.folderTooltipText' ).forEach( ( node ) => {
@@ -969,7 +970,6 @@
 			const nodes = [ ...document.querySelectorAll( `.${ line }` ) ]
 				.filter( node => !isInFolder( node ) );
 
-
 			const indexesOfVehicles = [];
 
 			nodes.forEach( ( node, index ) => {
@@ -979,7 +979,7 @@
 			} );
 
 			if ( indexesOfVehicles.length < 2 ) {
-				return;
+				continue;
 			}
 
 			const firstVehicle = indexesOfVehicles.shift();
@@ -1092,6 +1092,21 @@
 			header.style.height = `${ maxHeight }px`;
 			header.style.marginTop = '5px';
 		} );
+	}
+	function fitOverflowingFolder () {
+		const lowestTreePoint = document.querySelector( '#techTree' ).getBoundingClientRect().bottom;
+		const lowestFolderPoint = Math.max( ...[ ...document.querySelectorAll( '.folderTooltipText' ) ].map( node => {
+			return node.getBoundingClientRect().bottom;
+		} ) );
+
+		const difference = lowestFolderPoint - lowestTreePoint;
+
+		if ( difference > 0 ) {
+			const lastRank = [ ...document.querySelectorAll( '.rank' ) ].pop();
+			const currentHeight = lastRank.getBoundingClientRect().height;
+
+			lastRank.style.height = `${ currentHeight + difference }px`;
+		}
 	}
 	// #endregion Tech tree building functions
 

@@ -76,6 +76,8 @@ blockquote {
 	-ms-flex-pack: space-between;
 	justify-content: space-between;
 	padding: 15px;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
 }
 
 #vehicleClassIcons svg,
@@ -207,6 +209,7 @@ body {
 	text-align: center;
 	height: 2rem;
 	font-size: 2rem;
+	max-width: 95vw;
 }
 
 #techTreeNameLabel,

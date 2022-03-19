@@ -4,7 +4,7 @@ This tool allows creation of tech trees for the game [WarThunder](https://warthu
 
 ## [You can use the tool here!](https://przemyslaw-zan.github.io/WT-Tech-Tree-Maker/)
 
-### [Example output tree](https://zanju.neocities.org/)
+### [Examples of output trees](https://zanju.neocities.org/)
 
 ## Table of Contents
 

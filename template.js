@@ -15,15 +15,43 @@ function createHtmlContent ( data ) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     </head>
     <body>
-        <span style="position: absolute; right: 10px; top: 3px">
-            Created using
-            <a href="https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker" target="_blank"> WT Tech Tree Maker </a>
-        </span>
         <h1 style="text-align: center; border-bottom: 1px solid black; padding: 5px">${ data.title }</h1>
         <div style="max-width: 1000px; margin: auto; padding: 0 3px 0 3px">${ data.description }</div>
         <div id="techTreeWrapper">
             <div id="techTree">${ data.tree }</div>
         </div>
+        <footer>
+            <div>
+                <a href="https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker" target="_blank">
+                    <b>Github</b>
+                    <img src="https://raw.githubusercontent.com/przemyslaw-zan/WT-Tech-Tree-Maker/main/images/github.png">
+                </a>
+                <i>See source code</i>
+            </div>
+            <div>
+                <a href="https://www.reddit.com/user/zanju13" target="_blank">
+                    <b>Reddit</b>
+                    <img src="https://raw.githubusercontent.com/przemyslaw-zan/WT-Tech-Tree-Maker/main/images/reddit.png">
+                </a>
+                <i>Contact tool developer</i>
+            </div>
+            <div>
+                <a href="https://przemyslaw-zan.github.io/WT-Tech-Tree-Maker/" target="_blank">
+                    <b>Tool</b>
+                    <img src="https://raw.githubusercontent.com/przemyslaw-zan/WT-Tech-Tree-Maker/main/images/plus.png">
+                    <!-- https://icons-for-free.com/create+new+plus+icon-1320183419213083922/ -->
+                </a>
+                <i>Create your own tree</i>
+            </div>
+            <div>
+                <a href="https://zanju.neocities.org/" target="_blank">
+                    <b>Examples</b>
+                    <img src="https://raw.githubusercontent.com/przemyslaw-zan/WT-Tech-Tree-Maker/main/images/ribbon.png">
+                    <!-- https://icons-for-free.com/ribbon+icon-1320087269980093187/ -->
+                </a>
+                <i>See works of others</i>
+            </div>
+        </footer>
         <div id="vehicleDisplayModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
