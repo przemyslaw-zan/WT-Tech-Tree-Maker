@@ -172,6 +172,20 @@ body {
 	padding: 0px;
 }
 
+.codeFont {
+	background-color: lightgray;
+	color: black;
+	font-style: normal;
+}
+
+#techTreeHint {
+	text-align: center;
+	width: 100%;
+	display: block;
+	padding-bottom: 5px;
+	font-style: italic;
+}
+
 #techTree {
 	margin: auto;
 	width: -webkit-fit-content;
