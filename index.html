@@ -41,7 +41,7 @@
 		<div id="navBackup">Backup</div>
 		<div id="navExport">Export tree</div>
 		<div id="navClone">Clone WT Wiki</div>
-		<div id="navScreenshot">Screenshot Mode</div>
+		<div id="navSettings">Settings</div>
 		<div id="navHide">Hide Menu</div>
 	</nav>
 
@@ -499,6 +499,35 @@
 					</li>
 				</ol>
 
+			</div>
+		</div>
+	</div>
+
+	<div id="settingsModal" class="modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<span class="close">&times;</span>
+				<h2>Settings</h2>
+			</div>
+			<div class="modal-body">
+				<label>
+					Screenshot mode
+					<input type="checkbox" name="screenshotMode" autocomplete="off">
+				</label>
+
+				<p>Thumbnail image style:</p>
+				<label>
+					Fit below name
+					<input type="radio" name="thumbnailStyle" value="0" autocomplete="off" checked>
+				</label>
+				<label>
+					Fit full tile
+					<input type="radio" name="thumbnailStyle" value="1" autocomplete="off">
+				</label>
+				<label>
+					Stretch full tile
+					<input type="radio" name="thumbnailStyle" value="2" autocomplete="off">
+				</label>
 			</div>
 		</div>
 	</div>

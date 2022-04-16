@@ -183,7 +183,6 @@ body {
 	width: 100%;
 	display: block;
 	padding-bottom: 5px;
-	font-style: italic;
 }
 
 #techTree {
@@ -203,8 +202,6 @@ body {
 	position: absolute;
 	bottom: 0px;
 	left: 0px;
-	max-height: 70%;
-	max-width: 80%;
 }
 
 #vehicleDeleteDisplay {
@@ -662,4 +659,25 @@ footer i {
 
 footer img {
 	width: 32px;
+}
+
+#settingsModal label {
+	display: block;
+	margin: auto;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding: 3px;
+	width: 200px;
+	border: 1px solid white;
+	border-radius: 3px;
+	text-align: right;
+	background-color: var(--tech_tree_bg)
+}
+
+#settingsModal p {
+	display: block;
+	margin: auto;
+	margin-top: 10px;
+	margin-bottom: 3px;
+	width: fit-content;
 }

@@ -159,8 +159,11 @@
 		}
 	];
 	let sortingLoopError = false;
-	let screenshotMode = false;
-	let menuVisible = true;
+	const settings = {
+		menuVisible: true,
+		screenshotMode: false,
+		thumbnailStyle: '0'
+	};
 
 	init();
 
@@ -200,37 +203,21 @@
 		document.querySelector( '#cloneModal' ).style.display = 'block';
 		document.querySelector( 'body' ).style.overflow = 'hidden';
 	} );
-	document.querySelector( '#navScreenshot' ).addEventListener( 'click', ev => {
-		if ( screenshotMode ) {
-			screenshotMode = false;
-			ev.target.style.backgroundColor = '';
-		} else {
-			screenshotMode = true;
-			ev.target.style.backgroundColor = 'green';
-		}
-		drawTree( organizeTree( vehicleList ) );
+	document.querySelector( '#navSettings' ).addEventListener( 'click', () => {
+		closeModal();
+		document.querySelector( '#settingsModal' ).style.display = 'block';
+		document.querySelector( 'body' ).style.overflow = 'hidden';
 	} );
-	document.querySelector( '#navHide' ).addEventListener( 'click', ev => {
-		const navTabs = [
-			'#navAdd',
-			'#navEdit',
-			'#navDel',
-			'#navOrder',
-			'#navBackup',
-			'#navExport',
-			'#navScreenshot',
-			'#navClone'
-		];
-
-		if ( menuVisible ) {
-			menuVisible = false;
-			ev.target.innerText = 'Show Menu';
-			navTabs.forEach( tab => document.querySelector( tab ).style.display = 'none' );
+	document.querySelector( '#navHide' ).addEventListener( 'click', () => {
+		if ( settings.menuVisible ) {
+			settings.menuVisible = false;
 		} else {
-			menuVisible = true;
-			ev.target.innerText = 'Hide Menu';
-			navTabs.forEach( tab => document.querySelector( tab ).style.display = 'block' );
+			settings.menuVisible = true;
 		}
+
+		localStorage.setItem( 'settings', JSON.stringify( settings ) );
+
+		updateMenuDisplay();
 	} );
 	// #endregion Nav menu listeners
 
@@ -404,7 +391,7 @@
 	document.querySelector( '#backupDownload' ).addEventListener( 'click', () => {
 		const title = document.querySelector( '#techTreeName' ).value;
 		const description = CKEDITOR.instances.techTreeMainDesc.getData();
-		const content = { title, description, vehicleList, branchTitles };
+		const content = { title, description, vehicleList, branchTitles, settings };
 		const fileName = title.toLowerCase().trim()
 			.replaceAll( ' ', '_' ) + '_backup.json';
 		var file = new Blob( [ JSON.stringify( content ) ], { type: 'application/json' } );
@@ -444,6 +431,22 @@
 						branchTitles = {};
 					}
 
+					if ( loadedData.settings ) {
+						settings.menuVisible = loadedData.settings.menuVisible ?? true;
+						settings.screenshotMode = loadedData.settings.screenshotMode ?? false;
+						settings.thumbnailStyle = loadedData.settings.thumbnailStyle ?? '0';
+
+						updateMenuDisplay();
+						document.querySelector( '#settingsModal input[name="screenshotMode"]' ).checked = settings.screenshotMode;
+						document.querySelector( `input[name="thumbnailStyle"][value="${ settings.thumbnailStyle }"]` ).checked = true;
+					} else {
+						settings.menuVisible = true;
+						settings.screenshotMode = false;
+						settings.thumbnailStyle = '0';
+					}
+
+					localStorage.setItem( 'settings', JSON.stringify( settings ) );
+
 					document.querySelector( '#techTreeName' ).value = loadedData.title;
 					CKEDITOR.instances.techTreeMainDesc.setData( loadedData.description );
 					vehicleList.splice( 0, vehicleList.length );
@@ -461,7 +464,7 @@
 					closeModal();
 				}
 			} catch ( e ) {
-				window.alert( `An error occurred:\n${ e }\nMake sure you upload correct save file!` );
+				window.alert( `An error occurred:\n\n${ e }\n\nMake sure you upload correct save file!` );
 			}
 		} );
 	} );
@@ -470,10 +473,10 @@
 	// #region Export modal listeners
 	document.querySelector( '#exportTechTreeButton' ).addEventListener( 'click', () => {
 		// Exported tree should not be in screenshot mode.
-		if ( screenshotMode ) {
-			screenshotMode = false;
+		if ( settings.screenshotMode ) {
+			settings.screenshotMode = false;
 			drawTree( organizeTree( vehicleList ) );
-			screenshotMode = true;
+			settings.screenshotMode = true;
 		}
 
 		// Collecting data
@@ -638,10 +641,19 @@
 	} );
 	// #endregion Clone modal listeners
 
+	// #region Settings modal listeners
+	document.querySelector( '#settingsModal' ).addEventListener( 'change', () => {
+		settings.screenshotMode = document.querySelector( '#settingsModal input[name="screenshotMode"]' ).checked;
+		settings.thumbnailStyle = document.querySelector( 'input[name="thumbnailStyle"]:checked' ).value;
+		localStorage.setItem( 'settings', JSON.stringify( settings ) );
+		drawTree( organizeTree( vehicleList ) );
+	} );
+	// #endregion Settings modal listeners
+
 	// #region Tech tree listeners
 	document.querySelector( '#techTree' ).addEventListener( 'click', techTreeClickProcessor );
 	function techTreeClickProcessor ( e ) {
-		if ( !screenshotMode ) {
+		if ( !settings.screenshotMode ) {
 			document.querySelectorAll( '.folderTooltipText' ).forEach( ( node ) => {
 				node.style.visibility = 'hidden';
 			} );
@@ -790,7 +802,7 @@
 			sortedVehicles[ region ] = array;
 		}
 
-		if ( !screenshotMode ) return sortedVehicles;
+		if ( !settings.screenshotMode ) return sortedVehicles;
 
 
 		for ( const section in sortedVehicles ) {
@@ -912,7 +924,7 @@
 		addBranchHeaders();
 		fitOverflowingFolder();
 
-		if ( screenshotMode ) {
+		if ( settings.screenshotMode ) {
 			document.querySelectorAll( '.folderTooltipText' ).forEach( ( node ) => {
 				node.style.visibility = 'visible';
 			} );
@@ -1114,7 +1126,12 @@
 	function createVehicleBadge ( vehicle ) {
 		const div = document.createElement( 'div' );
 		let img = '';
-		if ( vehicle.thumbnail !== undefined ) img = `<img src="${ vehicle.thumbnail }">`;
+		const imgStyle = {
+			0: 'max-height: 70%; max-width: 80%',
+			1: 'max-height: 100%; max-width: 100%',
+			2: 'height: 100%; width: 100%'
+		}[ settings.thumbnailStyle ];
+		if ( vehicle.thumbnail !== undefined ) img = `<img src="${ vehicle.thumbnail }" style="${ imgStyle }">`;
 		let svg = '';
 		if ( vehicle.classIcon ) {
 			svg = createSvg( classIcons.find( classIcon => classIcon.id === vehicle.classIcon ) );
@@ -1612,8 +1629,6 @@ ${ svg }
 				vehicleList.push( element );
 			} );
 			fillEditSelection( vehicleList );
-			const organizedVehicles = organizeTree( vehicleList );
-			drawTree( organizedVehicles );
 			updateVehicleOrderList();
 		}
 		const techTreeTitle = localStorage.getItem( 'title' );
@@ -1623,6 +1638,32 @@ ${ svg }
 		const techTreeDescription = localStorage.getItem( 'description' );
 		if ( techTreeDescription ) {
 			CKEDITOR.instances.techTreeMainDesc.setData( techTreeDescription );
+		}
+		let settingsSave = localStorage.getItem( 'settings' );
+		if ( settingsSave ) {
+			settingsSave = JSON.parse( settingsSave );
+			settings.menuVisible = settingsSave.menuVisible ?? true;
+			settings.screenshotMode = settingsSave.screenshotMode ?? false;
+			settings.thumbnailStyle = settingsSave.thumbnailStyle ?? '0';
+
+			updateMenuDisplay();
+			document.querySelector( '#settingsModal input[name="screenshotMode"]' ).checked = settings.screenshotMode;
+			document.querySelector( `input[name="thumbnailStyle"][value="${ settings.thumbnailStyle }"]` ).checked = true;
+		}
+
+		drawTree( organizeTree( vehicleList ) );
+	}
+	function updateMenuDisplay () {
+		const hideButton = document.querySelector( '#navHide' );
+		const navTabs = [ ...document.querySelectorAll( 'nav div' ) ]
+			.filter( div => div.id !== 'navHide' );
+
+		if ( settings.menuVisible ) {
+			hideButton.innerText = 'Show Menu';
+			navTabs.forEach( tab => tab.style.display = 'none' );
+		} else {
+			hideButton.innerText = 'Hide Menu';
+			navTabs.forEach( tab => tab.style.display = 'block' );
 		}
 	}
 	// #endregion Other functions
