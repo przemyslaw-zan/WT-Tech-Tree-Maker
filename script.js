@@ -415,7 +415,7 @@
 		file.text().then( ( result ) => {
 			try {
 				const loadedData = JSON.parse( result );
-				if ( !loadedData.title || !loadedData.description || !loadedData.vehicleList ) {
+				if ( [ loadedData.title, loadedData.description, loadedData.vehicleList ].includes( undefined ) ) {
 					window.alert( 'Incorrect save file! Make sure you upload correct save file!' );
 					return;
 				}
