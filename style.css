@@ -291,12 +291,22 @@ a {
 	left: 4px;
 }
 
+.faithful .vehicleName {
+	left: initial;
+	right: 4px;
+	text-align: right;
+}
+
 .vehicleBr {
 	z-index: 1;
 	text-shadow: 0px 0px 11px #000000;
 	position: absolute;
 	bottom: 1px;
 	right: 2px;
+}
+
+.faithful .vehicleBr {
+	right: 30px;
 }
 
 .folderNumber {
@@ -312,6 +322,19 @@ a {
 	background: linear-gradient(to top right, transparent 50%, #000000 0) top right/30px 30px no-repeat, transparent;
 }
 
+.faithful .folderNumber {
+	left: -1px;
+	top: -12px;
+	width: 50px;
+	height: 12px;
+	background: rgb(46, 66, 80);
+	border: 1px black solid;
+	border-bottom: none;
+	font-size: 10px;
+	text-align: left;
+	padding-left: 3px;
+}
+
 .vehicleBadge {
 	width: 150px;
 	height: 50px;
@@ -325,6 +348,10 @@ a {
 	z-index: 1;
 	-webkit-filter: drop-shadow(0px 0px 5px rgb(0, 0, 0));
 	filter: drop-shadow(0px 0px 5px rgb(0, 0, 0));
+}
+
+.faithful .vehicleBadge svg {
+	bottom: 4px;
 }
 
 /*.fillerDiv {}*/

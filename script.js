@@ -162,7 +162,8 @@
 	const settings = {
 		menuVisible: true,
 		screenshotMode: false,
-		thumbnailStyle: '0'
+		thumbnailStyle: '0',
+		badgeStyle: '0'
 	};
 
 	init();
@@ -435,14 +436,17 @@
 						settings.menuVisible = loadedData.settings.menuVisible ?? true;
 						settings.screenshotMode = loadedData.settings.screenshotMode ?? false;
 						settings.thumbnailStyle = loadedData.settings.thumbnailStyle ?? '0';
+						settings.badgeStyle = loadedData.settings.badgeStyle ?? '0';
 
 						updateMenuDisplay();
 						document.querySelector( '#settingsModal input[name="screenshotMode"]' ).checked = settings.screenshotMode;
 						document.querySelector( `input[name="thumbnailStyle"][value="${ settings.thumbnailStyle }"]` ).checked = true;
+						document.querySelector( `input[name="badgeStyle"][value="${ settings.badgeStyle }"]` ).checked = true;
 					} else {
 						settings.menuVisible = true;
 						settings.screenshotMode = false;
 						settings.thumbnailStyle = '0';
+						settings.badgeStyle = '0';
 					}
 
 					localStorage.setItem( 'settings', JSON.stringify( settings ) );
@@ -645,6 +649,7 @@
 	document.querySelector( '#settingsModal' ).addEventListener( 'change', () => {
 		settings.screenshotMode = document.querySelector( '#settingsModal input[name="screenshotMode"]' ).checked;
 		settings.thumbnailStyle = document.querySelector( 'input[name="thumbnailStyle"]:checked' ).value;
+		settings.badgeStyle = document.querySelector( 'input[name="badgeStyle"]:checked' ).value;
 		localStorage.setItem( 'settings', JSON.stringify( settings ) );
 		drawTree( organizeTree( vehicleList ) );
 	} );
@@ -1165,6 +1170,7 @@ ${ svg }
 </tr>
 </tbody>
 </table>`;
+		if ( settings.badgeStyle === '1' ) div.classList.add( 'faithful' );
 		return div;
 	}
 	function createFolder ( folder ) {
@@ -1645,10 +1651,12 @@ ${ svg }
 			settings.menuVisible = settingsSave.menuVisible ?? true;
 			settings.screenshotMode = settingsSave.screenshotMode ?? false;
 			settings.thumbnailStyle = settingsSave.thumbnailStyle ?? '0';
+			settings.badgeStyle = settingsSave.badgeStyle ?? '0';
 
 			updateMenuDisplay();
 			document.querySelector( '#settingsModal input[name="screenshotMode"]' ).checked = settings.screenshotMode;
 			document.querySelector( `input[name="thumbnailStyle"][value="${ settings.thumbnailStyle }"]` ).checked = true;
+			document.querySelector( `input[name="badgeStyle"][value="${ settings.badgeStyle }"]` ).checked = true;
 		}
 
 		drawTree( organizeTree( vehicleList ) );
