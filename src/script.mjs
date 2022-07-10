@@ -1,6 +1,7 @@
 /* ⚠️ Programming gore below, not for the faint of heart ⚠️ */
 
-'use strict';
+import createHtmlContent from './template.mjs';
+
 /* eslint-disable no-undef */
 ( () => {
 	const vehicleList = [];

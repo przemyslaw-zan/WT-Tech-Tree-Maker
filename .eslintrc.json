@@ -1,13 +1,14 @@
 {
+	"ignorePatterns": [
+		"dist/"
+	],
 	"env": {
-		"browser": true,
-		"commonjs": true,
-		"es2021": true,
 		"node": true
 	},
 	"extends": "eslint:recommended",
 	"parserOptions": {
-		"ecmaVersion": "latest"
+		"ecmaVersion": "latest",
+		"sourceType": "script"
 	},
 	"rules": {
 		"indent": [

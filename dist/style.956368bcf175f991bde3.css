@@ -1,0 +1,687 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.3.6,
+* Autoprefixer: v10.3.1
+* Browsers: last 4 version
+*/
+
+:root {
+	--main_bg: rgb(48, 48, 48);
+	--text_col: white;
+
+	--tech_tree_bg: rgb(36, 46, 51);
+}
+
+html,
+body {
+	margin: 0;
+}
+
+.select2-search,
+.select2-results__option,
+.select2-container--default .select2-results__option--selected {
+	background-color: rgb(36, 46, 51);
+	background-color: var(--tech_tree_bg);
+}
+
+td {
+	border: 1px black solid;
+}
+
+ul {
+	padding-left: 17px;
+}
+
+#deleteSelectDiv {
+	text-align: center;
+	padding-bottom: 15px;
+}
+
+#exportModal .modal-body {
+	text-align: center;
+}
+
+#nameInputDiv {
+	text-align: center;
+	padding-bottom: 15px;
+}
+
+blockquote {
+	font-style: italic;
+	border-left: 3px rgb(31, 31, 31) solid;
+	padding: 5px;
+}
+
+#editSelectDiv {
+	text-align: center;
+	padding-bottom: 15px;
+}
+
+#vehicleImageListEditAdd,
+#vehicleImageListAdd {
+	display: block;
+	margin-top: 5px;
+	background-color: rgb(78, 156, 0);
+	color: white;
+	border-radius: 3px;
+	border: 1px solid black;
+	cursor: pointer;
+}
+
+#vehicleClassIcons,
+#vehicleClassIconsEdit {
+	display: flex;
+	justify-content: space-between;
+	padding: 15px;
+	flex-wrap: wrap;
+}
+
+#vehicleClassIcons svg,
+#vehicleClassIconsEdit svg {
+	padding: 5px;
+	border-bottom: 4px transparent solid;
+	border-radius: 5px;
+	cursor: pointer;
+	filter: drop-shadow(0px 0px 5px rgb(0, 0, 0));
+}
+
+.classIconContainer input:checked~svg {
+	border-color: green !important;
+}
+
+#addButton,
+#editButton {
+	display: block;
+	margin: auto;
+	margin-top: 15px;
+	font-size: 1.3rem;
+	background-color: rgb(78, 156, 0);
+	color: white;
+	border-radius: 3px;
+	border: 1px solid black;
+	cursor: pointer;
+}
+
+#modalDesc h1,
+#modalDesc h2,
+#modalDesc h3 {
+	font-weight: normal;
+}
+
+.flexWrapper {
+	width: 50%;
+	float: left;
+}
+
+.inputModalFlex {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.inputModalFlexChild {
+	padding: 3px;
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	width: fit-content;
+}
+
+.flexTitle {
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+	font-size: large;
+}
+
+body {
+	font-family: 'Arial';
+	background-color: rgb(36, 46, 51);
+	background-color: var(--tech_tree_bg);
+	color: white;
+	color: var(--text_col);
+}
+
+.type_researchable,
+.type_reserve,
+.type_event {
+	background-color: rgb(46, 66, 80);
+}
+
+.type_premium {
+	background-color: rgb(60, 52, 28);
+}
+
+.type_squadron {
+	background-color: rgb(48, 70, 44);
+}
+
+.badgeSide {
+	width: 10px;
+}
+
+.badgeLine {
+	height: 20px;
+	padding: 0px;
+}
+
+.codeFont {
+	background-color: lightgray;
+	color: black;
+	font-style: normal;
+}
+
+#techTreeHint {
+	text-align: center;
+	width: 100%;
+	display: block;
+	padding-bottom: 5px;
+}
+
+#techTree {
+	margin: auto;
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	width: fit-content;
+}
+
+#techTreeWrapper {
+	width: 100%;
+	overflow: auto;
+}
+
+#techTree img,
+#delModal .modal-body img {
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+}
+
+#vehicleDeleteDisplay {
+	background-color: rgb(36, 46, 51);
+	background-color: var(--tech_tree_bg);
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	width: fit-content;
+	margin: 10px;
+	margin: auto;
+	border-radius: 10px;
+}
+
+#techTreeName {
+	display: block;
+	margin: auto;
+	text-align: center;
+	height: 2rem;
+	font-size: 2rem;
+	max-width: 95vw;
+}
+
+#techTreeNameLabel,
+#techTreeMainDescLabel {
+	display: block;
+	text-align: center;
+}
+
+#deleteAllButton {
+	display: block;
+	margin: auto;
+	margin-top: 10px;
+	background-color: rgb(212, 0, 0);
+	color: black;
+	font-weight: bold;
+	padding: 10px;
+	border: 3px black dashed;
+	cursor: pointer;
+}
+
+a {
+	color: greenyellow;
+}
+
+#techTree table,
+#delModal .modal-body table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+#techTree td,
+#delModal .modal-body td {
+	border-color: rgba(0, 0, 0, 0);
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+}
+
+.rank {
+	border-left: 2px solid white;
+	border-right: 2px solid white;
+	border-bottom: 2px solid white;
+	display: flex;
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	width: fit-content;
+}
+
+.rank:first-of-type {
+	border-top: 2px solid white;
+}
+
+.branch {
+	width: 182px;
+	display: inline-block;
+	vertical-align: top;
+	flex-shrink: 0;
+}
+
+.vehicleName {
+	z-index: 1;
+	text-shadow: 0px 0px 11px #000000;
+	max-width: 140px;
+	position: absolute;
+	top: 0px;
+	left: 4px;
+}
+
+.faithful .vehicleName {
+	left: auto;
+	left: initial;
+	right: 4px;
+	text-align: right;
+}
+
+.vehicleBr {
+	z-index: 1;
+	text-shadow: 0px 0px 11px #000000;
+	position: absolute;
+	bottom: 1px;
+	right: 2px;
+}
+
+.faithful .vehicleBr {
+	right: 30px;
+}
+
+.folderNumber {
+	position: absolute;
+	top: -1px;
+	right: -1px;
+	border: none;
+	text-align: right;
+	width: 30px;
+	height: 30px;
+	background: linear-gradient(to top right, transparent 50%, #000000 0) top right/30px 30px no-repeat, transparent;
+}
+
+.faithful .folderNumber {
+	left: -1px;
+	top: -12px;
+	width: 50px;
+	height: 12px;
+	background: rgb(46, 66, 80);
+	border: 1px black solid;
+	border-bottom: none;
+	font-size: 10px;
+	text-align: left;
+	padding-left: 3px;
+}
+
+.vehicleBadge {
+	border: 1px black solid !important;
+}
+
+.vehicleBadge {
+	width: 150px;
+	height: 50px;
+}
+
+.vehicleBadge svg {
+	position: absolute;
+	bottom: 19px;
+	right: 3px;
+	z-index: 1;
+	filter: drop-shadow(0px 0px 5px rgb(0, 0, 0));
+}
+
+.faithful .vehicleBadge svg {
+	bottom: 4px;
+}
+
+/*.fillerDiv {}*/
+
+#orderModal table {
+	margin: auto;
+	border-spacing: 10px;
+}
+
+#orderModal td {
+	border: none;
+}
+
+#orderModal th {
+	color: rgb(221, 0, 0);
+	cursor: pointer;
+}
+
+nav {
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 3;
+}
+
+nav div {
+	background-color: rgb(5, 35, 36);
+	padding: 3px;
+	border-radius: 0 5px 5px 0;
+	border: 1px solid black;
+	border-left: none;
+	cursor: pointer;
+	text-align: center;
+}
+
+nav div:nth-child(odd) {
+	background-color: rgb(38, 74, 75);
+}
+
+.lineDiv {
+	width: 20px;
+	background-color: rgb(96, 125, 139);
+	height: 100%;
+	margin: auto;
+}
+
+.lineArrow {
+	width: 0px;
+	height: 0px;
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	border-top: 20px solid rgb(96, 125, 139);
+	margin: auto;
+}
+
+.rankNumber {
+	border-right: 2px solid white;
+	display: flex;
+	align-items: center;
+	min-width: 1.2rem;
+}
+
+.rankNumberText {
+	writing-mode: vertical-rl;
+	text-orientation: mixed;
+	padding: 3px;
+	height: -webkit-fit-content;
+	height: -moz-fit-content;
+	height: fit-content;
+	transform: rotate(180deg);
+}
+
+#vehicleImageList td,
+#vehicleImageListEdit td {
+	border: none;
+	transform: translateY(10px);
+}
+
+#vehicleImageList input,
+#vehicleImageListEdit input {
+	width: 300px;
+}
+
+#vehicleImageList,
+#vehicleImageListEdit {
+	margin-top: 0;
+}
+
+#vehicleImageList li::marker,
+#vehicleImageListEdit li::marker {
+	font-size: 2rem;
+}
+
+/*REGION TOOLTIPS*/
+.tooltip {
+	position: relative;
+	display: inline-block;
+}
+
+.tooltip .tooltipText {
+	visibility: hidden;
+	width: 300px;
+	background-color: black;
+	text-align: center;
+	padding: 5px 0;
+	border-radius: 6px;
+
+	position: absolute;
+	z-index: 2;
+}
+
+.tooltip:hover .tooltipText {
+	visibility: visible;
+}
+
+.tooltipText {
+	top: 30px
+}
+
+.folderTooltip {
+	margin-bottom: -4px;
+	position: relative;
+	display: inline-block;
+}
+
+.folderTooltip .folderTooltipText {
+	visibility: hidden;
+	position: absolute;
+	z-index: 2;
+}
+
+.folderTooltipText {
+	top: 0px;
+}
+
+.folderTooltip .vehicleBadge {
+	cursor: pointer;
+}
+
+.folderTooltip .folderTooltipText .vehicleBadge {
+	cursor: default;
+}
+
+.carpet {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: calc(100% - 22px);
+	height: calc(100% - 32px);
+	margin: 16px 11px;
+	background-color: rgb(62, 77, 85);
+	border-radius: 3px;
+}
+
+.folderTooltipText .lineArrow,
+.folderTooltipText .lineDiv {
+	position: relative;
+	z-index: 1;
+}
+
+/*ENDREGION TOOLTIPS*/
+
+/* The Modal (background) */
+.modal {
+	display: none;
+	/* Hidden by default */
+	position: fixed;
+	/* Stay in place */
+	z-index: 4;
+	/* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%;
+	/* Full width */
+	height: 100%;
+	/* Full height */
+	overflow: auto;
+	/* Enable scroll if needed */
+	background-color: rgb(0, 0, 0);
+	/* Fallback color */
+	background-color: rgba(0, 0, 0, 0.75);
+	/* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+	background-color: rgb(46, 66, 80);
+	margin: 15% auto;
+	/* 15% from the top and centered */
+	padding: 20px;
+	width: 100%;
+	/* Could be more or less, depending on screen size */
+	max-width: 750px;
+}
+
+.modal-gallery {
+	width: 100%;
+}
+
+/* The Close Button */
+.close {
+	color: rgb(255, 255, 255);
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.galleria {
+	width: 100%;
+	height: 400px;
+	background: #000;
+}
+
+.cke_wysiwyg_div,
+.cke_wysiwyg_frame {
+	background-color: black;
+}
+
+.close:hover,
+.close:focus {
+	color: rgb(255, 0, 0);
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* Modal Header */
+.modal-header {
+	padding: 2px 16px;
+	background-color: rgb(25, 37, 46);
+	color: white;
+}
+
+/* Modal Body */
+.modal-body {
+	padding: 10px;
+}
+
+#followLoopWarning {
+	display: none;
+}
+
+#followLoopWarning b {
+	color: red;
+}
+
+/* Modal Content */
+.modal-content {
+	position: relative;
+	margin: auto;
+	padding: 0;
+	width: 100%;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	-webkit-animation-name: animateTop;
+	animation-name: animateTop;
+	-webkit-animation-duration: 0.4s;
+	animation-duration: 0.4s;
+}
+
+/* Add Animation */
+@-webkit-keyframes animateTop {
+	from {
+		top: -300px;
+		opacity: 0;
+	}
+
+	to {
+		top: 0;
+		opacity: 1;
+	}
+}
+
+@keyframes animateTop {
+	from {
+		top: -300px;
+		opacity: 0;
+	}
+
+	to {
+		top: 0;
+		opacity: 1;
+	}
+}
+
+footer {
+	margin-top: 50px;
+	padding: 25px;
+	display: flex;
+	justify-content: space-evenly;
+	flex-wrap: wrap;
+	max-width: 750px;
+	margin: auto;
+}
+
+footer div {
+	text-align: center;
+	padding: 5px;
+}
+
+footer a {
+	display: block;
+	border-bottom: 2px solid white;
+	border-radius: 5px;
+	padding: 3px;
+	text-decoration: none;
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	width: fit-content;
+	margin: auto;
+}
+
+footer i {
+	display: block;
+	padding-top: 3px;
+}
+
+footer img {
+	width: 32px;
+}
+
+#settingsModal label {
+	display: block;
+	margin: auto;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding: 3px;
+	width: 200px;
+	border: 1px solid white;
+	border-radius: 3px;
+	text-align: right;
+	background-color: rgb(36, 46, 51);
+	background-color: var(--tech_tree_bg)
+}
+
+#settingsModal p {
+	display: block;
+	margin: auto;
+	margin-top: 10px;
+	margin-bottom: 3px;
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	width: fit-content;
+}

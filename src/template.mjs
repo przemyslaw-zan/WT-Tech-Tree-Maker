@@ -1,6 +1,4 @@
-'use strict';
-/* eslint-disable no-unused-vars */
-function createHtmlContent ( data ) {
+export default function createHtmlContent ( data ) {
 	return `
 <!DOCTYPE html>
 <html lang="en">
