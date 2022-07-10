@@ -4,6 +4,7 @@ const path = require( 'path' );
 
 const CleanTerminalPlugin = require( 'clean-terminal-webpack-plugin' );
 const { CleanWebpackPlugin } = require( 'clean-webpack-plugin' );
+const CssMinimizerPlugin = require( 'css-minimizer-webpack-plugin' );
 const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 
@@ -13,21 +14,23 @@ module.exports = {
 		'./src/style.css'
 	],
 	output: {
-		path: path.resolve( './dist' ),
-		filename: 'script.[contenthash].js'
+		path: path.resolve( '.' ),
+		filename: './dist/script.[contenthash].js'
 	},
 	devServer: {
 		hot: true
 	},
 	plugins: [
 		new CleanTerminalPlugin( { beforeCompile: true } ),
-		new CleanWebpackPlugin(),
+		new CleanWebpackPlugin( {
+			cleanOnceBeforeBuildPatterns: [ './dist' ]
+		} ),
 		new HtmlWebpackPlugin( {
 			template: './src/index.html',
 			filename: './index.html',
 			hash: true
 		} ),
-		new MiniCssExtractPlugin( { filename: 'style.[contenthash].css' } )
+		new MiniCssExtractPlugin( { filename: './dist/style.[contenthash].css' } )
 	],
 	module: {
 		rules: [ {
@@ -47,5 +50,11 @@ module.exports = {
 				}
 			]
 		} ]
+	},
+	optimization: {
+		minimizer: [
+			'...', // This line prevents replacement of the existing minimizers.
+			new CssMinimizerPlugin()
+		]
 	}
 };
