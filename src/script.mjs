@@ -1,9 +1,12 @@
 /* ⚠️ Programming gore below, not for the faint of heart ⚠️ */
 
-import createHtmlContent from './template.mjs';
+/* global $, Galleria */
 
-/* eslint-disable no-undef */
-( () => {
+import createHtmlContent from './template.mjs';
+import CKEditor from '@ckeditor/ckeditor5-build-classic';
+
+( async () => {
+	const editors = {};
 	const vehicleList = [];
 	let branchTitles = {};
 	const descriptionTemplate =
@@ -167,7 +170,7 @@ import createHtmlContent from './template.mjs';
 		badgeStyle: '0'
 	};
 
-	init();
+	await init();
 
 	// #region Nav menu listeners
 	document.querySelector( '#navAdd' ).addEventListener( 'click', () => {
@@ -288,7 +291,7 @@ import createHtmlContent from './template.mjs';
 		document.querySelector( '#vehicleConnectionEdit' ).value = vehicle.connection;
 		document.querySelector( '#vehicleBranchEdit' ).value = vehicle.branch;
 		document.querySelector( '#vehicleFollowEdit' ).value = vehicle.follow;
-		CKEDITOR.instances.vehicleDescriptionEdit.setData( vehicle.description );
+		editors.vehicleDescriptionEdit.data.set( vehicle.description );
 		document.querySelector( '#vehicleThumbnailEdit' ).value = vehicle.thumbnail;
 		if ( vehicle.images ) {
 			const list = document.querySelector( '#vehicleImageListEdit' );
@@ -363,7 +366,7 @@ import createHtmlContent from './template.mjs';
 			branchTitles = {};
 			vehicleList.splice( 0, vehicleList.length );
 			document.querySelector( '#techTreeName' ).value = '';
-			CKEDITOR.instances.techTreeMainDesc.setData( '' );
+			editors.mainDescription.data.set( '' );
 			localStorage.clear();
 
 			const organizedVehicles = organizeTree( vehicleList );
@@ -392,7 +395,7 @@ import createHtmlContent from './template.mjs';
 	// #region Backup modal listeners
 	document.querySelector( '#backupDownload' ).addEventListener( 'click', () => {
 		const title = document.querySelector( '#techTreeName' ).value;
-		const description = CKEDITOR.instances.techTreeMainDesc.getData();
+		const description = editors.mainDescription.data.get();
 		const content = { title, description, vehicleList, branchTitles, settings };
 		const fileName = title.toLowerCase().trim()
 			.replaceAll( ' ', '_' ) + '_backup.json';
@@ -453,7 +456,7 @@ import createHtmlContent from './template.mjs';
 					localStorage.setItem( 'settings', JSON.stringify( settings ) );
 
 					document.querySelector( '#techTreeName' ).value = loadedData.title;
-					CKEDITOR.instances.techTreeMainDesc.setData( loadedData.description );
+					editors.mainDescription.data.set( loadedData.description );
 					vehicleList.splice( 0, vehicleList.length );
 					loadedData.vehicleList.forEach( ( element ) => {
 						vehicleList.push( element );
@@ -486,7 +489,7 @@ import createHtmlContent from './template.mjs';
 
 		// Collecting data
 		const title = document.querySelector( '#techTreeName' ).value;
-		const description = CKEDITOR.instances.techTreeMainDesc.getData();
+		const description = editors.mainDescription.data.get();
 		consumeBranchHeaders();
 		const tree = document.querySelector( '#techTree' ).innerHTML;
 		const vehicles = JSON.stringify( vehicleList );
@@ -710,38 +713,15 @@ import createHtmlContent from './template.mjs';
 	document.querySelector( '#techTreeName' ).addEventListener( 'change', ( e ) => {
 		localStorage.setItem( 'title', e.target.value );
 	} );
-	CKEDITOR.instances.techTreeMainDesc.on( 'change', () => {
-		localStorage.setItem( 'description', CKEDITOR.instances.techTreeMainDesc.getData() );
-	} );
-	CKEDITOR.on( 'dialogDefinition', function ( ev ) {
-		const dialogName = ev.data.name;
-		const dialogDefinition = ev.data.definition;
-		if ( dialogName == 'link' ) {
-			const infoTab = dialogDefinition.getContents( 'info' );
-			const protocolField = infoTab.get( 'protocol' );
-			protocolField[ 'default' ] = 'https://';
-
-			const targetTab = dialogDefinition.getContents( 'target' );
-			const targetField = targetTab.get( 'linkTargetType' );
-			targetField[ 'default' ] = '_blank';
-		}
-	} );
-	CKEDITOR.on( 'instanceReady', function ( e ) {
-		// First time
-		e.editor.document.getBody().setStyle( 'background-color', 'rgb(36, 46, 51)' );
-		e.editor.document.getBody().setStyle( 'color', 'white' );
-		// in case the user switches to source and back
-		e.editor.on( 'contentDom', function () {
-			e.editor.document.getBody().setStyle( 'background-color', 'rgb(36, 46, 51)' );
-			e.editor.document.getBody().setStyle( 'color', 'white' );
-		} );
+	editors.mainDescription.model.document.on( 'change', () => {
+		localStorage.setItem( 'description', editors.mainDescription.data.get() );
 	} );
 	// #endregion Main title & description listeners
 
 	// #region Miscellaneous listeners
-	window.onbeforeunload = () => {
-		return 'Do you really want to leave this page?';
-	};
+	// window.onbeforeunload = () => {
+	// 	return 'Do you really want to leave this page?';
+	// };
 	// #endregion Miscellaneous listeners
 
 	// #region Tech tree building functions
@@ -1270,7 +1250,7 @@ ${ svg }
 			classIcon = undefined;
 		}
 		const follow = document.querySelector( '#vehicleFollowEdit' ).value;
-		const description = CKEDITOR.instances.vehicleDescription.getData();
+		const description = editors.vehicleDescription.data.get();
 		const id = 'v' + Date.now();
 		const thumbnail = document.querySelector( '#vehicleThumbnail' ).value;
 		const images = [];
@@ -1300,7 +1280,7 @@ ${ svg }
 		vehicleList.push( vehicle );
 		document.querySelector( '#newForm' ).reset();
 		document.querySelector( '#none' ).checked = true;
-		CKEDITOR.instances.vehicleDescription.setData( descriptionTemplate );
+		editors.vehicleDescription.data.set( descriptionTemplate );
 		closeModal();
 		return true;
 	}
@@ -1332,8 +1312,8 @@ ${ svg }
 			classIcon = undefined;
 		}
 		const follow = document.querySelector( '#vehicleFollowEdit' ).value;
-		const description = CKEDITOR.instances.vehicleDescriptionEdit.getData();
-		CKEDITOR.instances.vehicleDescriptionEdit.setData( '' );
+		const description = editors.vehicleDescriptionEdit.data.get();
+		editors.vehicleDescriptionEdit.data.set( '' );
 		const id = document.querySelector( '#editionSelect' ).value;
 		const thumbnail = document.querySelector( '#vehicleThumbnailEdit' ).value;
 		const images = [];
@@ -1598,7 +1578,7 @@ ${ svg }
 			document.querySelector( `#none${ edit ? 'Edit' : '' }` ).click();
 		}
 	}
-	function init () {
+	async function init () {
 		// Modal slideshow initialization
 		Galleria.loadTheme( 'https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/themes/classic/galleria.classic.min.js' );
 		Galleria.run( '.galleria' );
@@ -1613,12 +1593,10 @@ ${ svg }
 		$( '#deleteVehicleSelect' ).select2( { width: '15em' } );
 
 		// Text editor initialization
-		CKEDITOR.config.height = 350;
-		CKEDITOR.replace( 'vehicleDescription' );
-		CKEDITOR.replace( 'vehicleDescriptionEdit' );
-		CKEDITOR.instances.vehicleDescription.setData( descriptionTemplate );
-		CKEDITOR.replace( 'techTreeMainDesc' );
-		CKEDITOR.config.uiColor = '#A4D0E6';
+		editors.mainDescription = await CKEditor.create( document.querySelector( '#techTreeMainDesc' ) );
+		editors.vehicleDescription = await CKEditor.create( document.querySelector( '#vehicleDescription' ) );
+		editors.vehicleDescriptionEdit = await CKEditor.create( document.querySelector( '#vehicleDescriptionEdit' ) );
+		editors.vehicleDescription.data.set( descriptionTemplate );
 
 		// Adding class icon selection
 		fillClassSelection( false );
@@ -1644,7 +1622,7 @@ ${ svg }
 		}
 		const techTreeDescription = localStorage.getItem( 'description' );
 		if ( techTreeDescription ) {
-			CKEDITOR.instances.techTreeMainDesc.setData( techTreeDescription );
+			editors.mainDescription.data.set( techTreeDescription );
 		}
 		let settingsSave = localStorage.getItem( 'settings' );
 		if ( settingsSave ) {

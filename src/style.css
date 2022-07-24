@@ -1,15 +1,21 @@
-/*
-* Prefixed by https://autoprefixer.github.io
-* PostCSS: v8.3.6,
-* Autoprefixer: v10.3.1
-* Browsers: last 4 version
-*/
-
 :root {
 	--main_bg: rgb(48, 48, 48);
 	--text_col: white;
 
 	--tech_tree_bg: rgb(36, 46, 51);
+
+	/*
+	TODO: style ckeditor
+	https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/ui/theme-customization.html
+	*/
+
+	--ck-color-base-background: var(--tech_tree_bg) !important;
+	--ck-color-list-background: white !important;
+	--ck-color-input-background: white !important;
+	--ck-color-panel-background: white !important;
+	--ck-color-tooltip-background: white !important;
+	--ck-color-dropdown-panel-background: white !important;
+	--ck-color-labeled-field-label-background: white !important;
 }
 
 html,
@@ -69,14 +75,9 @@ blockquote {
 
 #vehicleClassIcons,
 #vehicleClassIconsEdit {
-	display: -webkit-box;
-	display: -ms-flexbox;
 	display: flex;
-	-webkit-box-pack: space-between;
-	-ms-flex-pack: space-between;
 	justify-content: space-between;
 	padding: 15px;
-	-ms-flex-wrap: wrap;
 	flex-wrap: wrap;
 }
 
@@ -86,7 +87,6 @@ blockquote {
 	border-bottom: 4px transparent solid;
 	border-radius: 5px;
 	cursor: pointer;
-	-webkit-filter: drop-shadow(0px 0px 5px rgb(0, 0, 0));
 	filter: drop-shadow(0px 0px 5px rgb(0, 0, 0));
 }
 
@@ -119,20 +119,13 @@ blockquote {
 }
 
 .inputModalFlex {
-	display: -webkit-box;
-	display: -ms-flexbox;
 	display: flex;
-	-ms-flex-wrap: wrap;
 	flex-wrap: wrap;
-	-webkit-box-pack: center;
-	-ms-flex-pack: center;
 	justify-content: center;
 }
 
 .inputModalFlexChild {
 	padding: 3px;
-	width: -webkit-fit-content;
-	width: -moz-fit-content;
 	width: fit-content;
 }
 
@@ -187,8 +180,6 @@ body {
 
 #techTree {
 	margin: auto;
-	width: -webkit-fit-content;
-	width: -moz-fit-content;
 	width: fit-content;
 }
 
@@ -206,8 +197,6 @@ body {
 
 #vehicleDeleteDisplay {
 	background-color: var(--tech_tree_bg);
-	width: -webkit-fit-content;
-	width: -moz-fit-content;
 	width: fit-content;
 	margin: 10px;
 	margin: auto;
@@ -262,11 +251,7 @@ a {
 	border-left: 2px solid white;
 	border-right: 2px solid white;
 	border-bottom: 2px solid white;
-	display: -webkit-box;
-	display: -ms-flexbox;
 	display: flex;
-	width: -webkit-fit-content;
-	width: -moz-fit-content;
 	width: fit-content;
 }
 
@@ -278,7 +263,6 @@ a {
 	width: 182px;
 	display: inline-block;
 	vertical-align: top;
-	-ms-flex-negative: 0;
 	flex-shrink: 0;
 }
 
@@ -317,8 +301,6 @@ a {
 	text-align: right;
 	width: 30px;
 	height: 30px;
-	background: -o-linear-gradient(bottom left, transparent 50%, #000000 0) top right/30px 30px no-repeat, transparent;
-	background: -webkit-gradient(linear, left bottom, right top, color-stop(50%, transparent), color-stop(0, #000000)) top right/30px 30px no-repeat, transparent;
 	background: linear-gradient(to top right, transparent 50%, #000000 0) top right/30px 30px no-repeat, transparent;
 }
 
@@ -346,7 +328,6 @@ a {
 	bottom: 19px;
 	right: 3px;
 	z-index: 1;
-	-webkit-filter: drop-shadow(0px 0px 5px rgb(0, 0, 0));
 	filter: drop-shadow(0px 0px 5px rgb(0, 0, 0));
 }
 
@@ -409,35 +390,22 @@ nav div:nth-child(odd) {
 
 .rankNumber {
 	border-right: 2px solid white;
-	display: -webkit-box;
-	display: -ms-flexbox;
 	display: flex;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
 	align-items: center;
 	min-width: 1.2rem;
 }
 
 .rankNumberText {
-	-webkit-writing-mode: vertical-rl;
-	-ms-writing-mode: tb-rl;
 	writing-mode: vertical-rl;
-	-webkit-text-orientation: mixed;
 	text-orientation: mixed;
 	padding: 3px;
-	height: -webkit-fit-content;
-	height: -moz-fit-content;
 	height: fit-content;
-	-webkit-transform: rotate(180deg);
-	-ms-transform: rotate(180deg);
 	transform: rotate(180deg);
 }
 
 #vehicleImageList td,
 #vehicleImageListEdit td {
 	border: none;
-	-webkit-transform: translateY(10px);
-	-ms-transform: translateY(10px);
 	transform: translateY(10px);
 }
 
@@ -614,27 +582,12 @@ nav div:nth-child(odd) {
 	margin: auto;
 	padding: 0;
 	width: 100%;
-	-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	-webkit-animation-name: animateTop;
 	animation-name: animateTop;
-	-webkit-animation-duration: 0.4s;
 	animation-duration: 0.4s;
 }
 
 /* Add Animation */
-@-webkit-keyframes animateTop {
-	from {
-		top: -300px;
-		opacity: 0;
-	}
-
-	to {
-		top: 0;
-		opacity: 1;
-	}
-}
-
 @keyframes animateTop {
 	from {
 		top: -300px;
@@ -650,13 +603,8 @@ nav div:nth-child(odd) {
 footer {
 	margin-top: 50px;
 	padding: 25px;
-	display: -webkit-box;
-	display: -ms-flexbox;
 	display: flex;
-	-webkit-box-pack: space-evenly;
-	-ms-flex-pack: space-evenly;
 	justify-content: space-evenly;
-	-ms-flex-wrap: wrap;
 	flex-wrap: wrap;
 	max-width: 750px;
 	margin: auto;
@@ -673,8 +621,6 @@ footer a {
 	border-radius: 5px;
 	padding: 3px;
 	text-decoration: none;
-	width: -webkit-fit-content;
-	width: -moz-fit-content;
 	width: fit-content;
 	margin: auto;
 }

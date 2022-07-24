@@ -1,5 +1,5 @@
 {
-	"license": "MIT",
+	"license": "GPL-3.0",
 	"name": "wt-tech-tree-maker",
 	"homepage": "https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker#readme",
 	"scripts": {
@@ -9,6 +9,7 @@
 	"devDependencies": {
 		"@babel/core": "^7.13.10",
 		"@babel/preset-env": "^7.13.10",
+		"@ckeditor/ckeditor5-build-classic": "^34.2.0",
 		"babel-loader": "^8.2.2",
 		"clean-terminal-webpack-plugin": "^3.0.0",
 		"clean-webpack-plugin": "^4.0.0",
