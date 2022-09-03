@@ -848,6 +848,11 @@ function organizeTree ( vehicleList ) {
 }
 function isFollowApplied ( array ) {
 	array = [ ...array ];
+
+	const allIds = array.map( vehicle => vehicle.id );
+	const allFollows = array.map( vehicle => vehicle.follow ).filter( id => ![ undefined, 'undefined' ].includes( id ) );
+	const invalidFollows = allFollows.filter( id => !allIds.includes( id ) );
+
 	if ( ![ undefined, 'undefined' ].includes( array[ 0 ].follow ) ) {
 		if (
 			array.some( ( vehicle ) => {
@@ -858,7 +863,7 @@ function isFollowApplied ( array ) {
 	}
 	while ( array.length >= 2 ) {
 		if ( ![ undefined, 'undefined' ].includes( array[ 1 ].follow ) ) {
-			if ( array[ 0 ].id !== array[ 1 ].follow ) return false;
+			if ( array[ 0 ].id !== array[ 1 ].follow && !invalidFollows.includes( array[ 1 ].follow ) ) return false;
 		}
 		array.shift();
 	}
