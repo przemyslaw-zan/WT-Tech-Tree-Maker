@@ -12,6 +12,15 @@
 	--tech_tree_bg: rgb(36, 46, 51);
 }
 
+/*
+* LTS version is only available to premium users.
+* Best I can do is to hide the warning.
+* Oh well :/
+*/
+.cke_notifications_area {
+	display: none;
+}
+
 html,
 body {
 	margin: 0;
