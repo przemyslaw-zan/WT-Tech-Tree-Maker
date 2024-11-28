@@ -537,79 +537,115 @@ document.querySelector( '#exportTechTreeButton' ).addEventListener( 'click', () 
 // #region Clone modal listeners
 document.querySelector( '#copyCloneUtility' ).addEventListener( 'click', () => {
 	const cloneUtility = `
-		resBranches = Number( document.querySelectorAll( '.tree th' )[ 1 ].getAttribute( 'colspan' ) || 0 );
+		rankMap = {
+		'RANK I': 1,
+		'RANK II': 2,
+		'RANK III': 3,
+		'RANK IV': 4,
+		'RANK V': 5,
+		'RANK VI': 6,
+		'RANK VII': 7,
+		'RANK VIII': 8,
+		'RANK IX': 9,
+		'RANK X': 10,
+		'RANK XI': 11,
+		'RANK XII': 12,
+		'RANK XIII': 13,
+		'RANK XIV': 14,
+		'RANK XV': 15,
+		'RANK XVI': 16,
+		'RANK XVII': 17,
+		'RANK XVIII': 18,
+		'RANK XIX': 19,
+		'RANK XX': 20,
+		}
+
 		i = 0;
-		vehicleList = [ ...document.querySelectorAll( '.tree-item' ) ].map( node => {
+
+		vehicleList = [...document.querySelectorAll('.unit-tree[style=""] .wt-tree_item')].map(node => {
 			const vehicle = {};
-		
-			i++;
-			vehicle.id = 'v' + i;
-		
-			vehicle.name = node.innerText;
-		
-			vehicle.thumbnail = node.querySelector( '.tree-item-img img' )?.src;
-		
-			vehicle.type = node.querySelector( '.tree-item-background img' ).src.match( /_([^\\/]+)\\.png/ )[ 1 ];
-		
-			switch ( vehicle.type ) {
-			case 'own':
-				vehicle.type = 'researchable';
-				break;
-			case 'prem':
+
+			vehicle.id = 'v' + ++i;
+			vehicle.name = node.querySelector('.wt-tree_item-text').innerText.trim()
+				.replace(/\\s/g, '\\u0020').replace(/[^\\x00-\\xFF]/g, '\\u002a');
+			vehicle.br = Number(node.querySelector('.br').innerText);
+			vehicle.thumbnail = node.querySelector('.wt-tree_item-icon')?.style.backgroundImage.match(/(?<=^url\\(")[^"]+(?="\\)$)/)[0];
+
+			vehicle.type = 'researchable';
+
+			if (node.classList.contains('wt-tree_item--prem')) {
 				vehicle.type = 'premium';
-				break;
-			case 'squad':
+			} else if (node.classList.contains('wt-tree_item--squad')) {
 				vehicle.type = 'squadron';
 			}
-		
-			const parentNode = node.parentNode;
-			if ( parentNode.classList.contains( 'tree-group-collapse' ) ) {
-				if ( [ ...parentNode.querySelectorAll( '.tree-item' ) ][ 0 ].innerText === vehicle.name ) {
-					vehicle.connection = 'first';
-				} else {
+
+			if (node.parentNode.classList.contains('wt-tree_group-items')) {
+				if (node.previousElementSibling.classList.contains('wt-tree_item')) {
 					vehicle.connection = 'folder';
+				} else {
+					vehicle.connection = 'first';
 				}
 			}
-		
-			while ( node.tagName !== 'TD' ) {
-				node = node.parentNode;
+
+			let branchTdElement = node;
+
+			while (branchTdElement.tagName !== 'TD') {
+				branchTdElement = branchTdElement.parentNode;
 			}
-			node = node.parentNode;
-		
-			vehicle.branch = [ ...node.querySelectorAll( 'td' ) ].findIndex( td => {
-				const vehiclesInBranch = [ ...td.querySelectorAll( '.tree-item' ) ].map( vehicle => vehicle.innerText );
-				return vehiclesInBranch.includes( vehicle.name );
-			} ) + 1;
-		
-			if ( vehicle.branch > resBranches ) {
-				vehicle.branch = vehicle.branch - resBranches;
-				if ( vehicle.type === 'researchable' ) {
-					vehicle.type = 'event';
-				}
+
+			vehicle.branch = 1;
+
+			while (branchTdElement.previousElementSibling) {
+				branchTdElement = branchTdElement.previousElementSibling;
+				vehicle.branch++;
 			}
-		
-			node = node.parentNode;
-		
-			vehicle.rank = [ ...node.querySelectorAll( 'tr' ) ].findIndex( tr => {
-				const vehiclesInRank = [ ...tr.querySelectorAll( '.tree-item' ) ].map( vehicle => vehicle.innerText );
-				return vehiclesInRank.includes( vehicle.name );
-			} );
-		
-			vehicle.br = 0;
-		
-			if ( vehicle.connection !== 'folder' ) {
+
+			let parentRankElement = node;
+
+			while (!parentRankElement.classList.contains('wt-tree_rank-instance')) {
+				parentRankElement = parentRankElement.parentNode;
+			}
+
+			const isInPremiumSection = parentRankElement.style.getPropertyValue('margin-left') !== 'auto';
+
+			if (isInPremiumSection && vehicle.type === 'researchable') {
+				vehicle.type = 'event';
+			}
+
+			vehicle.rank = parentRankElement.parentNode.parentNode.previousElementSibling.innerText.trim().toUpperCase();
+			vehicle.rank = rankMap[vehicle.rank];
+
+			if (vehicle.connection !== 'folder') {
 				vehicle.connection = 'yes';
 			}
-			if ( vehicle.type !== 'researchable' ) {
+			if (vehicle.type !== 'researchable') {
 				vehicle.connection = 'no';
 			}
-			vehicle.name = vehicle.name.trim().replace( /\\s/g, '\\u0020' )
-				.replace( /[^\\x00-\\xFF]/g, '\\u002a' );
-		
+
 			return vehicle;
-		} );
-		title = document.querySelector( '#firstHeading' ).innerText;
+		});
+
+		title = document.querySelector('.navtabs_item.active').innerText + ' ' + document.querySelector('.unitclass-card_title').innerText;
 		description = 'This tech tree was cloned from the WT wiki on ' + new Date();
+
+		allBranches = Array.from(new Set(vehicleList.map(vehicle => vehicle.branch)));
+		allRanks = Array.from(new Set(vehicleList.map(vehicle => vehicle.rank)));
+
+		for (const rankNumber of allRanks) {
+			for (const premiumSection of [false, true]) {
+				for (const branchNumber of allBranches) {
+				const sectionVehicles = vehicleList.filter(vehicle => vehicle.branch === branchNumber && vehicle.rank === rankNumber && (vehicle.type === ('researchable')) !== premiumSection)
+
+				sectionVehicles.forEach((vehicle, index) => {
+					if (index === 0) {
+					return;
+					}
+
+					vehicle.follow = sectionVehicles[index - 1].id;
+				})
+				}
+			}
+		}
 		
 		content = {
 			title,

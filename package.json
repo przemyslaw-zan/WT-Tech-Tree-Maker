@@ -1,7 +1,11 @@
 {
 	"name": "wt-tech-tree-maker",
 	"devDependencies": {
-		"eslint": "^8.0.0"
+		"eslint": "^8.0.0",
+		"http-server": "^14.1.1"
+	},
+	"scripts": {
+		"dev": "http-server ."
 	},
 	"homepage": "https://github.com/przemyslaw-zan/WT-Tech-Tree-Maker#readme"
 }

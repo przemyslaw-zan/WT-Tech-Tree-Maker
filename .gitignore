@@ -1,3 +1,4 @@
 node_modules
 template.html
 .vscode/settings.json
+package-lock.json
