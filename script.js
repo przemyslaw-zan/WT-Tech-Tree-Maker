@@ -568,7 +568,8 @@ document.querySelector( '#copyCloneUtility' ).addEventListener( 'click', () => {
 			vehicle.id = 'v' + ++i;
 			vehicle.name = node.querySelector('.wt-tree_item-text').innerText.trim()
 				.replace(/\\s/g, '\\u0020').replace(/[^\\x00-\\xFF]/g, '\\u002a');
-			vehicle.br = Number(node.querySelector('.br').innerText);
+			// Vehicles with dynamic BR show a range (e.g. "10.7–11.7"), in which case the top BR is used.
+			vehicle.br = Number(node.querySelector('.br').innerText.split('\\u2013').pop());
 			vehicle.thumbnail = node.querySelector('.wt-tree_item-icon')?.style.backgroundImage.match(/(?<=^url\\(")[^"]+(?="\\)$)/)[0];
 
 			vehicle.type = 'researchable';
